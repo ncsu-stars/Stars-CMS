@@ -1,0 +1,48 @@
+{% extends 'website/base.html' %}
+
+{% block title %}Homepage{% endblock title %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(window).load(function() {
+    $('#slider').nivoSlider({
+    	effect: 'fade',
+    	slices: 15,
+    	directionNav: true,
+    	directionNavHide: true,
+    	controlNav: false,
+    	controlNavThumbs: false,
+    	keyboardNav: true,
+    	pauseOnHover: true
+    });
+});
+</script>
+{% endblock extrajs %}
+
+{% block content %}
+<div id="photos" class="theme-default" style="width: 618px">
+	<div class="ribbon"></div>
+    <div id="slider" class="nivoSlider">
+        <img src="{{ STATIC_URL }}images/toystory.jpg" alt="" />
+        <img src="{{ STATIC_URL }}images/up.jpg" alt="" title="Caption" /></a>
+        <img src="{{ STATIC_URL }}images/walle.jpg" alt="" />
+        <img src="{{ STATIC_URL }}images/nemo.jpg" alt="" title="#htmlcaption" />
+    </div>
+    <div id="htmlcaption" class="nivo-html-caption">
+        A <a href="#">link</a> using html
+    </div>
+    <br />
+</div>
+<h1>Welcome to the NCSU STARS website</h1>
+<p>
+    The NCSU STARS (Students & Technology in Academia, Research and Service) Student Leadership Corps (SLC) is a student organization that provides students with the opportunity to learn more about computer science careers, participate in service and outreach programs to local schools, engage in research, meet with leaders in the computer field, all while earning a stipend!
+    <br /><br />
+    The NCSU SLC is part of the larger STARS Alliance, a system of regional partnerships among colleges and universities, industry, primary schools and the community to collaboratively implement programs for student recruitment and success in computing.
+    <br /><br />
+    If you are a college student in the Raleigh area and would like to learn more about joining STARS SLC, follow the Joining Stars link. To learn more about what NCSU STARS students do every week, view their blogs.
+    <br /><br />
+    STARS is funded by the National Science Foundation.
+    <br /><br />
+    NCSU STARS would like to thank their local sponsors below for their contributions to the Raleigh community.
+</p>
+{% endblock content %}

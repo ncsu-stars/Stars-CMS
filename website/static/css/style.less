@@ -1,0 +1,83 @@
+.inset-shadow() {
+    box-shadow: inset 0px -1px 0px 0px #767676, inset 0px 1px 0px 0px #898989, 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: inset 0px -1px 0px 0px #767676, inset 0px 1px 0px 0px #898989, 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: inset 0px -1px 0px 0px #767676, inset 0px 1px 0px 0px #898989, 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+.shadow() {
+    box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    -webkit-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0px 1px 2px 0px rgba(0, 0, 0, 0.3);
+}
+
+.shadow-notop() {
+    box-shadow: inset 0px -1px 0px 0px #767676, inset 0px 0px 0px 0px #898989, 0px 1px 3px 0px rgba(0, 0, 0, 0.5);
+    -webkit-box-shadow: inset 0px -1px 0px 0px #767676, inset 0px 0px 0px 0px #898989, 0px 1px 3px 0px rgba(0, 0, 0, 0.5);
+    -moz-box-shadow: inset 0px -1px 0px 0px #767676, inset 0px 0px 0px 0px #898989, 0px 1px 3px 0px rgba(0, 0, 0, 0.5);
+}
+
+.rounded-borders(@top-left: 3px, @top-right: 3px, @bottom-left: 3px, @bottom-right: 3px) {
+    border-top-left-radius: @top-left;
+    -moz-border-radius-topleft: @top-left;
+
+    border-top-right-radius: @top-right;
+    -moz-border-radius-topright: @top-right;
+
+    border-bottom-right-radius: @bottom-right;
+    -moz-border-radius-bottomright: @bottom-right;
+
+    border-bottom-left-radius: @bottom-left;
+    -moz-border-radius-bottomleft: @bottom-left;
+}
+
+.gradient(@top, @bottom) {
+    background: -moz-linear-gradient(top, @top 0%, @bottom 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @top), color-stop(100%, @bottom));
+    background: -webkit-linear-gradient(top, @top 0%, @bottom 100%);
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 800px;
+    font: 400 12px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
+    background-color: #F5F5F6;
+    color: #222222;
+
+    .container {
+        width: 950px;
+        margin: 0 auto;
+    }
+
+    .text {
+        margin-top: 5px;
+    }
+
+    .formlyInvalid, .formlyRequired {
+        border-radius: 4px;
+        padding:5px 10px; 
+        font-weight: bold;
+        font-size: 12px;
+        display: none;
+        margin: 5px 0;
+    }
+
+    .formlyInvalid {
+        background: #ef7971;
+        color: #fff;
+        border:1px solid #e63125;
+        box-shadow: inset 0px 1px 0px #f4a49f;
+        text-shadow: 0px -1px 0px #e63125;
+    }
+
+    .formlyRequired {
+        background: #f5972f;
+        color: #fff;
+        border: 1px solid #c76d09;
+        box-shadow: inset 0px 1px 0px #f9c081;
+        text-shadow:0px -1px 0px #c76d09;
+    }
+}
+
+
+

@@ -1,0 +1,12 @@
+{% extends 'website/base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock title %}
+
+{% block content %}
+{% load filters %}
+<h1>{{ blog.title }} <small>posted on {{ blog.date }} by {{ member }}
+{% if member.user == user %}<a href="{% url website:edit_blog_url pk=member.pk blog_pk=blog.pk %}">edit</a>{% endif %}</small></h1>
+<p>
+	{{ blog.post|stripjs }}
+</p>
+{% endblock content %}
