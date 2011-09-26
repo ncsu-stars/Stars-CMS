@@ -9,11 +9,11 @@ Installation
 ### Create your virtual environment
 
 Make sure you have pip and virtualenv installed on your system already
-
-#. Change into the cloned project directory (where this README is contained)
-#. Run the following: ``virtualenv --no-site-packages --distribute ve``
-#. Active the virtual environment by running: ``source ve/bin/activate``
-#. Install the requirements by running: ``pip install -r requirements.txt``
+  
+  1. Change into the cloned project directory (where this README is contained)
+  2. Run the following: ``virtualenv --no-site-packages --distribute ve``
+  3. Active the virtual environment by running: ``source ve/bin/activate``
+  4. Install the requirements by running: ``pip install -r requirements.txt``
 
 ### Run your server
 
