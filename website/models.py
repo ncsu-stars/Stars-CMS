@@ -20,7 +20,7 @@ class Project(models.Model):
 
     class Meta:
         verbose_name        = 'project'
-        verbose_name_plural = 'project'
+        verbose_name_plural = 'projects'
 
 class Member(models.Model):
     GROUP_CHOICES = (
@@ -88,9 +88,6 @@ class BlogPost(models.Model):
     title           = models.CharField(max_length=255)
     date            = models.DateTimeField()
     post            = models.TextField()
-
-    def __unicode__(self):
-        return unicode('%s by %s' % (self.title, self.author))
 
     @models.permalink
     def get_absolute_url(self):

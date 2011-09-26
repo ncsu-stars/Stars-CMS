@@ -128,7 +128,7 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.databrowse',
     'south',
-    'website',
+    'website'
 )
 
 AUTHENTICATION_BACKENDS = (

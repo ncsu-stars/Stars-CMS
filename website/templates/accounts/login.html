@@ -2,14 +2,6 @@
 
 {% block title %}Login{% endblock title %}
 
-{% block extrajs %}
-<script type="text/javascript">
-    /*$('document').ready(function() {
-        $('#loginForm').formly();
-    });*/
-</script>
-{% endblock extrajs %}
-
 {% block content %}
 <form id="loginForm" width="400px" method="post" action="{% url website:login_url %}">
     {% csrf_token %}
