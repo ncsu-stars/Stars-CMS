@@ -103,6 +103,7 @@ class AddBlogView(CreateView):
 	form_class = BlogForm
 	template_name = 'website/blogs/add_blog.html'
 	object = None
+	
 	def post(self, request, *args, **kwargs):
 		pk = self.kwargs.get('pk', None)
 		if pk is not None:
