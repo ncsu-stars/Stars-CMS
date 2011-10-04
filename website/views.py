@@ -1,11 +1,22 @@
-from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed, HttpResponseForbidden
 from django.conf import settings
+from django.utils import simplejson
+from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView
 
 from website.models import Member, News, Page, Project, BlogPost, Tag
 from website.forms import MemberForm, ProjectForm, BlogForm
+
+class JSONResponseMixin(object):
+	def get_json_response(self, json, **kwargs):
+		return HttpResponse(json, content_type='application/json', **kwargs)
+
+	def convert_to_json(self, context):
+		return simplejson.dumps(context)
+
+	def render_to_response(self, context):
+		return self.get_json_response(self.convert_to_json(context))
 
 class HomepageView(TemplateView):
     template_name = 'website/home.html'
@@ -131,7 +142,15 @@ class EditBlogView(UpdateView):
 		else:
 			return HttpResponseForbidden('You do not have permission to edit this blog post')
 
+class TagCloudView(JSONResponseMixin, View):
+	def get(self, request, *args, **kwargs):
+		tags = Tag.objects.all()
+		response = {}
 
+		for tag in tags:
+			response[tag.name] = BlogPost.objects.filter(tags__name=tag.name).count()
+		
+		return JSONResponseMixin.render_to_response(self, response)
 
 
 
