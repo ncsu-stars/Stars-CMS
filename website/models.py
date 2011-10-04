@@ -93,11 +93,14 @@ class BlogPost(models.Model):
     title           = models.CharField(max_length=255)
     date            = models.DateTimeField()
     post            = models.TextField()
-    tags            = models.ManyToManyField(Tag, blank=True)
+    tags            = models.ManyToManyField(Tag, blank=True, related_name='tags')
 
     @models.permalink
     def get_absolute_url(self):
         return ('website:blog_post_url', (), {'pk': self.author.pk, 'blog_pk': self.pk})
+    
+    def __unicode__(self):
+        return unicode('%s by %s' % (self.title, self.author))
 
     class Meta:
         verbose_name        = 'blog post'
