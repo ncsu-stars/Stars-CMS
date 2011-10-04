@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, TemplateView
 
-from website.models import Member, News, Page, Project, BlogPost
+from website.models import Member, News, Page, Project, BlogPost, Tag
 from website.forms import MemberForm, ProjectForm, BlogForm
 
 class HomepageView(TemplateView):
@@ -91,22 +91,21 @@ class AddBlogView(CreateView):
 	model = BlogPost
 	form_class = BlogForm
 	template_name = 'website/blogs/add_blog.html'
-
+	object = None
 	def post(self, request, *args, **kwargs):
 		pk = self.kwargs.get('pk', None)
-
 		if pk is not None:
 			member = Member.objects.get(pk=pk)
 		else:
 			return Http404('Could not locate specified user')
 		
 		form = BlogForm(request.POST)
-
+		
 		if form.is_valid():
 			self.object = form.save(commit=False)
 			self.object.author = member
 			self.object.save()
-		
+			form.save_m2m()
 			return HttpResponseRedirect(self.object.get_absolute_url())
 		else:
 			return self.render_to_response(self.get_context_data(form=form))
@@ -116,11 +115,14 @@ class EditBlogView(UpdateView):
 	form_class = BlogForm
 	template_name = 'website/blogs/edit_blog.html'
 
+	def get_object(self, **kwargs):
+		pk = self.kwargs.get('blog_pk', None)
+		return BlogPost.objects.get(pk=self.kwargs.get('blog_pk', None), author__pk=self.kwargs.get('pk', None))
+
 	def get_context_data(self, **kwargs):
 		context = super(EditBlogView, self).get_context_data(**kwargs)
 		context['member'] = Member.objects.get(pk=self.kwargs.get('pk', None))
 		context['blog'] = BlogPost.objects.get(pk=self.kwargs.get('blog_pk', None), author__pk=context['member'].pk)
-
 		return context
 	
 	def render_to_response(self, context):

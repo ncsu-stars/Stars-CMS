@@ -36,7 +36,7 @@ class Member(models.Model):
         (u'senior', u'Senior')
     )
 
-    user            = models.ForeignKey(User, related_name='profile')
+    user            = models.ForeignKey(User, related_name='profile', unique=True) #Should this be a one-to-one?
     group           = models.CharField(max_length=255, choices=GROUP_CHOICES)
     classification  = models.CharField(max_length=255, choices=CLASS_CHOICES, blank=True)
     city            = models.CharField(max_length=255)
@@ -81,6 +81,11 @@ class Page(models.Model):
     def __unicode__(self):
         return unicode(self.title)
         
+class Tag(models.Model):
+    name            = models.CharField(max_length=255)
+
+    def __unicode__(self):
+        return unicode(self.name)
 
 
 class BlogPost(models.Model):
@@ -88,13 +93,13 @@ class BlogPost(models.Model):
     title           = models.CharField(max_length=255)
     date            = models.DateTimeField()
     post            = models.TextField()
+    tags            = models.ManyToManyField(Tag, blank=True)
 
     @models.permalink
     def get_absolute_url(self):
         return ('website:blog_post_url', (), {'pk': self.author.pk, 'blog_pk': self.pk})
-    
+
     class Meta:
         verbose_name        = 'blog post'
         verbose_name_plural = 'blog posts'
         ordering            = ['-date']
-
