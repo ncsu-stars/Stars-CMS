@@ -15,11 +15,19 @@
     <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/style.less" />
 
     {% block extracss %}{% endblock extracss %}
+    <script type="text/javascript">
+        var globals = { };
+
+        globals.urls = {
+            'tagCloudUrl': '{% url website:tag_cloud_url %}'
+        }
+    </script>
 
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/formly.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.nivo.slider.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}js/less.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/core.js"></script>
 
     <script type="text/javascript">
         $(document).ready(function() {
