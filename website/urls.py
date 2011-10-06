@@ -5,7 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 from website.views import HomepageView, ProfileView, NewsView, NewsDetailView, PageDetailView
 from website.views import ProjectView, MembersView, EditProfileView, EditProjectView, BlogView
-from website.views import BlogPostView, AddBlogView, EditBlogView
+from website.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView
 
 urlpatterns = (
     url(r'^$', HomepageView.as_view(), name='homepage_url'),
@@ -31,6 +31,10 @@ urlpatterns += (
 	url(r'^accounts/member/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/$', BlogPostView.as_view(), name='blog_post_url'),
 	url(r'^accounts/member/(?P<pk>\d+)/blog/add/$', AddBlogView.as_view(), name='add_blog_url'),
 	url(r'^accounts/member/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/edit/$', EditBlogView.as_view(), name='edit_blog_url'),
+)
+
+urlpatterns += (
+    url(r'^json/tagcloud/$', TagCloudView.as_view(), name='tag_cloud_url'),
 )
 
 urlpatterns += (
