@@ -17,10 +17,10 @@ urlpatterns = (
 )
 
 urlpatterns += (
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login',
+    url(r'^accounts/login/$', 'ncsu.wrap.views.login',
         {'template_name': 'accounts/login.html'}, name='login_url'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
-    	{'template_name': 'accounts/login.html'}, name='logout_url'),
+    	{'template_name': 'accounts/logout.html'}, name='logout_url'),
     url(r'^accounts/member/$', MembersView.as_view(), name='members_url'),
     url(r'^accounts/member/(?P<pk>\d+)/$', ProfileView.as_view(), name='profile_url'),
     url(r'^accounts/member/(?P<pk>\d+)/edit/$', EditProfileView.as_view(), name='edit_profile_url'),

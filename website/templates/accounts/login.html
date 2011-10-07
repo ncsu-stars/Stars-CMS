@@ -2,26 +2,25 @@
 
 {% block title %}Login{% endblock title %}
 
-{% block extrajs %}
-<script type="text/javascript">
-    /*$('document').ready(function() {
-        $('#loginForm').formly();
-    });*/
-</script>
-{% endblock extrajs %}
-
 {% block content %}
 <form id="loginForm" width="400px" method="post" action="{% url website:login_url %}">
-    {% csrf_token %}
-    {% if form.errors %}
-        {% for field in form %}
-            {% if field.errors %}
+     {% csrf_token %}
+    {% if form.non_field_errors %}
+        {% for error in form.non_field_errors %}
                 <div class="formlyRequired" style="display: block">
-                    {{ field.label }}: {{ field.errors|first }}
+                    {{ error }}
                 </div>
-            {% endif %}
         {% endfor %}
-    {% endif %}
+	{% endif %}
+	{% if form.errors %}
+		{% for field in form %}
+			{% if field.errors %}
+			    <div class="formlyRequired" style="display: block">
+			        {{ field.label }}: {{ field.errors|first }}
+			    </div>
+			{% endif %}
+		{% endfor %}
+	{% endif %}
     <fieldset>
         <legend>Login</legend>
         {% for field in form %}
@@ -33,8 +32,29 @@
         </div>
         {% endfor %}
         <div class="actions">
-            <input type="submit" class="btn primary" value="Login" />
+            <input type="submit" class="btn primary" name="password_login" value="Login" />
             <button type="reset" class="btn">Cancel</button>
     </fieldset>
+    <fieldset>
+    	<legend>WRAP Login</legend>
+		{% if form.token %}
+			{% if form.token.properties.name %}
+				<div> Authentication token found for <b>{{ form.token.properties.name }} ({{ form.token.user_id }})</b>. </div>
+			{% else %}
+				<div> Authentication token found for <b>{{ form.token.user_id }}</b>. </div>
+			{% endif %}
+		{% else %}
+				<div> No valid authentication token found. </div>		
+		{% endif %}
+
+		<div class="actions">	
+		{% if form.token %}
+				<input type="submit" class="btn" name="token_login" value="Login" />
+				<input type="submit" class="btn" name="token_redirect" value="Reauthenticate" />
+		{% else %}
+				<input type="submit" class="btn" name="token_redirect" value="Authenticate" />
+		{% endif %}
+		</div>
+	</fieldset>
 </form>
 {% endblock content %}
