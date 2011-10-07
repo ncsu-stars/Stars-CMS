@@ -5,3 +5,6 @@ distribute==0.6.19
 django-floppyforms==0.4.7
 django-uni-form==0.8.0
 wsgiref==0.1.2
+python-dateutil==1.5
+vobject==0.8.1c
+M2Crypto==0.21.1

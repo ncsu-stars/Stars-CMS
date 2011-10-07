@@ -128,12 +128,16 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.databrowse',
     'south',
-    'website'
+    'website',
+    'ncsu.wrap',
 )
 
 AUTHENTICATION_BACKENDS = (
+    'ncsu.wrap.backends.WrapBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
+
+from ncsu.wrap.settings import *
 
 AUTH_PROFILE_MODULE = 'website.Member'
 

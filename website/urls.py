@@ -17,7 +17,7 @@ urlpatterns = (
 )
 
 urlpatterns += (
-    url(r'^accounts/login/$', 'django.contrib.auth.views.login',
+    url(r'^accounts/login/$', 'ncsu.wrap.views.login',
         {'template_name': 'accounts/login.html'}, name='login_url'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
     	{'template_name': 'accounts/logout.html'}, name='logout_url'),
