@@ -1,4 +1,12 @@
-*.pyc
-*.DS_STORE
 db
+media
+
+# compiled Python
+*.pyc
+
+# OS junk
+*.DS_STORE
+Thumbs.db
+
+# skip keyfiles
 *.pub
