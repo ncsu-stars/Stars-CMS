@@ -26,6 +26,14 @@ class ProfileView(DetailView):
     template_name = 'accounts/profile.html'
     context_object_name = 'member'
 
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        
+        projects = Project.objects.filter(members__pk=self.kwargs.get('pk', -1)).order_by('-year')
+        context['project_groups'] = [ {'heading': x, 'projects': projects.filter(year=x).order_by('title') } for x in projects.values_list('year', flat=True).distinct() ]        
+                    
+        return context
+
 class EditProfileView(UpdateView):
 	model = Member
 	form_class = MemberForm

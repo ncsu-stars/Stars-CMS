@@ -55,6 +55,22 @@
 <dt>Interests</dt> <dd>{{ member.interests }}</dd>
 <dt>Homepage</dt> <dd>{% if member.homepage %}<a href="{{ member.homepage }}">{{ member.homepage }}</a>{% else %}None{% endif %}</dd>
 <dt>Blurb</dt> <dd>{{ member.blurb }}</dd>
+
+{% if project_groups %}
+	<dt>Projects</dt>
+	{% for group in project_groups %}
+		<dd>{{ group.heading }}</dd>
+	
+		<ul>
+		{% for project in group.projects %}
+			{% comment %} <li><a href="{% url website:project_url pk=project.pk %}">{{ project.title }}</li> {% endcomment %}
+			<li>{{ project.title }}</li>
+		{% endfor %}
+		</ul>
+
+	{% endfor %}
+{% endif %}
+
 </dl>
 {% endblock content %}
 
