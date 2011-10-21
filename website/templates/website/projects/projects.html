@@ -8,10 +8,18 @@
 
 {% block content %}
 {% load filters %}
+<div><a href="{% url website:project_year_url year=prev_year%}">&laquo; Projects {{ prev_year }}</a>
+<div style="float: right;"><a href="{% url website:project_year_url year=next_year%}">Projects {{ next_year }} &raquo;</a></div>
+</div>
+<h1>Projects {{ year }}</h1>
+
+{% if projects %}
+
 {% for project in projects %}
 <img class="span-6" src="{{ MEDIA_URL }}{{ project.image }}" width="35%" />
 <dl class="span-10 last">
-	<h1>{{ project.title }} {{ project.year }} {% if user.get_profile == project.coordinator %}<small><a href="{% url website:edit_project_url pk=project.pk %}">edit</a></small>{% endif %}</h1>
+	<a name="{{ project.pk }}"></a>
+	<h2>{{ project.title }} {% if user.get_profile == project.coordinator %}<small><a href="{% url website:edit_project_url pk=project.pk %}">edit</a></small>{% endif %}</h2>
 	<dt>Description</dt> <dd>{{ project.description|stripjs }}</dd>
 	<dt>Coordinator</dt>
 	<dd>
@@ -28,4 +36,8 @@
 	</dd>
 </dl>
 {% endfor %}
+
+{% else %}
+	No projects available.
+{% endif %}
 {% endblock content %}

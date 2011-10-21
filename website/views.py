@@ -29,9 +29,11 @@ class ProfileView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(ProfileView, self).get_context_data(**kwargs)
         
-        projects = Project.objects.filter(members__pk=self.kwargs.get('pk', -1)).order_by('-year')
-        context['project_groups'] = [ {'heading': x, 'projects': projects.filter(year=x).order_by('title') } for x in projects.values_list('year', flat=True).distinct() ]        
-                    
+        projects = Project.objects.filter(members__pk=self.kwargs.get('pk', None)).order_by('-year')
+        context['project_groups'] = [ {'year': x, 'projects': projects.filter(year=x).order_by('title') } for x in projects.values_list('year', flat=True).distinct() ]        
+        
+        context['recent_blogs'] = BlogPost.objects.filter(author__pk=self.kwargs.get('pk', None)).order_by('-date')[:3]
+        
         return context
 
 class EditProfileView(UpdateView):
@@ -49,6 +51,18 @@ class MembersView(ListView):
 	model = Member
 	template_name = 'accounts/members.html'
 	context_object_name = 'members'
+	
+	def get_queryset(self):
+		return sorted([ Member.objects.get(id=x) for x in Project.objects.select_related(depth=1).filter(year=self.kwargs.get('year', None)).values('members').distinct().values_list('members', flat=True) ], key=lambda x: x.user.first_name)
+
+	def get_context_data(self, **kwargs):
+		context = super(MembersView, self).get_context_data(**kwargs)
+		context['year'] = self.kwargs.get('year', None)
+		if context['year'] is not None:
+			context['next_year'] = int(context['year']) + 1
+			context['prev_year'] = int(context['year']) - 1
+				
+		return context
 
 class NewsView(ListView):
 	model = News
@@ -69,7 +83,19 @@ class ProjectView(ListView):
 	model = Project
 	template_name = 'website/projects/projects.html'
 	context_object_name = 'projects'
+	
+	def get_queryset(self):
+		return Project.objects.filter(year=self.kwargs.get('year', None)).order_by('title')
 
+	def get_context_data(self, **kwargs):
+		context = super(ProjectView, self).get_context_data(**kwargs)
+		context['year'] = self.kwargs.get('year', None)
+		if context['year'] is not None:
+			context['next_year'] = int(context['year']) + 1
+			context['prev_year'] = int(context['year']) - 1
+				
+		return context
+	
 class EditProjectView(UpdateView):
 	model = Project
 	form_class = ProjectForm
