@@ -12,8 +12,9 @@ urlpatterns = (
     url(r'^news/$', NewsView.as_view(), name='news_url'),
     url(r'^news/(?P<pk>\d+)/(?P<slug>\w+)/$', NewsDetailView.as_view(), name='news_detail_url'),
     url(r'^page/(?P<slug>\w+)/$', PageDetailView.as_view(), name='page_url'),
-    url(r'^project/$', ProjectView.as_view(), name='project_url'),
-    url(r'^project/(?P<pk>\d+)/edit/$', EditProjectView.as_view(), name='edit_project_url')
+    url(r'^project/$', ProjectView.as_view(), {'year': settings.CURRENT_YEAR}, name='project_url'),
+    url(r'^project/year/(?P<year>\d+)/$', ProjectView.as_view(), name='project_year_url'),
+    url(r'^project/(?P<pk>\d+)/edit/$', EditProjectView.as_view(), name='edit_project_url'),
 )
 
 urlpatterns += (
@@ -21,7 +22,8 @@ urlpatterns += (
         {'template_name': 'accounts/login.html'}, name='login_url'),
     url(r'^accounts/logout/$', 'django.contrib.auth.views.logout',
     	{'template_name': 'accounts/logout.html'}, name='logout_url'),
-    url(r'^accounts/member/$', MembersView.as_view(), name='members_url'),
+    url(r'^accounts/member/$', MembersView.as_view(), {'year': settings.CURRENT_YEAR}, name='members_url'),
+    url(r'^accounts/member/year/(?P<year>\d+)/$', MembersView.as_view(), name='members_year_url'),
     url(r'^accounts/member/(?P<pk>\d+)/$', ProfileView.as_view(), name='profile_url'),
     url(r'^accounts/member/(?P<pk>\d+)/edit/$', EditProfileView.as_view(), name='edit_profile_url'),
 )
