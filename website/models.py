@@ -10,6 +10,7 @@ class Project(models.Model):
     coordinator     = models.ForeignKey('Member')
     image           = models.ImageField(upload_to='project_images')
     active          = models.BooleanField(default=False)
+    year            = models.IntegerField()
 
     def __unicode__(self):
         return unicode(self.title)

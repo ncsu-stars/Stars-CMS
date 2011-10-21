@@ -141,6 +141,8 @@ LOGIN_REDIRECT_URL = '/'
 
 ANONYMOUS_USER_ID = -1
 
+CURRENT_YEAR = 2010
+
 STATIC_ROOT = '/static'
 STATIC_URL = '/static/'
 
