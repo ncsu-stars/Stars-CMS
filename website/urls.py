@@ -36,7 +36,7 @@ urlpatterns += (
 )
 
 urlpatterns += (
-    url(r'^json/tagcloud/$', TagCloudView.as_view(), name='tag_cloud_url'),
+    url(r'^tags/$', TagCloudView.as_view(), name='tag_cloud_url'),
 )
 
 urlpatterns += (

@@ -23,13 +23,3 @@ admin.site.register(Member, MemberAdmin)
 admin.site.register(News, NewsAdmin)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(Tag)
-
-# Include this here for now
-
-from django.contrib import databrowse
-
-databrowse.site.register(Project)
-databrowse.site.register(Member)
-databrowse.site.register(News)
-databrowse.site.register(BlogPost)
-databrowse.site.register(Tag)

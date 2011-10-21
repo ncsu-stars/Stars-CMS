@@ -178,6 +178,13 @@ class EditBlogView(UpdateView):
 			return HttpResponseForbidden('You do not have permission to edit this blog post')
 
 class TagCloudView(JSONResponseMixin, View):
+    def post(self, request, *args, **kwargs):
+        tag_name = request.POST['tag']
+        blog_post = BlogPost.objects.get(pk=request.POST['blog_id'], author__pk=request.POST['member_id'])
+        tag = Tag.objects.get_or_create(name=tag_name)
+        
+        return HttpResponse()
+    
 	def get(self, request, *args, **kwargs):
 		tags = Tag.objects.all()
 		response = {}
