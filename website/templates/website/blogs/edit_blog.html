@@ -4,6 +4,11 @@
 
 {% block extracss %}
 <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/anytime.css" />
+<style type="text/css">
+select#id_tags {
+    height: 100px;
+}
+</style>
 {% endblock extracss %}
 
 {% block extrajs %}
@@ -14,6 +19,36 @@
 
 		AnyTime.picker("id_date", {
 			format: "%Y-%m-%d %H:%i:%s"
+		});
+		
+		$('#tag').focus(function() {
+		    $(this).val('');
+		});
+		
+		$('#add_tag').click(function() {		    
+		    var new_value = parseInt($('#id_tags option:last').val()) + 1;
+		    var new_tag = $('#tag').val();
+		    
+		    if(new_tag.length) {
+		        var child = $('#id_tags option:[text="' + new_tag + '"]');
+		        
+		        if(!child.length) {
+		            var csrf = $('input[name=csrfmiddlewaretoken]').val();
+		            $.post('{% url website:tag_cloud_url %}', {
+		                'tag': new_tag,
+		                'blog_id': {{ blog.pk }},
+		                'member_id': {{ member.pk }},
+		                'csrfmiddlewaretoken': csrf
+		            });
+		            
+		            $('#id_tags').append('<option value="' + new_value + '">' + new_tag + '</option>');
+	            } else {
+	                var value = $('#id_tags option:[text="' + new_tag + '"]').val();
+	                $('#id_tags option:[value=' + value + ']').attr('selected', 'selected');
+	            }
+	        } else {
+	            alert('Cannot have an empty tag');
+	        }
 		});
 	});
 </script>
@@ -41,7 +76,12 @@
         <div class="clearfix">
             <label for="id_{{ field.name }}">{{ field.label }}</label>
             <div class="input">
-                {{ field }}
+                {% if field.label == 'Tags' %}
+                    {{ field }}<br />
+                    <input type="text" id="tag" value="Or add a tag..." /> <input type="button" class="btn" id="add_tag" value="Add" />
+                {% else %}
+                    {{ field }}
+                {% endif %}
             </div>
         </div>
         {% endfor %}

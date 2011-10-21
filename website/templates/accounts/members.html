@@ -3,9 +3,9 @@
 {% block title %}Members{% endblock title %}
 
 {% block content %}
-<article>
+<div class="span-12">
 	{% for member in members %}
 		<h1><a href="{% url website:profile_url pk=member.pk %}">{{ member }}</a></h1>
 	{% endfor %}
-</article>
+</div>
 {% endblock content %}

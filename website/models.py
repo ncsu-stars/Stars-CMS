@@ -1,15 +1,15 @@
 from django.db import models
-from django.db.models import signals
 from django.conf import settings
+from django.db.models import signals
 from django.contrib.auth.models import User
 import django.contrib.localflavor.us.us_states as states
 
 class Project(models.Model):
     title           = models.CharField(max_length=255)
-    members         = models.ManyToManyField('Member', related_name='+')
     description     = models.TextField()
+    coordinator     = models.ForeignKey('Member')
     image           = models.ImageField(upload_to='project_images')
-    coordinator     = models.ForeignKey('Member', related_name='project')
+    active          = models.BooleanField(default=False)
 
     def __unicode__(self):
         return unicode(self.title)
@@ -36,7 +36,7 @@ class Member(models.Model):
         (u'senior', u'Senior')
     )
 
-    user            = models.ForeignKey(User, related_name='profile', unique=True) #Should this be a one-to-one?
+    user            = models.ForeignKey(User, related_name='profile', unique=True)
     group           = models.CharField(max_length=255, choices=GROUP_CHOICES)
     classification  = models.CharField(max_length=255, choices=CLASS_CHOICES, blank=True)
     city            = models.CharField(max_length=255)
@@ -56,6 +56,18 @@ class Member(models.Model):
     class Meta:
         verbose_name        = 'member'
         verbose_name_plural = 'members'
+        ordering            = ['user__last_name']
+
+class ProjectMember(models.Model):
+    project         = models.ForeignKey(Project, related_name='project_member')
+    member          = models.ForeignKey(Member)
+
+class ProjectCordinator(models.Model):
+    project         = models.ManyToManyField(Project, related_name='project_coordinators')
+    member          = models.ForeignKey(Member)
+
+class ProjectVolunteer(models.Model):
+    project         = models.ForeignKey(Project)
 
 class News(models.Model):
     title           = models.CharField(max_length=255)
@@ -87,13 +99,12 @@ class Tag(models.Model):
     def __unicode__(self):
         return unicode(self.name)
 
-
 class BlogPost(models.Model):
     author          = models.ForeignKey(Member)
     title           = models.CharField(max_length=255)
     date            = models.DateTimeField()
     post            = models.TextField()
-    tags            = models.ManyToManyField(Tag, blank=True, related_name='tags')
+    tags            = models.ManyToManyField(Tag, blank=True, related_name='blogpost')
 
     @models.permalink
     def get_absolute_url(self):
