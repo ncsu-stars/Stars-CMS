@@ -9,9 +9,14 @@ class Project(models.Model):
     description     = models.TextField()
     coordinator     = models.ForeignKey('Member')
     image           = models.ImageField(upload_to='project_images')
+<<<<<<< HEAD
     coordinator     = models.ForeignKey('Member', related_name='project')
     year            = models.IntegerField()
     active          = models.BooleanField(default=False)
+=======
+    active          = models.BooleanField(default=False)
+    year            = models.IntegerField()
+>>>>>>> e57ed0568e4865aa02e26f83729c3459bac8abfa
 
     def __unicode__(self):
         return unicode(self.title)
