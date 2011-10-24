@@ -5,16 +5,25 @@ from django.contrib.auth.models import User
 import django.contrib.localflavor.us.us_states as states
 
 class Project(models.Model):
+    STATUS_EMPTY    = 0 # this project is pending "creation" by coordinator
+    STATUS_ACTIVE   = 1 # this project has been created and is editable by coordinators
+    STATUS_ARCHIVED = 2 # this project has been archived and is frozen
+
+    STATUS_CHOICES  = (
+        (STATUS_EMPTY, u'Empty'),
+        (STATUS_ACTIVE, u'Active'),
+        (STATUS_ARCHIVED, u'Archived')
+    )
+
     title           = models.CharField(max_length=255)
     description     = models.TextField()
-    coordinator     = models.ForeignKey('Member')
     image           = models.ImageField(upload_to='project_images')
-    active          = models.BooleanField(default=False)
+    status          = models.IntegerField(choices=STATUS_CHOICES)
     year            = models.IntegerField()
 
     def __unicode__(self):
         return unicode(self.title)
-    
+
     @models.permalink
     def get_absolute_url(self):
         return ('website:project_url', (), {})
@@ -36,20 +45,30 @@ class Member(models.Model):
         (u'junior', u'Junior'),
         (u'senior', u'Senior')
     )
+    
+    STATUS_EMPTY    = 0 # this member is pending "creation" by its owner
+    STATUS_ACTIVE   = 1 # this member has been created
+    STATUS_ARCHIVED = 2 # this member has been archived and is frozen
 
+    STATUS_CHOICES  = (
+        (STATUS_EMPTY, u'Empty'),
+        (STATUS_ACTIVE, u'Active'),
+        (STATUS_ARCHIVED, u'Archived')
+    )
+ 
     user            = models.ForeignKey(User, related_name='profile', unique=True)
     group           = models.CharField(max_length=255, choices=GROUP_CHOICES)
     classification  = models.CharField(max_length=255, choices=CLASS_CHOICES, blank=True)
-    city            = models.CharField(max_length=255)
-    state           = models.CharField(max_length=2, choices=states.US_STATES)
+    hometown        = models.CharField(max_length=255, blank=True)
     interests       = models.TextField(blank=True)
     homepage        = models.URLField(verify_exists=False, blank=True)
     blurb           = models.TextField(blank=True)
     image           = models.ImageField(upload_to='user_images', blank=True)
+    #status          = models.IntegerField(choices=STATUS_CHOICES)
 
     def __unicode__(self):
         return unicode(self.user.get_full_name())
-    
+
     @models.permalink
     def get_absolute_url(self):
         return ('website:profile_url', (self.pk,), {})
@@ -60,15 +79,13 @@ class Member(models.Model):
         ordering            = ['user__last_name']
 
 class ProjectMember(models.Model):
-    project         = models.ForeignKey(Project, related_name='project_member')
-    member          = models.ForeignKey(Member)
+    project         = models.ForeignKey(Project, related_name='members')
+    member          = models.ForeignKey(Member, blank=True)
+    role            = models.CharField(max_length=255, blank=True)
+    is_coordinator  = models.BooleanField()
 
-class ProjectCordinator(models.Model):
-    project         = models.ManyToManyField(Project, related_name='project_coordinators')
-    member          = models.ForeignKey(Member)
-
-class ProjectVolunteer(models.Model):
-    project         = models.ForeignKey(Project)
+    def __unicode__(self):
+        return unicode('%s (%s) %s' % (self.member.user.get_full_name(), self.role, ['N', 'Y'][self.is_coordinator]))
 
 class News(models.Model):
     title           = models.CharField(max_length=255)
@@ -93,7 +110,7 @@ class Page(models.Model):
 
     def __unicode__(self):
         return unicode(self.title)
-        
+
 class Tag(models.Model):
     name            = models.CharField(max_length=255)
 
@@ -105,12 +122,12 @@ class BlogPost(models.Model):
     title           = models.CharField(max_length=255)
     date            = models.DateTimeField()
     post            = models.TextField()
-    tags            = models.ManyToManyField(Tag, blank=True, related_name='blogpost')
+    tags            = models.ManyToManyField(Tag, blank=True, related_name='blogposts')
 
     @models.permalink
     def get_absolute_url(self):
         return ('website:blog_post_url', (), {'pk': self.author.pk, 'blog_pk': self.pk})
-    
+
     def __unicode__(self):
         return unicode('%s by %s' % (self.title, self.author))
 
