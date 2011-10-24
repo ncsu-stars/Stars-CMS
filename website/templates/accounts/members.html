@@ -3,15 +3,15 @@
 {% block title %}Members{% endblock title %}
 
 {% block content %}
-<div><a href="{% url website:members_year_url year=prev_year%}">&laquo; Members {{ prev_year }}</a>
-<div style="float: right;"><a href="{% url website:members_year_url year=next_year%}">Members {{ next_year }} &raquo;</a></div>
+<div>{% if prev_year %}<a href="{% url website:members_year_url year=prev_year%}">&laquo; Members {{ prev_year }}</a>{% else %}&nbsp;{% endif%}
+{% if next_year %}<a style="float: right;" href="{% url website:members_year_url year=next_year%}">Members {{ next_year }} &raquo;</a>{% endif %}
 </div>
 <h1>Members {{ year }}</h1>
 {% if members %}
 <article>
-	{% for member in members %}
-		<h2><a href="{% url website:profile_url pk=member.pk %}">{{ member }}</a></h2>
-	{% endfor %}
+    {% for member in members %}
+        <h2><a href="{% url website:profile_url pk=member.pk %}">{{ member }}</a></h2>
+    {% endfor %}
 </article>
 {% else %}
 No members available.
