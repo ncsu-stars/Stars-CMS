@@ -3,13 +3,13 @@ from django.contrib import admin
 from website.models import Project, Member, News, BlogPost, Tag
 
 class ProjectAdmin(admin.ModelAdmin):
-    list_display = ('title', 'coordinator',)
-    list_filter = ('title', 'coordinator',)
+    list_display = ('title', 'members',)
+    list_filter = ('title', 'members',)
 
 class BlogPostAdmin(admin.ModelAdmin):
     list_display = ('title', 'author', 'date')
     list_filter = ('author', 'date')
-    
+
 class MemberAdmin(admin.ModelAdmin):
     list_display = ('user', 'group', 'classification')
     list_filter = ('group', 'classification')

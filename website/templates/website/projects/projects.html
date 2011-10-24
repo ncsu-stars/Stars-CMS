@@ -8,8 +8,8 @@
 
 {% block content %}
 {% load filters %}
-<div><a href="{% url website:project_year_url year=prev_year%}">&laquo; Projects {{ prev_year }}</a>
-<div style="float: right;"><a href="{% url website:project_year_url year=next_year%}">Projects {{ next_year }} &raquo;</a></div>
+<div>{% if prev_year %}<a href="{% url website:project_year_url year=prev_year%}">&laquo; Projects {{ prev_year }}</a>{% else %}&nbsp;{% endif%}
+{% if next_year %}<a style="float: right;" href="{% url website:project_year_url year=next_year%}">Projects {{ next_year }} &raquo;</a>{% endif %}
 </div>
 <h1>Projects {{ year }}</h1>
 
@@ -18,26 +18,21 @@
 {% for project in projects %}
 <img class="span-6" src="{{ MEDIA_URL }}{{ project.image }}" width="35%" />
 <dl class="span-10 last">
-	<a name="{{ project.pk }}"></a>
-	<h2>{{ project.title }} {% if user.get_profile == project.coordinator %}<small><a href="{% url website:edit_project_url pk=project.pk %}">edit</a></small>{% endif %}</h2>
-	<dt>Description</dt> <dd>{{ project.description|stripjs }}</dd>
-	<dt>Coordinator</dt>
-	<dd>
-		<a href="{% url website:profile_url pk=project.coordinator.pk %}">
-		{{ project.coordinator }}</a>
-	</dd>
-	<dt>Members</dt>
-	<dd>
-		<ul class="unstyled">
-		{% for member in project.members.all %}
-			<li><a href="{% url website:profile_url pk=member.pk %}">{{ member }}</a></li>
-		{% endfor %}
-		</ul>
-	</dd>
+    <a name="{{ project.pk }}"></a>
+    <h2>{{ project.title }} {% if user.get_profile == project.coordinator %}<small><a href="{% url website:edit_project_url pk=project.pk %}">edit</a></small>{% endif %}</h2>
+    <dt>Description</dt> <dd>{{ project.description|stripjs }}</dd>
+    <dt>Members</dt>
+    <dd>
+        <ul class="unstyled">
+        {% for project_member in project.members.all %}
+            <li><a href="{% url website:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
+        {% endfor %}
+        </ul>
+    </dd>
 </dl>
 {% endfor %}
 
 {% else %}
-	No projects available.
+    No projects available.
 {% endif %}
 {% endblock content %}
