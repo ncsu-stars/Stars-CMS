@@ -4,7 +4,7 @@ import os
 import django
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
+sys.path.insert(0, os.path.join(BASE_DIR, "../apps"))
 
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
