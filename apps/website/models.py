@@ -18,6 +18,7 @@ class Project(models.Model):
     title           = models.CharField(max_length=255)
     description     = models.TextField()
     image           = models.ImageField(upload_to='project_images')
+    #active          = models.BooleanField(default=False)
     status          = models.IntegerField(choices=STATUS_CHOICES)
     year            = models.IntegerField()
 
