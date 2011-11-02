@@ -64,11 +64,12 @@
                 <input type="text" class="center search" value="Search..." style="width: 150px;" />
                 <div class="menu" class="center">
                     <a href="{% url website:homepage_url %}">Home</a><br />
-                    {% if user|logged_in %}
+                    {% if user|logged_in and user.get_profile %}
                     <a href="{% url website:profile_url pk=user.get_profile.pk %}">My Profile</a><br />
                     {% endif %}
-                    <a href="{% url website:project_url %}">Projects</a><br />
+                    <a href="{% url website:projects_url %}">Projects</a><br />
                     <a href="{% url website:members_url %}">Members</a><br />
+                    
                 </div>
             </nav>
         </div>

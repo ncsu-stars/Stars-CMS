@@ -4,14 +4,14 @@
 
 {% block extrajs %}
 <script type="text/javascript">
-	$(document).ready(function() {
-		//Quick and dirty fix for the select height
-		$('select[multiple=multiple]').css('height', '100px');
+    $(document).ready(function() {
+        //Quick and dirty fix for the select height
+        $('select[multiple=multiple]').css('height', '100px');
 
-		$('button.btn').click(function() {
-			window.location = '{% url website:project_url %}';
-		});
-	});
+        $('button.btn').click(function() {
+            window.location = '{% url website:projects_url %}';
+        });
+    });
 </script>
 {% endblock extrajs %}
 

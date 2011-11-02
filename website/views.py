@@ -56,28 +56,32 @@ class MembersView(ListView):
 
     def get_queryset(self):
         # NOTE: "year" is a field lookup type so must use "year__exact" instead
-        return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', None)).distinct().values_list('member')).order_by('user__first_name')
+        return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR)).distinct().values_list('member')).order_by('user__first_name')
 
     def get_context_data(self, **kwargs):
         context = super(MembersView, self).get_context_data(**kwargs)
 
-        context['year'] = self.kwargs.get('year', None)
-        if context['year'] is not None:
-            next_year = int(context['year']) + 1
-            prev_year = int(context['year']) - 1
+        context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
+        next_year = int(context['year']) + 1
+        context['year2'] = next_year
 
-            if Project.objects.filter(year=next_year).count() > 0:
-                context['next_year'] = next_year
-            if Project.objects.filter(year=prev_year).count() > 0:
-                context['prev_year'] = prev_year
+        prev_year = int(context['year']) - 1
+
+        if Project.objects.filter(year=next_year).count() > 0:
+            context['next_year'] = next_year
+            context['next_year2'] = next_year + 1
+        if Project.objects.filter(year=prev_year).count() > 0:
+            context['prev_year'] = prev_year
+            context['prev_year2'] = prev_year + 1
 
         return context
 
     def render_to_response(self, context):
-        if len(context['members']) > 0:
-            return super(MembersView, self).render_to_response(context)
-        else:
+        # check for "year" in kwargs to avoid redirect loop when current year has no data
+        if len(context['members']) == 0 and 'year' in self.kwargs:
             return HttpResponseRedirect(reverse('website:members_url'))
+        else:
+            return super(MembersView, self).render_to_response(context)
 
 class NewsView(ListView):
     model = News
@@ -100,28 +104,32 @@ class ProjectView(ListView):
     context_object_name = 'projects'
 
     def get_queryset(self):
-        return Project.objects.filter(year=self.kwargs.get('year', None)).order_by('title')
+        return Project.objects.filter(year=self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('title')
 
     def get_context_data(self, **kwargs):
         context = super(ProjectView, self).get_context_data(**kwargs)
 
-        context['year'] = self.kwargs.get('year', None)
-        if context['year'] is not None:
-            next_year = int(context['year']) + 1
-            prev_year = int(context['year']) - 1
+        context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
+        next_year = int(context['year']) + 1
+        context['year2'] = next_year
 
-            if Project.objects.filter(year=next_year).count() > 0:
-                context['next_year'] = next_year
-            if Project.objects.filter(year=prev_year).count() > 0:
-                context['prev_year'] = prev_year
+        prev_year = int(context['year']) - 1
+
+        if Project.objects.filter(year=next_year).count() > 0:
+            context['next_year'] = next_year
+            context['next_year2'] = next_year + 1
+        if Project.objects.filter(year=prev_year).count() > 0:
+            context['prev_year'] = prev_year
+            context['prev_year2'] = prev_year + 1
 
         return context
 
     def render_to_response(self, context):
-        if len(context['projects']) > 0:
-            return super(ProjectView, self).render_to_response(context)
+        # check for "year" in kwargs to avoid redirect loop when current year has no data
+        if len(context['projects']) == 0 and 'year' in self.kwargs:
+            return HttpResponseRedirect(reverse('website:projects_url'))
         else:
-            return HttpResponseRedirect(reverse('website:project_url'))
+            return super(ProjectView, self).render_to_response(context)
 
 class EditProjectView(UpdateView):
     model = Project
@@ -129,18 +137,18 @@ class EditProjectView(UpdateView):
     template_name = 'website/projects/edit_project.html'
 
     def render_to_response(self, context):
-        print context
+        #print context
         return UpdateView.render_to_response(self, context)
 
 class BlogView(ListView):
     template_name = 'website/blogs/blogs.html'
+    context_object_name = 'blog_posts'
 
     def get_queryset(self):
         return BlogPost.objects.filter(author__pk=self.kwargs.get('pk', None))
 
     def get_context_data(self, **kwargs):
         context = super(BlogView, self).get_context_data(**kwargs)
-        context['blog_posts'] = self.get_queryset()
         context['member'] = Member.objects.get(pk=self.kwargs.get('pk', None))
 
         return context
@@ -220,7 +228,3 @@ class TagCloudView(JSONResponseMixin, View):
             response[tag.name] = BlogPost.objects.filter(tags__name=tag.name).count()
 
         return JSONResponseMixin.render_to_response(self, response)
-
-
-
-

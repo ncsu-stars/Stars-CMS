@@ -62,7 +62,7 @@
         <dd>{{ group.year }}
             <ul>
                 {% for project_member in group.project_members %}
-                    <li><a href="{% url website:project_year_url year=group.year %}#{{ project_member.project.pk }}">{{ project_member.project.title }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
+                    <li><a href="{% url website:projects_year_url year=group.year %}#{{ project_member.project.pk }}">{{ project_member.project.title }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
                 {% endfor %}
             </ul>
         </dd>

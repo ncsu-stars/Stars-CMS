@@ -22,11 +22,11 @@ class Project(models.Model):
     year            = models.IntegerField()
 
     def __unicode__(self):
-        return unicode(self.title)
+        return unicode('%s %d' % (self.title, self.year))
 
     @models.permalink
     def get_absolute_url(self):
-        return ('website:project_url', (), {})
+        return ('website:projects_url', (), {})
 
     class Meta:
         verbose_name        = 'project'
@@ -45,7 +45,7 @@ class Member(models.Model):
         (u'junior', u'Junior'),
         (u'senior', u'Senior')
     )
-    
+
     STATUS_EMPTY    = 0 # this member is pending "creation" by its owner
     STATUS_ACTIVE   = 1 # this member has been created
     STATUS_ARCHIVED = 2 # this member has been archived and is frozen
@@ -55,7 +55,7 @@ class Member(models.Model):
         (STATUS_ACTIVE, u'Active'),
         (STATUS_ARCHIVED, u'Archived')
     )
- 
+
     user            = models.ForeignKey(User, related_name='profile', unique=True)
     group           = models.CharField(max_length=255, choices=GROUP_CHOICES)
     classification  = models.CharField(max_length=255, choices=CLASS_CHOICES, blank=True)
@@ -64,7 +64,7 @@ class Member(models.Model):
     homepage        = models.URLField(verify_exists=False, blank=True)
     blurb           = models.TextField(blank=True)
     image           = models.ImageField(upload_to='user_images', blank=True)
-    #status          = models.IntegerField(choices=STATUS_CHOICES)
+    status          = models.IntegerField(choices=STATUS_CHOICES)
 
     def __unicode__(self):
         return unicode(self.user.get_full_name())
@@ -80,12 +80,25 @@ class Member(models.Model):
 
 class ProjectMember(models.Model):
     project         = models.ForeignKey(Project, related_name='members')
-    member          = models.ForeignKey(Member, blank=True)
+    member          = models.ForeignKey(Member, blank=True, related_name='project_members')
     role            = models.CharField(max_length=255, blank=True)
+    volunteer_name  = models.CharField(max_length=255, blank=True)
     is_coordinator  = models.BooleanField()
 
+    def is_volunteer(self):
+        return self.member is None
+
+    def get_full_name(self):
+        if self.is_volunteer:
+            return self.member.user.get_full_name()
+        else:
+            return unicode(self.volunteer_name)
+
     def __unicode__(self):
-        return unicode('%s (%s) %s' % (self.member.user.get_full_name(), self.role, ['N', 'Y'][self.is_coordinator]))
+        if self.role:
+            return unicode('%s (%s)' % (self.get_full_name(), self.role))
+        else:
+            return self.get_full_name()
 
 class News(models.Model):
     title           = models.CharField(max_length=255)

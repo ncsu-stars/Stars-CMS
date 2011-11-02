@@ -3,10 +3,10 @@
 {% block title %}Members{% endblock title %}
 
 {% block content %}
-<div>{% if prev_year %}<a href="{% url website:members_year_url year=prev_year%}">&laquo; Members {{ prev_year }}</a>{% else %}&nbsp;{% endif%}
-{% if next_year %}<a style="float: right;" href="{% url website:members_year_url year=next_year%}">Members {{ next_year }} &raquo;</a>{% endif %}
+<div>{% if prev_year %}<a href="{% url website:members_year_url year=prev_year%}">&laquo; Members {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}
+{% if next_year %}<a style="float: right;" href="{% url website:members_year_url year=next_year%}">Members {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% endif %}
 </div>
-<h1>Members {{ year }}</h1>
+<h1>Members {{ year }} &ndash; {{ year2 }}</h1>
 {% if members %}
 <article>
     {% for member in members %}

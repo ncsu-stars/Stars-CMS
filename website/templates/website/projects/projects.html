@@ -8,10 +8,10 @@
 
 {% block content %}
 {% load filters %}
-<div>{% if prev_year %}<a href="{% url website:project_year_url year=prev_year%}">&laquo; Projects {{ prev_year }}</a>{% else %}&nbsp;{% endif%}
-{% if next_year %}<a style="float: right;" href="{% url website:project_year_url year=next_year%}">Projects {{ next_year }} &raquo;</a>{% endif %}
+<div>{% if prev_year %}<a href="{% url website:projects_year_url year=prev_year%}">&laquo; Projects {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}
+{% if next_year %}<a style="float: right;" href="{% url website:projects_year_url year=next_year%}">Projects {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% endif %}
 </div>
-<h1>Projects {{ year }}</h1>
+<h1>Projects {{ year }} &ndash; {{ year2 }}</h1>
 
 {% if projects %}
 
@@ -25,7 +25,11 @@
     <dd>
         <ul class="unstyled">
         {% for project_member in project.members.all %}
+            {% if project_member.member %}
             <li><a href="{% url website:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
+            {% else %}
+            <li>{{ project_member.volunteer_name }}</li>
+            {% endif %}
         {% endfor %}
         </ul>
     </dd>
