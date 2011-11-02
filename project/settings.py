@@ -131,17 +131,7 @@ INSTALLED_APPS = (
     'website'
 )
 
-AUTHENTICATION_BACKENDS = (
-    'django.contrib.auth.backends.ModelBackend',
-)
-
-AUTH_PROFILE_MODULE = 'website.Member'
-
-LOGIN_REDIRECT_URL = '/'
-
-ANONYMOUS_USER_ID = -1
-
-CURRENT_YEAR = 2010
+from website.settings import *
 
 STATIC_ROOT = '/static'
 STATIC_URL = '/static/'
