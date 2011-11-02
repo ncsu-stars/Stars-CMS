@@ -24,8 +24,8 @@ urlpatterns += (
 )
 
 urlpatterns += (
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'accounts/login.html'}, name='login_url'),
-    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'accounts/logout.html'}, name='logout_url'),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login_url'),
+    url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}, name='logout_url'),
     url(r'^members/$', MembersView.as_view(), name='members_url'),
     url(r'^members/(?P<year>\d+)/$', MembersView.as_view(), name='members_year_url'),
     url(r'^member/(?P<pk>\d+)/$', ProfileView.as_view(), name='profile_url'),

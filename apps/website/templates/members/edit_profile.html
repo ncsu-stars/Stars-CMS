@@ -1,25 +1,25 @@
-{% extends 'website/base.html' %}
+{% extends 'base.html' %}
 
-{% block title %}Edit Project{% endblock title %}
+{% block title %}Edit Profile{% endblock title %}
 
 {% block extrajs %}
 <script type="text/javascript">
-    $(document).ready(function() {
-        //Quick and dirty fix for the select height
-        $('select[multiple=multiple]').css('height', '100px');
+    $('document').ready(function() {
+        //Quick and dirty fix for a form issue
+    	$('label[for=image-clear_id]').remove();
 
-        $('button.btn').click(function() {
-            window.location = '{% url website:projects_url %}';
-        });
+    	$('button.btn').click(function() {
+			window.location = '{% url website:profile_url pk=user.pk %}';
+		});
     });
 </script>
 {% endblock extrajs %}
 
 {% block content %}
 {% if form.is_multipart %}
-<form id="projectForm" width="700px" method="post" enctype="multipart/form-data" action="{% url website:edit_project_url pk=project.pk %}">
+<form id="profileForm" width="700px" method="post" enctype="multipart/form-data" action="{% url website:edit_profile_url pk=user.pk %}">
 {% else %}
-<form id="projectForm" width="700px" method="post" action="{% url website:edit_project_url pk=project.pk %}">
+<form id="profileForm" width="700px" method="post" action="{% url website:edit_profile_url pk=user.pk %}">
 {% endif %}
     {% csrf_token %}
     {% if form.errors %}

@@ -20,11 +20,11 @@ class JSONResponseMixin(object):
         return self.get_json_response(self.convert_to_json(context))
 
 class HomepageView(TemplateView):
-    template_name = 'website/home.html'
+    template_name = 'home.html'
 
 class ProfileView(DetailView):
     model = Member
-    template_name = 'accounts/profile.html'
+    template_name = 'members/profile.html'
     context_object_name = 'member'
 
     def get_context_data(self, **kwargs):
@@ -41,7 +41,7 @@ class ProfileView(DetailView):
 class EditProfileView(UpdateView):
     model = Member
     form_class = MemberForm
-    template_name = 'accounts/edit_profile.html'
+    template_name = 'members/edit_profile.html'
 
     def render_to_response(self, context):
         if(self.request.user != context['member'].user):
@@ -51,7 +51,7 @@ class EditProfileView(UpdateView):
 
 class MembersView(ListView):
     model = Member
-    template_name = 'accounts/members.html'
+    template_name = 'members/members.html'
     context_object_name = 'members'
 
     def get_queryset(self):
@@ -85,22 +85,22 @@ class MembersView(ListView):
 
 class NewsView(ListView):
     model = News
-    template_name = 'website/news/news.html'
+    template_name = 'news/news.html'
     context_object_name = 'news_list'
 
 class NewsDetailView(DetailView):
     model = News
-    template_name = 'website/news/article.html'
+    template_name = 'news/article.html'
     context_object_name = 'news'
 
 class PageDetailView(DetailView):
     model = Page
-    template_name = 'website/pages/page.html'
+    template_name = 'pages/page.html'
     context_object_name = 'page'
 
 class ProjectView(ListView):
     model = Project
-    template_name = 'website/projects/projects.html'
+    template_name = 'projects/projects.html'
     context_object_name = 'projects'
 
     def get_queryset(self):
@@ -134,14 +134,14 @@ class ProjectView(ListView):
 class EditProjectView(UpdateView):
     model = Project
     form_class = ProjectForm
-    template_name = 'website/projects/edit_project.html'
+    template_name = 'projects/edit_project.html'
 
     def render_to_response(self, context):
         #print context
         return UpdateView.render_to_response(self, context)
 
 class BlogView(ListView):
-    template_name = 'website/blogs/blogs.html'
+    template_name = 'blogs/blogs.html'
     context_object_name = 'blog_posts'
 
     def get_queryset(self):
@@ -158,7 +158,7 @@ class BlogView(ListView):
 
 class BlogPostView(DetailView):
     model = BlogPost
-    template_name = 'website/blogs/blog_post.html'
+    template_name = 'blogs/blog_post.html'
 
     def get_context_data(self, **kwargs):
         context = super(BlogPostView, self).get_context_data(**kwargs)
@@ -170,7 +170,7 @@ class BlogPostView(DetailView):
 class AddBlogView(CreateView):
     model = BlogPost
     form_class = BlogForm
-    template_name = 'website/blogs/add_blog.html'
+    template_name = 'blogs/add_blog.html'
     object = None
 
     def post(self, request, *args, **kwargs):
@@ -194,7 +194,7 @@ class AddBlogView(CreateView):
 class EditBlogView(UpdateView):
     model = BlogPost
     form_class = BlogForm
-    template_name = 'website/blogs/edit_blog.html'
+    template_name = 'blogs/edit_blog.html'
 
     def get_object(self, **kwargs):
         pk = self.kwargs.get('blog_pk', None)
