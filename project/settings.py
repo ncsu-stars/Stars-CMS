@@ -128,10 +128,10 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.databrowse',
     'south',
-    'website'
+    'cms'
 )
 
-from website.settings import *
+from cms.settings import *
 
 STATIC_ROOT = '/static'
 STATIC_URL = '/static/'
@@ -139,7 +139,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (
     ('admin', os.path.join(os.path.dirname(django.__file__),
                            'contrib', 'admin', 'media')),
-    ('website', BASE_DIR + '/wesbite/static')
+    ('cms', BASE_DIR + '/wesbite/static')
 )
 
 # A sample logging configuration. The only tangible logging

@@ -8,7 +8,7 @@ from django.contrib import databrowse
 admin.autodiscover()
 
 urlpatterns = patterns('',
-    (r'^', include('website.urls', namespace='website')),
+    (r'^', include('cms.urls', namespace='cms')),
     (r'^admin/', include(admin.site.urls)),
     (r'^databrowse/(.*)', databrowse.site.root),
 

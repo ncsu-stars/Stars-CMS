@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+
+{% block title %}Projects{% endblock title %}
+
+{% block extrajs %}
+
+{% endblock %}
+
+{% block content %}
+{% load filters %}
+<div>{% if prev_year %}<a href="{% url cms:projects_year_url year=prev_year%}">&laquo; Projects {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}
+{% if next_year %}<a style="float: right;" href="{% url cms:projects_year_url year=next_year%}">Projects {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% endif %}
+</div>
+<h1>Projects {{ year }} &ndash; {{ year2 }}</h1>
+
+{% if projects %}
+
+{% for project in projects %}
+<img class="span-6" src="{{ MEDIA_URL }}{{ project.image }}" width="35%" />
+<dl class="span-10 last">
+    <a name="{{ project.pk }}"></a>
+    <h2>{{ project.title }} {% if user.get_profile == project.coordinator %}<small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>{% endif %}</h2>
+    <dt>Description</dt> <dd>{{ project.description|stripjs }}</dd>
+    <dt>Members</dt>
+    <dd>
+        <ul class="unstyled">
+        {% for project_member in project.members.all %}
+            {% if project_member.member %}
+            <li><a href="{% url cms:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
+            {% else %}
+            <li>{{ project_member.volunteer_name }}</li>
+            {% endif %}
+        {% endfor %}
+        </ul>
+    </dd>
+</dl>
+{% endfor %}
+
+{% else %}
+    No projects available.
+{% endif %}
+{% endblock content %}

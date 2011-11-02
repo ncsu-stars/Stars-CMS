@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NCSU STARS - {% block title %}{% endblock title %}</title>
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/print.css" type="text/css" media="print" /> 
+    <!--[if lt IE 8]>
+        <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
+    <![endif]-->
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.2.0.min.css">
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/formly.min.css" />
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/nivo.slider.css" />
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/themes/default/default.css" />
+    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/style.less" />
+
+    {% block extracss %}{% endblock extracss %}
+    <script type="text/javascript">
+        var globals = { };
+
+        globals.urls = {
+            'tagCloudUrl': '{% url cms:tag_cloud_url %}'
+        }
+    </script>
+
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/formly.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/jquery.nivo.slider.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/less.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}js/core.js"></script>
+
+    <script type="text/javascript">
+        $(document).ready(function() {
+            $('input.search').blur(function() {
+                if($(this).val() === '') {
+                    $(this).val('Search...');
+                }
+            }).click(function() {
+                $(this).val('');
+            });
+        });
+    </script>
+    {% block extrajs %}{% endblock extrajs %}
+</head>
+
+<body>
+    <div class="container">
+        <div class="span-24">
+            <span class="right" style="padding-right: 20px;">
+                {% load filters %}
+                {% if user|logged_in %}
+                    Welcome back {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
+                {% else %}
+                    Please <a href="{% url cms:login_url %}">login</a>
+                {% endif %}
+            </span>
+            <div id="logo" class="center">
+                <img src="{{ STATIC_URL }}images/text-logo-grey.png" />
+            </div>
+        </div>
+
+        <div class="span-5">
+            <nav id="main" class="left">
+                <input type="text" class="center search" value="Search..." style="width: 150px;" />
+                <div class="menu" class="center">
+                    <a href="{% url cms:homepage_url %}">Home</a><br />
+                    {% if user|logged_in and user.get_profile %}
+                    <a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a><br />
+                    {% endif %}
+                    <a href="{% url cms:projects_url %}">Projects</a><br />
+                    <a href="{% url cms:members_url %}">Members</a><br />
+                    
+                </div>
+            </nav>
+        </div>
+
+        <div class="span-18 last">
+            {% block content %}{% endblock content %}
+        </div>
+
+        <div class="span-24">
+            footer
+        </div>
+    </div>
+</body>
+</html>

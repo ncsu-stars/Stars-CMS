@@ -1,0 +1,91 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {% if member.user == user %}
+        Your Profile
+    {% else %}
+        {{ member }}'s Profile
+    {% endif %}
+{% endblock title %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    /*$('document').ready(function() {
+        var els = $('dd');
+
+        for(var i = 0; i < els.length; i++) {
+            $(els[i]).click(function() {
+                var name = $(this).prev().html().toLowerCase();
+
+                if($(this).html().indexOf('input') == -1 && $(this).html().indexOf('textarea') == -1) {
+                    if(name == 'city' || name == 'homepage') {
+                        $(this).html('<input type="text" name="' + name + '" id="id_' + name + '" value="' + $(this).html() + '" />');
+                    }
+
+                    if(name == 'interests' || name == 'blurb') {
+                        $(this).html('<textarea rows="6" style="width: 400px" name="'
+                            + name + '" id="id_' + name + '">' + $(this).html() + '</textarea>');
+                    }
+                }
+            }).blur(function() {
+                if($(this).html().indexOf('input') != -1) {
+                    console.log('blurred')
+                    $(this).html('<dd>' + $(this).attr('value'));
+                }
+            }).submit(function(e) {
+                e.preventDefault();
+            });
+        }
+    });*/
+</script>
+{% endblock extrajs %}
+
+{% block content %}
+<h1>{{ member }} {% if member.user == user %}<small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small> {% endif %}
+<small><a href="{% url cms:blog_url pk=member.pk %}">blog posts</a></small>
+</h1>
+<img class="span-6" src="{{ MEDIA_URL }}{{ member.image }}" width="33%" />
+<dl class="span-10 last">
+<dt>Group</dt> <dd>{{ member.group }}</dd>
+{% if member.classification %}
+<dt>Classification</dt> <dd>{{ member.classification }}</dd>
+{% endif %}
+<dt>City</dt> <dd>{{ member.city }}</dd>
+<dt>State</dt> <dd>{{ member.state }}</dd>
+<dt>Interests</dt> <dd>{{ member.interests }}</dd>
+<dt>Homepage</dt> <dd>{% if member.homepage %}<a href="{{ member.homepage }}">{{ member.homepage }}</a>{% else %}None{% endif %}</dd>
+<dt>Blurb</dt> <dd>{{ member.blurb }}</dd>
+
+{% if project_groups %}
+    <dt>Projects</dt>
+    {% for group in project_groups %}
+        <dd>{{ group.year }}
+            <ul>
+                {% for project_member in group.project_members %}
+                    <li><a href="{% url cms:projects_year_url year=group.year %}#{{ project_member.project.pk }}">{{ project_member.project.title }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
+                {% endfor %}
+            </ul>
+        </dd>
+    {% endfor %}
+{% endif %}
+
+{% if recent_blogs %}
+    <dt>Recent Blogs</dt>
+    <dd>
+        <ul>
+            {% for blog in recent_blogs %}
+                <li><a href="{% url cms:blog_post_url pk=member.pk blog_pk=blog.pk %}">{{ blog.title }}</a> - {{ blog.date }}</li>
+            {% endfor%}
+        </ul>
+    </dd>
+{% endif %}
+
+</dl>
+{% endblock content %}
+
+
+
+
+
+
+
