@@ -109,7 +109,7 @@ class ProjectView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProjectView, self).get_context_data(**kwargs)
 
-        if self.request.user.is_authenticated:
+        if not self.request.user.is_anonymous:
             editable_project_pks = ProjectMember.objects.filter(member__user__pk=self.request.user.pk, is_coordinator=True).values_list('project__pk', flat=True)
         else:
             editable_project_pks = []
@@ -145,7 +145,7 @@ class EditProjectView(UpdateView):
     template_name = 'projects/edit_project.html'
 
     def render_to_response(self, context):
-        if self.request.user.is_authenticated and context['project'].pk in ProjectMember.objects.filter(member__user__pk=self.request.user.pk, is_coordinator=True).values_list('project__pk', flat=True):
+        if not self.request.user.is_anonymous and context['project'].pk in ProjectMember.objects.filter(member__user__pk=self.request.user.pk, is_coordinator=True).values_list('project__pk', flat=True):
             return UpdateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to edit this project.')
