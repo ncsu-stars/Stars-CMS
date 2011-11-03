@@ -24,7 +24,7 @@ urlpatterns += (
 )
 
 urlpatterns += (
-    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login_url'),
+    url(r'^login/$', 'ncsu.wrap.views.login', {'template_name': 'login.html'}, name='login_url'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}, name='logout_url'),
     url(r'^members/$', MembersView.as_view(), name='members_url'),
     url(r'^members/(?P<year>\d+)/$', MembersView.as_view(), name='members_year_url'),

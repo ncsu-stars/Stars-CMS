@@ -133,6 +133,10 @@ INSTALLED_APPS = (
 
 from cms.settings import *
 
+from ncsu.wrap.settings import *
+
+WRAP_PUBLIC_KEY_PATH = os.path.join('apps', WRAP_PUBLIC_KEY_PATH)
+
 STATIC_ROOT = '/static'
 STATIC_URL = '/static/'
 
