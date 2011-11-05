@@ -1,18 +1,19 @@
 {% extends 'base.html' %}
 
-{% block title %}Blogs {{ month }} {{ year }}{% endblock title %}
+{% load filters %}
+
+{% block title %}Blogs {{ month|month_name }} {{ year }}{% endblock title %}
 
 {% block extrajs %}
 
 {% endblock %}
 
 {% block content %}
-{% load filters %}
-<div><a href="{% url cms:blogs_month_url year=prev_year month=prev_month %}">&laquo; Blogs {{ prev_month }} {{ prev_year }}</a>
-<a style="float: right;" href="{% url cms:blogs_month_url year=next_year month=next_month %}">Blogs {{ next_month }} {{ next_year }} &raquo;</a>
+<div><a href="{% url cms:blogs_month_url year=prev_year month=prev_month %}">&laquo; Blogs {{ prev_month|month_name }} {{ prev_year }}</a>
+<a style="float: right;" href="{% url cms:blogs_month_url year=next_year month=next_month %}">Blogs {{ next_month|month_name }} {{ next_year }} &raquo;</a>
 </div>
 
-<h1>Blogs {{ month }} {{ year }}</h1>
+<h1>Blogs {{ month|month_name }} {{ year }}</h1>
 
 {% if blog_posts %}
     {% for blog in blog_posts %}
