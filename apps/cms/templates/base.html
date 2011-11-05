@@ -4,7 +4,7 @@
     <title>NCSU STARS - {% block title %}{% endblock title %}</title>
 
     <link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection" />
-    <link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/print.css" type="text/css" media="print" /> 
+    <link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/print.css" type="text/css" media="print" />
     <!--[if lt IE 8]>
         <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
     <![endif]-->
@@ -69,7 +69,7 @@
                     {% endif %}
                     <a href="{% url cms:projects_url %}">Projects</a><br />
                     <a href="{% url cms:members_url %}">Members</a><br />
-                    
+                    <a href="{% url cms:blogs_url %}">Blogs</a><br />
                 </div>
             </nav>
         </div>

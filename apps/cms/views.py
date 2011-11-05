@@ -8,6 +8,9 @@ from django.views.generic import View, ListView, DetailView, CreateView, UpdateV
 
 from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag
 from cms.forms import MemberForm, ProjectForm, BlogForm
+from cms import academic_year
+
+import time
 
 class JSONResponseMixin(object):
     def get_json_response(self, json, **kwargs):
@@ -56,7 +59,7 @@ class MembersView(ListView):
 
     def get_queryset(self):
         # NOTE: "year" is a field lookup type so must use "year__exact" instead
-        return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR)).distinct().values_list('member')).order_by('user__first_name')
+        return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR)).distinct().values_list('member')).order_by('user__first_name', 'user__last_name')
 
     def get_context_data(self, **kwargs):
         context = super(MembersView, self).get_context_data(**kwargs)
@@ -109,18 +112,17 @@ class ProjectView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProjectView, self).get_context_data(**kwargs)
 
-        if not self.request.user.is_anonymous:
-            editable_project_pks = ProjectMember.objects.filter(member__user__pk=self.request.user.pk, is_coordinator=True).values_list('project__pk', flat=True)
+        if not self.request.user.is_anonymous():
+            coordinated_project_pks = self.request.user.get_profile().get_coordinated_projects().values_list('pk', flat=True)
         else:
-            editable_project_pks = []
+            coordinated_project_pks = []
 
         for project in context['projects']:
-            project.show_edit = (project.pk in editable_project_pks)
+            project.show_edit = (project.pk in coordinated_project_pks)
 
         context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
         next_year = int(context['year']) + 1
         context['year2'] = next_year
-
         prev_year = int(context['year']) - 1
 
         if Project.objects.filter(year=next_year).count() > 0:
@@ -145,10 +147,62 @@ class EditProjectView(UpdateView):
     template_name = 'projects/edit_project.html'
 
     def render_to_response(self, context):
-        if not self.request.user.is_anonymous and context['project'].pk in ProjectMember.objects.filter(member__user__pk=self.request.user.pk, is_coordinator=True).values_list('project__pk', flat=True):
+        if not self.request.user.is_anonymous() and context['project'].is_member_coordinator(self.request.user.get_profile()):
             return UpdateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to edit this project.')
+
+class BlogsYearView(ListView):
+    model = BlogPost
+    template_name = 'blogs/blogs_year.html'
+    context_object_name = 'blog_posts'
+
+    def get_queryset(self):
+        return BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('date')
+
+    def get_context_data(self, **kwargs):
+        context = super(BlogsYearView, self).get_context_data(**kwargs)
+
+        context['year'] = int(self.kwargs.get('year', settings.CURRENT_YEAR))
+        next_year = context['year'] + 1
+        context['year2'] = next_year
+        prev_year = context['year'] - 1
+
+        context['months'] = context['blog_posts'].dates('date', 'month', 'ASC')
+
+        if BlogPost.objects.by_academic_year(next_year).count() > 0:
+            context['next_year'] = next_year
+            context['next_year2'] = next_year + 1
+        if BlogPost.objects.by_academic_year(prev_year).count() > 0:
+            context['prev_year'] = prev_year
+            context['prev_year2'] = prev_year + 1
+
+        return context
+
+class BlogsMonthView(ListView):
+    model = BlogPost
+    template_name = 'blogs/blogs_month.html'
+    context_object_name = 'blog_posts'
+
+    def get_queryset(self):
+        return BlogPost.objects.filter(date__year=self.kwargs.get('year', settings.CURRENT_YEAR)).filter(date__month=self.kwargs.get('month', time.localtime().tm_mon)).order_by('date')
+
+    def get_context_data(self, **kwargs):
+        context = super(BlogsMonthView, self).get_context_data(**kwargs)
+
+        year = int(self.kwargs.get('year', settings.CURRENT_YEAR))
+        month = int(self.kwargs.get('month', time.localtime().tm_mon))
+
+        context['year'] = year
+        context['month'] = month
+
+        context['next_month'] = (month + 0) % 12 + 1
+        context['prev_month'] = (month - 2) % 12 + 1
+
+        context['next_year'] = [ year, year + 1 ][month == 12]
+        context['prev_year'] = [ year, year - 1 ][month == 1]
+
+        return context
 
 class BlogView(ListView):
     template_name = 'blogs/blogs.html'

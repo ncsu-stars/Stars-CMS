@@ -4,6 +4,8 @@ from django.db.models import signals
 from django.contrib.auth.models import User
 import django.contrib.localflavor.us.us_states as states
 
+from cms.managers import BlogPostManager
+
 class Project(models.Model):
     STATUS_EMPTY    = 0 # this project is pending "creation" by coordinator
     STATUS_ACTIVE   = 1 # this project has been created and is editable by coordinators
@@ -28,6 +30,9 @@ class Project(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('cms:projects_url', (), {})
+
+    def is_member_coordinator(self, member):
+        return ProjectMember.objects.filter(member__pk=member.pk, project__pk=self.pk, is_coordinator=True).count() != 0
 
     class Meta:
         verbose_name        = 'project'
@@ -73,6 +78,9 @@ class Member(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('cms:profile_url', (self.pk,), {})
+
+    def get_coordinated_projects(self):
+        return Project.objects.filter(pk__in=ProjectMember.objects.filter(member__pk=self.pk, is_coordinator=True).values_list('project__pk', flat=True))
 
     class Meta:
         verbose_name        = 'member'
@@ -137,6 +145,8 @@ class BlogPost(models.Model):
     date            = models.DateTimeField()
     post            = models.TextField()
     tags            = models.ManyToManyField(Tag, blank=True, related_name='blogposts')
+
+    objects         = BlogPostManager()
 
     @models.permalink
     def get_absolute_url(self):
