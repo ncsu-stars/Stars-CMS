@@ -274,7 +274,7 @@ class EditBlogView(UpdateView):
         if self.request.user.get_profile() == context['member']:
             return UpdateView.render_to_response(self, context)
         else:
-            return HttpResponseForbidden('You do not have permission to edit this blog post')
+            return HttpResponseForbidden('You do not have permission to edit this blog post.')
 
 class TagCloudView(JSONResponseMixin, View):
     def post(self, request, *args, **kwargs):
