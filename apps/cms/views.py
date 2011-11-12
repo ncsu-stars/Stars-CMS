@@ -156,6 +156,7 @@ class BlogsYearView(ListView):
     model = BlogPost
     template_name = 'blogs/blogs_year.html'
     context_object_name = 'blog_posts'
+    paginate_by = 25
 
     def get_queryset(self):
         return BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('date')
@@ -179,10 +180,18 @@ class BlogsYearView(ListView):
 
         return context
 
+    def render_to_response(self, context):
+        # check for "year" in kwargs to avoid redirect loop when current year has no data
+        if len(context['blog_posts']) == 0 and 'year' in self.kwargs:
+            return HttpResponseRedirect(reverse('cms:blogs_url'))
+        else:
+            return super(BlogsYearView, self).render_to_response(context)
+
 class BlogsMonthView(ListView):
     model = BlogPost
     template_name = 'blogs/blogs_month.html'
     context_object_name = 'blog_posts'
+    paginate_by = 25
 
     def get_queryset(self):
         return BlogPost.objects.filter(date__year=self.kwargs.get('year', settings.CURRENT_YEAR)).filter(date__month=self.kwargs.get('month', time.localtime().tm_mon)).order_by('date')

@@ -20,7 +20,20 @@
         <h2><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a>
         <small>by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author.user.get_full_name }}</a> &ndash; {{ blog.date|date:"F j" }} &ndash; {{ blog.date|date:"H:i" }}</small></h2>
     {% endfor %}
+
+    {% if is_paginated %}
+        <div>
+        {% if page_obj.has_previous %} <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a> {% endif %}
+        Page {{ page_obj.number }} of {{ paginator.num_pages }}
+        {% if page_obj.has_next %} <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a> {% endif %}
+        </div>
+        <div>
+        {% for page in paginator.page_range %}
+            <a href="?page={{ page }}">{{ page }}</a>
+        {% endfor %}
+        </div>
+    {% endif %}
 {% else %}
-    <h1>No blogs are available.</h1>
+    No blogs available.
 {% endif %}
 {% endblock content %}
