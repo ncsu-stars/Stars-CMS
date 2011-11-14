@@ -16,12 +16,12 @@ urlpatterns = (
 )
 
 urlpatterns += (
-    url(r'^projects/$', ProjectView.as_view(), name='projects_url'),
-    url(r'^projects/(?P<year>\d+)/$', ProjectView.as_view(), name='projects_year_url'),
+    url(r'^project/all/$', ProjectView.as_view(), name='projects_url'),
+    url(r'^project/all/(?P<year>\d+)/$', ProjectView.as_view(), name='projects_year_url'),
     url(r'^project/(?P<pk>\d+)/edit/$', EditProjectView.as_view(), name='edit_project_url'),
-    url(r'^blogs/$', BlogsYearView.as_view(), name='blogs_url'),
-    url(r'^blogs/(?P<year>\d+)/$', BlogsYearView.as_view(), name='blogs_year_url'),
-    url(r'^blogs/(?P<year>\d+)/(?P<month>\d+)/$', BlogsMonthView.as_view(), name='blogs_month_url'),
+    url(r'^blog/all/$', BlogsYearView.as_view(), name='blogs_url'),
+    url(r'^blog/all/(?P<year>\d+)/$', BlogsYearView.as_view(), name='blogs_year_url'),
+    url(r'^blog/all/(?P<year>\d+)/(?P<month>\d+)/$', BlogsMonthView.as_view(), name='blogs_month_url'),
 )
 
 urlpatterns += (
@@ -32,8 +32,8 @@ urlpatterns += (
 urlpatterns += (
     url(r'^login/$', 'ncsu.wrap.views.login', {'template_name': 'login.html'}, name='login_url'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}, name='logout_url'),
-    url(r'^members/$', MembersView.as_view(), name='members_url'),
-    url(r'^members/(?P<year>\d+)/$', MembersView.as_view(), name='members_year_url'),
+    url(r'^member/all/$', MembersView.as_view(), name='members_url'),
+    url(r'^member/all/(?P<year>\d+)/$', MembersView.as_view(), name='members_year_url'),
     url(r'^member/(?P<pk>\d+)/$', ProfileView.as_view(), name='profile_url'),
     url(r'^member/(?P<pk>\d+)/edit/$', EditProfileView.as_view(), name='edit_profile_url'),
 )
