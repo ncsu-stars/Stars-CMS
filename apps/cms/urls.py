@@ -25,8 +25,8 @@ urlpatterns += (
 )
 
 urlpatterns += (
-    url(r'^projects/create/$', CreateProjectView.as_view(), name='create_project_url'),
-    url(r'^members/create/$', CreateMemberView.as_view(), name='create_member_url'),
+    url(r'^project/create/$', CreateProjectView.as_view(), name='create_project_url'),
+    url(r'^member/create/$', CreateMemberView.as_view(), name='create_member_url'),
 )
 
 urlpatterns += (
