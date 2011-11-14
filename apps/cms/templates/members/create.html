@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Member{% endblock title %}
+
+{% block extrajs %}
+{% endblock extrajs %}
+
+{% block content %}
+{% if form.is_multipart %}
+<form id="createMemberForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:create_member_url %}">
+{% else %}
+<form id="createMemberForm" width="700px" method="post" action="{% url cms:create_member_url %}">
+{% endif %}
+    {% csrf_token %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% if field.errors %}
+                <div class="formlyRequired" style="display: block">
+                    {{ field.label }}: {{ field.errors|first }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <fieldset>
+        <legend>Create Member</legend>
+        {% for field in form %}
+        <div class="clearfix">
+            <label for="id_{{ field.label }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Create" />
+            <button class="btn">Cancel</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock content %}

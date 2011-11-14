@@ -7,7 +7,9 @@ from django.contrib.auth.models import User, Group
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView
 
 from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag
-from cms.forms import MemberForm, ProjectForm, BlogForm
+from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm
+
+from cms import signals
 from cms import academic_year
 
 import time
@@ -292,3 +294,43 @@ class TagCloudView(JSONResponseMixin, View):
             response[tag.name] = BlogPost.objects.filter(tags__name=tag.name).count()
 
         return JSONResponseMixin.render_to_response(self, response)
+
+class CreateProjectView(CreateView):
+    model = Project
+    form_class = ProjectAdminForm
+    template_name = 'projects/create.html'
+
+class CreateMemberView(CreateView):
+    model = Member
+    form_class = MemberAdminForm
+    template_name = 'members/create.html'
+    
+    def get_context_data(self, **kwargs):
+        return kwargs
+    
+    def render_to_response(self, context):
+        return CreateView.render_to_response(self, context)
+    
+    def post(self, request, *args, **kwargs):
+        form = MemberAdminForm(request.POST)
+        
+        if form.is_valid():
+            unity_id = request.POST['unity_id']
+            email = request.POST['email']
+            first_name = request.POST['first_name']
+            last_name = request.POST['last_name']
+            group = request.POST['group']
+            classification = request.POST['classification']
+            
+            user = User.objects.create(username=unity_id, email=email, first_name=first_name, last_name=last_name)
+            signals.create_profile.send(sender=None, user=user, group=group, classification=classification)
+            
+            return HttpResponseRedirect(reverse('cms:members_url'))
+        else:
+            self.render_to_response(self.get_context_data(form=form))
+
+
+
+
+
+

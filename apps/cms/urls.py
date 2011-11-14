@@ -5,7 +5,8 @@ from django.views.decorators.csrf import csrf_exempt
 
 from cms.views import HomepageView, ProfileView, NewsView, NewsDetailView, PageDetailView
 from cms.views import ProjectView, MembersView, EditProfileView, EditProjectView, BlogView
-from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, BlogsYearView, BlogsMonthView
+from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, BlogsYearView
+from cms.views import BlogsMonthView, CreateProjectView, CreateMemberView
 
 urlpatterns = (
     url(r'^$', HomepageView.as_view(), name='homepage_url'),
@@ -21,6 +22,11 @@ urlpatterns += (
     url(r'^blogs/$', BlogsYearView.as_view(), name='blogs_url'),
     url(r'^blogs/(?P<year>\d+)/$', BlogsYearView.as_view(), name='blogs_year_url'),
     url(r'^blogs/(?P<year>\d+)/(?P<month>\d+)/$', BlogsMonthView.as_view(), name='blogs_month_url'),
+)
+
+urlpatterns += (
+    url(r'^projects/create/$', CreateProjectView.as_view(), name='create_project_url'),
+    url(r'^members/create/$', CreateMemberView.as_view(), name='create_member_url'),
 )
 
 urlpatterns += (

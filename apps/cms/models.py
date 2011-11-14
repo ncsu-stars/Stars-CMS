@@ -81,7 +81,7 @@ class Member(models.Model):
 
     def get_coordinated_projects(self):
         return Project.objects.filter(pk__in=ProjectMember.objects.filter(member__pk=self.pk, is_coordinator=True).values_list('project__pk', flat=True))
-
+    
     class Meta:
         verbose_name        = 'member'
         verbose_name_plural = 'members'
