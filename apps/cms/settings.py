@@ -20,3 +20,12 @@ LOGOUT_URL = reverse_lazy('cms:logout_url')
 ANONYMOUS_USER_ID = -1
 
 CURRENT_YEAR = 2010
+
+# Remove in production
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Can be set to any email
+DEFAULT_FROM_EMAIL = 'donotrespond@stars.csc.ncsu.edu'
+
+# Used for now to get the SLC leader
+SLC_LEADER = 'Arpan Chakraborty'

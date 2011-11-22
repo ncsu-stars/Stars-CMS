@@ -1,0 +1,8 @@
+Hello {{ name }},
+
+Welcome to NC State's STARS SLC! As a new member, you will need to activate
+and fill out your profile information at:
+{{ url }}
+
+Thank you and congratulations,
+STARS Administration

@@ -115,7 +115,10 @@ class ProjectView(ListView):
         context = super(ProjectView, self).get_context_data(**kwargs)
 
         if not self.request.user.is_anonymous():
-            coordinated_project_pks = self.request.user.get_profile().get_coordinated_projects().values_list('pk', flat=True)
+            try:
+                coordinated_project_pks = self.request.user.get_profile().get_coordinated_projects().values_list('pk', flat=True)
+            except Member.DoesNotExist:
+                coordinated_project_pks = []
         else:
             coordinated_project_pks = []
 
@@ -308,37 +311,84 @@ class CreateProjectView(CreateView):
     model = Project
     form_class = ProjectAdminForm
     template_name = 'projects/create.html'
+    slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
+
+    def get_context_data(self, **kwargs):
+        return kwargs
+    
+    def render_to_response(self, context):
+        if self.request.user == self.slc_leader:
+            return CreateView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page')
+    
+    def post(self, request, *args, **kwargs):
+        if request.user == self.slc_leader:
+            form = ProjectAdminForm(request.POST)
+
+            if form.is_valid():
+                project = form.save(commit=False)
+                project.year = settings.CURRENT_YEAR
+                project.status = 0 # Empty, so a coordinator can fill out the project information
+                project.save()
+
+                signals.assign_coordinators.send(sender=None, project=project, members=form.cleaned_data['coordinators'])
+
+                return HttpResponseRedirect(reverse('cms:projects_url'))
+            else:
+                self.render_to_response(self.get_context_data(form=form))
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page')
 
 class CreateMemberView(CreateView):
     model = Member
     form_class = MemberAdminForm
     template_name = 'members/create.html'
+    slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
     
     def get_context_data(self, **kwargs):
         return kwargs
     
     def render_to_response(self, context):
-        return CreateView.render_to_response(self, context)
+        if self.request.user == self.slc_leader:
+            return CreateView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page')
     
     def post(self, request, *args, **kwargs):
-        form = MemberAdminForm(request.POST)
-        
-        if form.is_valid():
-            unity_id = request.POST['unity_id']
-            email = request.POST['email']
-            first_name = request.POST['first_name']
-            last_name = request.POST['last_name']
-            group = request.POST['group']
-            classification = request.POST['classification']
+        if request.user == self.slc_leader:
+            form = MemberAdminForm(request.POST)
             
-            user = User.objects.create(username=unity_id, email=email, first_name=first_name, last_name=last_name)
-            signals.create_profile.send(sender=None, user=user, group=group, classification=classification)
-            
-            return HttpResponseRedirect(reverse('cms:members_url'))
+            if form.is_valid():
+                unity_id = request.POST['unity_id']
+                email = request.POST['email']
+                first_name = request.POST['first_name']
+                last_name = request.POST['last_name']
+                group = request.POST['group']
+                classification = request.POST['classification']
+                
+                user = User.objects.create(username=unity_id, email=email, first_name=first_name, last_name=last_name)
+                member, project_member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification)
+
+                return HttpResponseRedirect(reverse('cms:members_url'))
+            else:
+                self.render_to_response(self.get_context_data(form=form))
         else:
-            self.render_to_response(self.get_context_data(form=form))
+            return HttpResponseForbidden('You do not have permission to access this page')
 
+class ActivateMemberView(UpdateView):
+    model = Member
+    form_class = MemberForm
+    template_name = 'members/activate.html'
+    
+    def get_object(self, queryset):
+        pass
 
+    def post(self, request, *args, **kwargs):
+        pass
+    
+    def render_to_response(self, context):
+        return TemplateView.render_to_response(self, context)
 
 
 

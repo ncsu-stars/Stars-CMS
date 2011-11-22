@@ -1,6 +1,7 @@
 import floppyforms
 
 from django import forms
+from django.conf import settings
 from django.forms import ModelForm, ModelChoiceField
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
@@ -23,21 +24,19 @@ class MemberAdminForm(ModelForm):
         fields = ('first_name', 'last_name', 'email', 'unity_id', 'group', 'classification',)
         
 class ProjectAdminForm(ModelForm):
-    coordinator = forms.ModelMultipleChoiceField(queryset=ProjectMember.objects.all())
+    #members = Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact= \
+    #    settings.CURRENT_YEAR).distinct().values_list('member')).order_by('user__first_name', 'user__last_name')
+    members = Member.get_current_members()
+
+    coordinators = forms.ModelMultipleChoiceField(queryset=members)
 
     class Meta:
         model = Project
-        fields = ('title', 'year', 'coordinator',)
+        fields = ('title', 'coordinators',)
 
 class ProjectForm(ModelForm):
 	class Meta:
 		model = Project
-
-def func_concat(old_func, new_func):
-    def function():
-        old_func()
-        new_func()
-    return function
 
 class BlogForm(ModelForm):
 	class Meta:
