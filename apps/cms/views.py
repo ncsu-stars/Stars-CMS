@@ -27,6 +27,12 @@ class JSONResponseMixin(object):
 class HomepageView(TemplateView):
     template_name = 'home.html'
 
+    def get_context_data(self, **kwargs):
+        context = super(HomepageView, self).get_context_data(**kwargs)
+        context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:5]
+
+        return context
+
 class ProfileView(DetailView):
     model = Member
     template_name = 'members/profile.html'
