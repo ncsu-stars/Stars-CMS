@@ -6,14 +6,14 @@
 <script type="text/javascript">
 $(window).load(function() {
     $('#slider').nivoSlider({
-    	effect: 'fade',
-    	slices: 15,
-    	directionNav: true,
-    	directionNavHide: true,
-    	controlNav: false,
-    	controlNavThumbs: false,
-    	keyboardNav: true,
-    	pauseOnHover: true
+        effect: 'fade',
+        slices: 15,
+        directionNav: true,
+        directionNavHide: true,
+        controlNav: false,
+        controlNavThumbs: false,
+        keyboardNav: true,
+        pauseOnHover: true
     });
 });
 </script>
@@ -21,7 +21,7 @@ $(window).load(function() {
 
 {% block content %}
 <div id="photos" class="theme-default" style="width: 618px">
-	<div class="ribbon"></div>
+    <div class="ribbon"></div>
     <div id="slider" class="nivoSlider">
         <img src="{{ STATIC_URL }}images/toystory.jpg" alt="" />
         <img src="{{ STATIC_URL }}images/up.jpg" alt="" title="Caption" /></a>
@@ -58,5 +58,6 @@ $(window).load(function() {
 
 <div class="span-9 prepend-1 last">
     <h3>Sponsors</h3>
+    {% for sponsor in sponsors %} <img alt="{{ sponsor.name }}" src="{{ STATIC_URL }}{{ SPONSOR_LOGO_URL }}{{ sponsor.logo_path }}" width="25%" /> {% endfor %}
 </div>
 {% endblock content %}

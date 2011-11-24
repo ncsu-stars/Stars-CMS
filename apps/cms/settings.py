@@ -1,3 +1,5 @@
+import os
+
 try:
     from django.core.urlresolvers import reverse_lazy
 except ImportError:
@@ -30,3 +32,16 @@ DEFAULT_FROM_EMAIL = 'donotrespond@stars.csc.ncsu.edu'
 
 # Used for now to get the SLC leader
 SLC_LEADER = 'Arpan Chakraborty'
+
+SPONSOR_LOGO_URL = 'images/logos/sponsors/'
+SPONSORS = [ dict(zip(['name', 'logo_path'], x)) for x in [
+                ('Deutsche Bank Global Technology', 'dbgt.jpg'),
+                ('NetApp', 'netapp.jpg'),
+                ('SAS', 'sas.jpg'),
+                ('EMC', 'emc.jpg'),
+                ('Cisco', 'cisco.jpg'),
+                ('Duke Energy', 'duke_energy.jpg'),
+                ('Tekelec', 'tekelec.jpg'),
+                ('I-Cubed', 'i-cubed.jpg'),
+                ('TCS', 'tcs.jpg')
+                ] ]

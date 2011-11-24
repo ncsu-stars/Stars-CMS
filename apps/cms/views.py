@@ -32,6 +32,8 @@ class HomepageView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:5]
+        context['SPONSOR_LOGO_URL'] = settings.SPONSOR_LOGO_URL
+        context['sponsors'] = settings.SPONSORS
 
         return context
 
