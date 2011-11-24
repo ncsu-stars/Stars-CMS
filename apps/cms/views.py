@@ -15,8 +15,6 @@ from cms import permissions
 
 import time
 
-slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
-
 class JSONResponseMixin(object):
     def get_json_response(self, json, **kwargs):
         return HttpResponse(json, content_type='application/json', **kwargs)
