@@ -8,12 +8,11 @@
 
 {% block content %}
 {% load filters %}
-<div>{% if prev_year %}<a href="{% url cms:blogs_year_url year=prev_year%}">&laquo; Blogs {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}
-{% if next_year %}<a style="float: right;" href="{% url cms:blogs_year_url year=next_year%}">Blogs {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% endif %}
-</div>
+<h4 class="span-9">{% if prev_year %}<a href="{% url cms:blogs_year_url year=prev_year%}">&laquo; Blogs {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}</h4>
+<h4 class="span-9 last" style="text-align: right;">{% if next_year %}<a href="{% url cms:blogs_year_url year=next_year%}">Blogs {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% else %}&nbsp;{% endif %}</h4>
+<h5 class="span-18 last" style="text-align: center;">{% if months %} {% for month in months %} <a href="{% url cms:blogs_month_url year=month.year month=month.month %}">{{ month|date:"F" }}</a> {% endfor %} {% endif %}</h5>
 
 <h1>Blogs {{ year }} &ndash; {{ year2 }}</h1>
-<div>{% if months %} {% for month in months %} <a href="{% url cms:blogs_month_url year=month.year month=month.month %}">{{ month|date:"F" }}</a> {% endfor %} {% endif %} </div>
 
 {% if blog_posts %}
     {% for blog in blog_posts %}

@@ -9,9 +9,8 @@
 {% endblock %}
 
 {% block content %}
-<div><a href="{% url cms:blogs_month_url year=prev_year month=prev_month %}">&laquo; Blogs {{ prev_month|month_name }} {{ prev_year }}</a>
-<a style="float: right;" href="{% url cms:blogs_month_url year=next_year month=next_month %}">Blogs {{ next_month|month_name }} {{ next_year }} &raquo;</a>
-</div>
+<h4 class="span-9"><a href="{% url cms:blogs_month_url year=prev_year month=prev_month %}">&laquo; Blogs {{ prev_month|month_name }} {{ prev_year }}</a></h3>
+<h4 class="span-9 last" style="text-align: right;"><a href="{% url cms:blogs_month_url year=next_year month=next_month %}">Blogs {{ next_month|month_name }} {{ next_year }} &raquo;</a></h3>
 
 <h1>Blogs {{ month|month_name }} {{ year }}</h1>
 
