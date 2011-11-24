@@ -45,7 +45,11 @@
 <h1>{{ member }} {% if user|can_edit_member:member%}<small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small> {% endif %}
 <small><a href="{% url cms:blog_url pk=member.pk %}">blog posts</a></small>
 </h1>
+{% if member.image %}
 <img class="span-6" src="{{ MEDIA_URL }}{{ member.image }}" width="33%" />
+{% else %}
+<div class="span-6" width="33%">No image available.</div>
+{% endif %}
 <dl class="span-10 last">
 <dt>Group</dt> <dd>{{ member.group }}</dd>
 {% if member.classification %}
