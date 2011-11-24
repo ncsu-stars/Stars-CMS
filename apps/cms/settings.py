@@ -9,6 +9,7 @@ except ImportError:
 
 AUTHENTICATION_BACKENDS = (
     'django.contrib.auth.backends.ModelBackend',
+    'ncsu.wrap.backends.WrapBackend',
 )
 
 AUTH_PROFILE_MODULE = 'cms.Member'

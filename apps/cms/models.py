@@ -81,13 +81,13 @@ class Member(models.Model):
     @models.permalink
     def get_absolute_url(self):
         return ('cms:profile_url', (self.pk,), {})
-    
+
     def generate_hashed_email(self):
         return hashlib.md5(self.user.email).hexdigest()
 
     def get_coordinated_projects(self):
         return Project.objects.filter(pk__in=ProjectMember.objects.filter(member__pk=self.pk, is_coordinator=True).values_list('project__pk', flat=True))
-    
+
     @staticmethod
     def get_current_members():
         return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact= \
