@@ -19,7 +19,13 @@
 <img class="span-6" src="{{ MEDIA_URL }}{{ project.image }}" width="35%" />
 <dl class="span-10 last">
     <a name="{{ project.pk }}"></a>
-    <h2>{{ project.title }} {% if project.show_edit %}<small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>{% endif %}</h2>
+    <h2>
+        {{ project.title }}
+        {% load filters %}
+        {% if user|is_slc_leader or user.get_profile|is_project_coordinator:project %}
+        <small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>
+        {% endif %}
+    </h2>
     <dt>Description</dt> <dd>{{ project.description|stripjs }}</dd>
     <dt>Members</dt>
     <dd>

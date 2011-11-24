@@ -15,6 +15,8 @@ from cms import permissions
 
 import time
 
+slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
+
 class JSONResponseMixin(object):
     def get_json_response(self, json, **kwargs):
         return HttpResponse(json, content_type='application/json', **kwargs)
@@ -27,6 +29,12 @@ class JSONResponseMixin(object):
 
 class HomepageView(TemplateView):
     template_name = 'home.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(HomepageView, self).get_context_data(**kwargs)
+        context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:5]
+
+        return context
 
 class ProfileView(DetailView):
     model = Member
@@ -254,6 +262,7 @@ class AddBlogView(CreateView):
 
     def post(self, request, *args, **kwargs):
         pk = self.kwargs.get('pk', None)
+
         if pk is not None:
             member = Member.objects.get(pk=pk)
         else:
@@ -269,6 +278,17 @@ class AddBlogView(CreateView):
             return HttpResponseRedirect(self.object.get_absolute_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))
+
+    def render_to_response(self, context):
+        pk = self.kwargs.get('pk', None)
+
+        if pk is not None:
+            if self.request.user != Member.objects.get(pk=pk).user:
+                return HttpResponseForbidden('You do not have permission to post as that user.')
+            else:
+                return CreateView.render_to_response(self, context)
+        else:
+            return Http404('Could not located specified user')
 
 class EditBlogView(UpdateView):
     model = BlogPost
@@ -388,7 +408,3 @@ class ActivateMemberView(UpdateView):
 
     def render_to_response(self, context):
         return TemplateView.render_to_response(self, context)
-
-
-
-
