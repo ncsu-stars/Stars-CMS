@@ -41,7 +41,8 @@
 {% endblock extrajs %}
 
 {% block content %}
-<h1>{{ member }} {% if member.user == user %}<small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small> {% endif %}
+{% load filters %}
+<h1>{{ member }} {% if user|can_edit_member:member%}<small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small> {% endif %}
 <small><a href="{% url cms:blog_url pk=member.pk %}">blog posts</a></small>
 </h1>
 <img class="span-6" src="{{ MEDIA_URL }}{{ member.image }}" width="33%" />

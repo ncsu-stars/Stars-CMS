@@ -22,7 +22,7 @@
     <h2>
         {{ project.title }}
         {% load filters %}
-        {% if user|is_slc_leader or user.get_profile|is_project_coordinator:project %}
+        {% if user|can_edit_project:project %}
         <small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>
         {% endif %}
     </h2>

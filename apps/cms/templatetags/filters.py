@@ -1,3 +1,6 @@
+import re
+import calendar
+
 from django import template
 from django.conf import settings
 from django.contrib.auth.models import User
@@ -5,8 +8,7 @@ from django.template.defaultfilters import stringfilter
 from django.utils.safestring import mark_safe
 from django.utils.encoding import force_unicode
 
-import re
-import calendar
+from cms import permissions
 
 register = template.Library()
 
@@ -26,9 +28,19 @@ def logged_in(user):
 
 @register.filter
 def is_slc_leader(user):
-	slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
+	return permissions.is_user_slc_leader(user)
 
-	return user == slc_leader
+@register.filter
+def can_edit_project(user, project):
+	return permissions.can_user_edit_project(user, project)
+
+@register.filter
+def can_edit_member(user, member):
+	return permissions.can_user_edit_member(user, member)
+
+@register.filter
+def can_edit_blogpost(user, blogpost):
+	return permissions.can_user_edit_blogpost(user, blogpost)
 
 @register.filter
 def is_project_coordinator(member, project):

@@ -7,7 +7,8 @@
 <h1>{{ blog.title }}
 	<small>
 		posted on {{ blog.date }} by {{ member }}
-		{% if member.user == user or user|is_slc_leader %}
+		{% load filters %}
+		{% if user|can_edit_blogpost:blog %}
 		<a href="{% url cms:edit_blog_url pk=member.pk blog_pk=blog.pk %}">edit</a>
 		{% endif %}
 	</small>
