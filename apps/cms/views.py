@@ -14,6 +14,8 @@ from cms import academic_year
 
 import time
 
+slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
+
 class JSONResponseMixin(object):
     def get_json_response(self, json, **kwargs):
         return HttpResponse(json, content_type='application/json', **kwargs)
@@ -55,10 +57,10 @@ class EditProfileView(UpdateView):
     template_name = 'members/edit_profile.html'
 
     def render_to_response(self, context):
-        if(self.request.user != context['member'].user):
-            return HttpResponseForbidden('You do not have permission to edit this profile.')
-        else:
+        if self.request.user == context['member'].user or self.request.user == slc_leader:
             return UpdateView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to edit this profile.')
 
 class MembersView(ListView):
     model = Member
@@ -158,7 +160,9 @@ class EditProjectView(UpdateView):
     template_name = 'projects/edit_project.html'
 
     def render_to_response(self, context):
-        if not self.request.user.is_anonymous() and context['project'].is_member_coordinator(self.request.user.get_profile()):
+        is_coordinator = context['project'].is_member_coordinator(self.request.user.get_profile())
+
+        if not self.request.user.is_anonymous() and (is_coordinator or self.request.user == slc_leader):
             return UpdateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to edit this project.')
@@ -259,6 +263,7 @@ class AddBlogView(CreateView):
 
     def post(self, request, *args, **kwargs):
         pk = self.kwargs.get('pk', None)
+        
         if pk is not None:
             member = Member.objects.get(pk=pk)
         else:
@@ -274,6 +279,17 @@ class AddBlogView(CreateView):
             return HttpResponseRedirect(self.object.get_absolute_url())
         else:
             return self.render_to_response(self.get_context_data(form=form))
+    
+    def render_to_response(self, context):
+        pk = self.kwargs.get('pk', None)
+
+        if pk is not None:
+            if self.request.user != Member.objects.get(pk=pk).user:
+                return HttpResponseForbidden('You do not have permission to post as that user.')
+            else:
+                return CreateView.render_to_response(self, context)
+        else:
+            return Http404('Could not located specified user')
 
 class EditBlogView(UpdateView):
     model = BlogPost
@@ -291,7 +307,7 @@ class EditBlogView(UpdateView):
         return context
 
     def render_to_response(self, context):
-        if self.request.user.get_profile() == context['member']:
+        if self.request.user == context['member'].user or self.request.user == slc_leader:
             return UpdateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to edit this blog post.')
@@ -317,19 +333,19 @@ class CreateProjectView(CreateView):
     model = Project
     form_class = ProjectAdminForm
     template_name = 'projects/create.html'
-    slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
+    #slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
 
     def get_context_data(self, **kwargs):
         return kwargs
     
     def render_to_response(self, context):
-        if self.request.user == self.slc_leader:
+        if self.request.user == slc_leader:
             return CreateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to access this page')
     
     def post(self, request, *args, **kwargs):
-        if request.user == self.slc_leader:
+        if request.user == slc_leader:
             form = ProjectAdminForm(request.POST)
 
             if form.is_valid():
@@ -350,19 +366,19 @@ class CreateMemberView(CreateView):
     model = Member
     form_class = MemberAdminForm
     template_name = 'members/create.html'
-    slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
+    #slc_leader = User.objects.get(first_name=settings.SLC_LEADER.split(' ')[0], last_name=settings.SLC_LEADER.split(' ')[1])
     
     def get_context_data(self, **kwargs):
         return kwargs
     
     def render_to_response(self, context):
-        if self.request.user == self.slc_leader:
+        if self.request.user == slc_leader:
             return CreateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to access this page')
     
     def post(self, request, *args, **kwargs):
-        if request.user == self.slc_leader:
+        if request.user == slc_leader:
             form = MemberAdminForm(request.POST)
             
             if form.is_valid():
