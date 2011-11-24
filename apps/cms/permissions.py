@@ -35,6 +35,10 @@ def can_user_edit_member(user, member):
     # through the main interface
     return (user == member.user) or is_user_slc_leader(user)
 
+def can_user_post_as_member(user, member):
+    # only the user that owns a member profile can post to that member's blog
+    return (user == member.user)
+
 def can_user_edit_blogpost(user, blogpost):
     # only blogpost authors and the SLC leader can edit blogposts
     # through the main interface
