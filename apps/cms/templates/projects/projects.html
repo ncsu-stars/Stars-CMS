@@ -16,16 +16,16 @@
 {% if projects %}
 
 {% for project in projects %}
+<div class="span-18 last">
 {% if project.image %}
-<img class="span-6" src="{{ MEDIA_URL }}{{ project.image }}" width="35%" />
+<img class="span-6" style="margin-bottom: 2em;" src="{{ MEDIA_URL }}{{ project.image }}" width="35%" />
 {% else %}
-<div class="span-6" width="33%">No image available.</div>
+<div class="span-6">No image available.</div>
 {% endif %}
 <dl class="span-10 last">
     <a name="{{ project.pk }}"></a>
     <h2>
         {{ project.title }}
-        {% load filters %}
         {% if user|can_edit_project:project %}
         <small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>
         {% endif %}
@@ -43,7 +43,7 @@
         {% endfor %}
         </ul>
     </dd>
-</dl>
+</dl></div>
 {% endfor %}
 
 {% else %}
