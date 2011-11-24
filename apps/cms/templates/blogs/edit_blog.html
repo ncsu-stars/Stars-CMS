@@ -14,51 +14,51 @@ select#id_tags {
 {% block extrajs %}
 <script type="text/javascript" src="{{ STATIC_URL }}/js/anytime.js"></script>
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('textarea').css('width', '400px');
+    $(document).ready(function() {
+        $('textarea').css('width', '400px');
 
-		AnyTime.picker("id_date", {
-			format: "%Y-%m-%d %H:%i:%s"
-		});
-		
-		$('#tag').focus(function() {
-		    $(this).val('');
-		});
-		
-		$('#add_tag').click(function() {		    
-		    var new_value = parseInt($('#id_tags option:last').val()) + 1;
-		    var new_tag = $('#tag').val();
-		    
-		    if(new_tag.length) {
-		        var child = $('#id_tags option:[text="' + new_tag + '"]');
-		        
-		        if(!child.length) {
-		            var csrf = $('input[name=csrfmiddlewaretoken]').val();
-		            $.post('{% url cms:tag_cloud_url %}', {
-		                'tag': new_tag,
-		                'blog_id': {{ blog.pk }},
-		                'member_id': {{ member.pk }},
-		                'csrfmiddlewaretoken': csrf
-		            });
-		            
-		            $('#id_tags').append('<option value="' + new_value + '">' + new_tag + '</option>');
-	            } else {
-	                var value = $('#id_tags option:[text="' + new_tag + '"]').val();
-	                $('#id_tags option:[value=' + value + ']').attr('selected', 'selected');
-	            }
-	        } else {
-	            alert('Cannot have an empty tag');
-	        }
-		});
-	});
+        AnyTime.picker("id_date", {
+            format: "%Y-%m-%d %H:%i:%s"
+        });
+
+        $('#tag').focus(function() {
+            $(this).val('');
+        });
+
+        $('#add_tag').click(function() {
+            var new_value = parseInt($('#id_tags option:last').val()) + 1;
+            var new_tag = $('#tag').val();
+
+            if(new_tag.length) {
+                var child = $('#id_tags option:[text="' + new_tag + '"]');
+
+                if(!child.length) {
+                    var csrf = $('input[name=csrfmiddlewaretoken]').val();
+                    $.post('{% url cms:tag_cloud_url %}', {
+                        'tag': new_tag,
+                        'blog_id': {{ blog.pk }},
+                        'member_id': {{ member.pk }},
+                        'csrfmiddlewaretoken': csrf
+                    });
+
+                    $('#id_tags').append('<option value="' + new_value + '">' + new_tag + '</option>');
+                } else {
+                    var value = $('#id_tags option:[text="' + new_tag + '"]').val();
+                    $('#id_tags option:[value=' + value + ']').attr('selected', 'selected');
+                }
+            } else {
+                alert('Cannot have an empty tag');
+            }
+        });
+    });
 </script>
 {% endblock extrajs %}
 
 {% block content %}
 {% if form.is_multipart %}
-<form id="editBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:edit_blog_url pk=user.pk blog_pk=blog.pk %}">
+<form id="editBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:edit_blog_url pk=user.get_profile.pk blog_pk=blog.pk %}">
 {% else %}
-<form id="editBlogForm" width="700px" method="post" action="{% url cms:edit_blog_url pk=user.pk blog_pk=blog.pk %}">
+<form id="editBlogForm" width="700px" method="post" action="{% url cms:edit_blog_url pk=user.get_profile.pk blog_pk=blog.pk %}">
 {% endif %}
     {% csrf_token %}
     {% if form.errors %}

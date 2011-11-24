@@ -9,21 +9,21 @@
 {% block extrajs %}
 <script type="text/javascript" src="{{ STATIC_URL }}/js/anytime.js"></script>
 <script type="text/javascript">
-	$(document).ready(function() {
-		$('textarea').css('width', '400px');
+    $(document).ready(function() {
+        $('textarea').css('width', '400px');
 
-		AnyTime.picker("id_date", {
-			format: "%Y-%m-%d %H:%i:%s"
-		});
-	});
+        AnyTime.picker("id_date", {
+            format: "%Y-%m-%d %H:%i:%s"
+        });
+    });
 </script>
 {% endblock extrajs %}
 
 {% block content %}
 {% if form.is_multipart %}
-<form id="addBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:add_blog_url pk=user.pk %}">
+<form id="addBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:add_blog_url pk=user.get_profile.pk %}">
 {% else %}
-<form id="addBlogForm" width="700px" method="post" action="{% url cms:add_blog_url pk=user.pk %}">
+<form id="addBlogForm" width="700px" method="post" action="{% url cms:add_blog_url pk=user.get_profile.pk %}">
 {% endif %}
     {% csrf_token %}
     {% if form.errors %}
