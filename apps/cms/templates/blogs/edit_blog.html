@@ -56,9 +56,9 @@ select#id_tags {
 
 {% block content %}
 {% if form.is_multipart %}
-<form id="editBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:edit_blog_url pk=user.get_profile.pk blog_pk=blog.pk %}">
+<form id="editBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:edit_blog_url pk=blog.author.pk blog_pk=blog.pk %}">
 {% else %}
-<form id="editBlogForm" width="700px" method="post" action="{% url cms:edit_blog_url pk=user.get_profile.pk blog_pk=blog.pk %}">
+<form id="editBlogForm" width="700px" method="post" action="{% url cms:edit_blog_url pk=blog.author.pk blog_pk=blog.pk %}">
 {% endif %}
     {% csrf_token %}
     {% if form.errors %}

@@ -21,9 +21,9 @@
 
 {% block content %}
 {% if form.is_multipart %}
-<form id="addBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:add_blog_url pk=user.get_profile.pk %}">
+<form id="addBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:add_blog_url pk=member.pk %}">
 {% else %}
-<form id="addBlogForm" width="700px" method="post" action="{% url cms:add_blog_url pk=user.get_profile.pk %}">
+<form id="addBlogForm" width="700px" method="post" action="{% url cms:add_blog_url pk=member.pk %}">
 {% endif %}
     {% csrf_token %}
     {% if form.errors %}

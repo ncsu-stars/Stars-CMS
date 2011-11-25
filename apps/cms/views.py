@@ -267,12 +267,17 @@ class AddBlogView(CreateView):
             form.save_m2m()
             return HttpResponseRedirect(self.object.get_absolute_url())
         else:
-            return self.render_to_response(self.get_context_data(form=form))
+            return self.render_to_response(self.get_context_data(form=form, member=member))
+
+    def get(self, request, *args, **kwargs):
+        member = get_object_or_404(Member, pk=self.kwargs.get('pk', None))
+        return self.render_to_response(self.get_context_data(form=BlogForm(), member=member))
 
 class EditBlogView(UpdateView):
     model = BlogPost
     form_class = BlogForm
     template_name = 'blogs/edit_blog.html'
+    context_object_name = 'blog'
 
     def get_object(self, **kwargs):
         return get_object_or_404(BlogPost, pk=self.kwargs.get('blog_pk', None), author__pk=self.kwargs.get('pk', None))
@@ -280,7 +285,8 @@ class EditBlogView(UpdateView):
     def get_context_data(self, **kwargs):
         context = super(EditBlogView, self).get_context_data(**kwargs)
         context['member'] = get_object_or_404(Member, pk=self.kwargs.get('pk', None))
-        context['blog'] = get_object_or_404(BlogPost, pk=self.kwargs.get('blog_pk', None), author__pk=context['member'].pk)
+        #context['blog'] = get_object_or_404(BlogPost, pk=self.kwargs.get('blog_pk', None), author__pk=context['member'].pk)
+
         return context
 
     def render_to_response(self, context):
