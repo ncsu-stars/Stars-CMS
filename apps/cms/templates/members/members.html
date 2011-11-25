@@ -11,6 +11,15 @@
 {% if members %}
 <article>
 <div class="span-12">
+    {% for project_member_group in project_member_groups %}
+        <h3>{{ project_member_group.group }}</h3>
+        {% for member in project_member_group.members %}
+            <a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a>
+        {% endfor %}
+        {% for project_member in project_member_group.project_members %}
+            {{ project_member }}
+        {% endfor %}
+    {% endfor %}
     {% for member in members %}
         <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2>
     {% endfor %}

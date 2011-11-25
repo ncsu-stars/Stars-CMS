@@ -69,12 +69,15 @@ class MembersView(ListView):
     template_name = 'members/members.html'
     context_object_name = 'members'
 
-    def get_queryset(self):
-        # NOTE: "year" is a field lookup type so must use "year__exact" instead
-        return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR)).distinct().values_list('member')).order_by('user__first_name', 'user__last_name')
-
     def get_context_data(self, **kwargs):
         context = super(MembersView, self).get_context_data(**kwargs)
+
+        # NOTE: "year" is a field lookup type so must use "year__exact" instead
+        project_members = ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR))
+        context['members'] = Member.objects.filter(pk__in=project_members.values_list('member')).order_by('user__first_name', 'user__last_name').distinct()
+
+        context['project_member_groups'] = [ {'group': x[1], 'members': Member.objects.filter(pk__in=project_members.filter(member__group=x[0]).values_list('member')).distinct().order_by('user__first_name', 'user__last_name')} for x in Member.GROUP_CHOICES ]
+        context['project_member_groups'] += [ {'group': 'Volunteer', 'project_members': project_members.filter(member=None).order_by('volunteer_name')} ]
 
         context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
         next_year = int(context['year']) + 1
