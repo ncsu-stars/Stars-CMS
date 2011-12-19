@@ -7,6 +7,9 @@
 <h1>{{ blog.title }}
 	<small>
 		posted on {{ blog.date }} by {{ member }}
+		{% ifnotequal blog.date|date:"d m y h:i:s" blog.edit_date|date:"d m y h:i:s" %}
+		<br/>last edited on {{ blog.edit_date }}
+		{% endifnotequal %}
 		{% load filters %}
 		{% if user|can_edit_blogpost:blog %}
 		<a href="{% url cms:edit_blog_url pk=member.pk blog_pk=blog.pk %}">edit</a>
