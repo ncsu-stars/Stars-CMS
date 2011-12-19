@@ -8,37 +8,7 @@ import django.contrib.localflavor.us.us_states as states
 
 from cms.managers import BlogPostManager
 
-class Project(models.Model):
-    STATUS_EMPTY    = 0 # this project is pending "creation" by coordinator
-    STATUS_ACTIVE   = 1 # this project has been created and is editable by coordinators
-    STATUS_ARCHIVED = 2 # this project has been archived and is frozen
 
-    STATUS_CHOICES  = (
-        (STATUS_EMPTY, u'Empty'),
-        (STATUS_ACTIVE, u'Active'),
-        (STATUS_ARCHIVED, u'Archived')
-    )
-
-    title           = models.CharField(max_length=255)
-    description     = models.TextField()
-    image           = models.ImageField(upload_to='project_images')
-    #active          = models.BooleanField(default=False)
-    status          = models.IntegerField(choices=STATUS_CHOICES)
-    year            = models.IntegerField()
-
-    def __unicode__(self):
-        return unicode('%s %d' % (self.title, self.year))
-
-    @models.permalink
-    def get_absolute_url(self):
-        return ('cms:projects_url', (), {})
-
-    def is_member_coordinator(self, member):
-        return ProjectMember.objects.filter(member__pk=member.pk, project__pk=self.pk, is_coordinator=True).count() != 0
-
-    class Meta:
-        verbose_name        = 'project'
-        verbose_name_plural = 'projects'
 
 class Member(models.Model):
     GROUP_CHOICES = (
@@ -98,9 +68,42 @@ class Member(models.Model):
         verbose_name_plural = 'members'
         ordering            = ['user__last_name']
 
+class Project(models.Model):
+    STATUS_EMPTY    = 0 # this project is pending "creation" by coordinator
+    STATUS_ACTIVE   = 1 # this project has been created and is editable by coordinators
+    STATUS_ARCHIVED = 2 # this project has been archived and is frozen
+
+    STATUS_CHOICES  = (
+        (STATUS_EMPTY, u'Empty'),
+        (STATUS_ACTIVE, u'Active'),
+        (STATUS_ARCHIVED, u'Archived')
+    )
+
+    title           = models.CharField(max_length=255)
+    description     = models.TextField()
+    image           = models.ImageField(upload_to='project_images')
+    #active          = models.BooleanField(default=False)
+    status          = models.IntegerField(choices=STATUS_CHOICES)
+    year            = models.IntegerField()
+    members         = models.ManyToManyField(Member, through="ProjectMember")
+
+    def __unicode__(self):
+        return unicode('%s %d' % (self.title, self.year))
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('cms:projects_url', (), {})
+
+    def is_member_coordinator(self, member):
+        return ProjectMember.objects.filter(member__pk=member.pk, project__pk=self.pk, is_coordinator=True).count() != 0
+
+    class Meta:
+        verbose_name        = 'project'
+        verbose_name_plural = 'projects'
+
 class ProjectMember(models.Model):
-    project         = models.ForeignKey(Project, related_name='members')
-    member          = models.ForeignKey(Member, blank=True, related_name='project_members')
+    project         = models.ForeignKey(Project)
+    member          = models.ForeignKey(Member, blank=True)
     role            = models.CharField(max_length=255, blank=True)
     volunteer_name  = models.CharField(max_length=255, blank=True)
     is_coordinator  = models.BooleanField()

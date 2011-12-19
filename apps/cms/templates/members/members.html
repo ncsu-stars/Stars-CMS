@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
-
+{% block extracss %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/badge.css">
+{% endblock extracss %}
 {% block title %}Members {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
 {% block content %}
@@ -21,7 +23,24 @@
         {% endfor %}
     {% endfor %}
     {% for member in members %}
-        <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2>
+        <div class="badge">
+            <a href="{% url cms:profile_url pk=member.pk %}"><img class="member_pic" src="{{ MEDIA_URL }}/{{member.image}}"/></a>
+            <div class="member_info">
+                <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2> from {{ member.hometown }}<br/>
+                {% if member.homepage %}
+                Website: <a href="{{ member.homepage }}">{{ member.homepage }}</a>
+                {% endif %}
+            </div>
+            <div class="member_participation">
+                <div class="project_list">Projects:
+                    {% for project in member.project_set.all %}
+                        <a href="{% url cms:projects_url %}">{{project.title }}</a>
+                    {% endfor %}
+                </div>
+                <a href="{% url cms:blog_url pk=member.pk%}">Blog</a>
+            </div>
+            </div>
+        
     {% endfor %}
 </div>
 </article>
