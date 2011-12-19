@@ -3,7 +3,6 @@
 {% block title %}Add a new blog post{% endblock title %}
 
 {% block extracss %}
-<link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/anytime.css" />
 <style type="text/css">
 select#id_tags {
     height: 100px;
@@ -12,7 +11,6 @@ select#id_tags {
 {% endblock extracss %}
 
 {% block extrajs %}
-<script type="text/javascript" src="{{ STATIC_URL }}/js/anytime.js"></script>
 <script type="text/javascript">
     $(document).ready(function() {
         $('textarea').css('width', '400px');

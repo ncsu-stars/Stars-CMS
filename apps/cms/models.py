@@ -153,7 +153,8 @@ class Tag(models.Model):
 class BlogPost(models.Model):
     author          = models.ForeignKey(Member)
     title           = models.CharField(max_length=255)
-    date            = models.DateTimeField()
+    date            = models.DateTimeField(auto_now_add=True)
+    edit_date       = models.DateTimeField(auto_now=True)
     post            = models.TextField()
     tags            = models.ManyToManyField(Tag, blank=True, related_name='blogposts')
 

@@ -7,6 +7,8 @@ from django.contrib.auth.models import User, Group
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView
 from django.shortcuts import get_object_or_404
 
+from datetime import datetime
+
 from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag
 from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm
 
