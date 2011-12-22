@@ -4,7 +4,7 @@ from django.utils import simplejson
 from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
-from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView
+from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView, DeleteView
 from django.shortcuts import get_object_or_404
 
 from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag
@@ -347,6 +347,19 @@ class CreateProjectView(CreateView):
                 self.render_to_response(self.get_context_data(form=form))
         else:
             return HttpResponseForbidden('You do not have permission to access this page.')
+
+class DeleteProjectView(DeleteView):
+    model = Project
+    template_name = 'projects/delete_project.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if permissions.is_user_slc_leader(request.user):
+            return super(DeleteProjectView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to delete projects.')
+    
+    def get_success_url(self):
+        return reverse('cms:projects_url')
 
 class CreateMemberView(CreateView):
     model = Member

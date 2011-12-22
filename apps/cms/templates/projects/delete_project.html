@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Project{% endblock title %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#not_delete').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var url = '{% url cms:projects_url %}';
+        window.location.href = url;
+    });
+});
+</script>
+{% endblock extrajs %}
+
+{% block content %}
+{% load filters %}
+{% if user|is_slc_leader %}
+<form id="deleteProject" method="post" action="{% url cms:delete_project_url pk=project.pk %}">
+    {% csrf_token %}
+    <h1>Are you sure you want to delete {{ project }}</h1>
+    <input type="submit" class="btn danger" value="Yes, delete project" />
+    <input type="submit" id="not_delete" class="btn primary" value="No, do not delete project" />
+</form>
+{% endif %}
+{% endblock content %}
