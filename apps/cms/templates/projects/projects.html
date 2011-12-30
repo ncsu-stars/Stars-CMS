@@ -34,7 +34,7 @@
     <dt>Members</dt>
     <dd>
         <ul class="unstyled">
-        {% for project_member in project.members.all %}
+        {% for project_member in project.projectmember_set.all %}
             {% if project_member.member %}
             <li><a href="{% url cms:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
             {% else %}
