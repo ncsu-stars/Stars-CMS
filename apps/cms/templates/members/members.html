@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block extracss %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/badge.css">
+<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
 {% endblock extracss %}
 {% block title %}Members {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
@@ -12,16 +13,26 @@
 <br /><h1>Members {{ year }} &ndash; {{ year2 }}</h1>
 {% if members %}
 <article>
-<div class="span-12">
+<div class="span-18 last index-outer-wrapper">
+    <div class="index-inner-wrapper">
     {% for project_member_group in project_member_groups %}
-        <h3>{{ project_member_group.group }}</h3>
-        {% for member in project_member_group.members %}
-            <a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a>
-        {% endfor %}
-        {% for project_member in project_member_group.project_members %}
-            {{ project_member }}
-        {% endfor %}
+        {% if project_member_group.members or project_member_group.project_members %}
+            <div class="index">
+            <h3>{{ project_member_group.group }}</h3>
+            <ul>
+            {% for member in project_member_group.members %}
+                <li><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></li>
+            {% endfor %}
+            {% for project_member in project_member_group.project_members %}
+                <li>{{ project_member }}</li>
+            {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
     {% endfor %}
+    </div>
+</div>
+<div class="span-12">
     {% for member in members %}
         <div class="badge">
             <a href="{% url cms:profile_url pk=member.pk %}"><img class="member_pic" src="{{ MEDIA_URL }}/{{member.image}}"/></a>
@@ -40,7 +51,7 @@
                 <a href="{% url cms:blog_url pk=member.pk%}">Blog</a>
             </div>
             </div>
-        
+
     {% endfor %}
 </div>
 </article>
