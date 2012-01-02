@@ -24,7 +24,7 @@
                 <li><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></li>
             {% endfor %}
             {% for project_member in project_member_group.project_members %}
-                <li>{{ project_member }}</li>
+                <li>{{ project_member.volunteer_name }}</li>
             {% endfor %}
             </ul>
             </div>

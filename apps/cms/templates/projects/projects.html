@@ -59,7 +59,7 @@
             {% if project_member.member %}
             <li><a href="{% url cms:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
             {% else %}
-            <li>{{ project_member.volunteer_name }}</li>
+            <li>{{ project_member.volunteer_name }} (Volunteer)</li>
             {% endif %}
         {% endfor %}
         </ul>

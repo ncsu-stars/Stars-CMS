@@ -120,7 +120,7 @@ class Project(models.Model):
 
 class ProjectMember(models.Model):
     project         = models.ForeignKey(Project)
-    member          = models.ForeignKey(Member, blank=True)
+    member          = models.ForeignKey(Member, blank=True, null=True)
     role            = models.CharField(max_length=255, blank=True)
     volunteer_name  = models.CharField(max_length=255, blank=True)
     is_coordinator  = models.BooleanField()
