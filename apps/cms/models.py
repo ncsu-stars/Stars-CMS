@@ -79,13 +79,30 @@ class Project(models.Model):
         (STATUS_ARCHIVED, u'Archived')
     )
 
+    CATEGORY_OTHER          = 0
+    CATEGORY_OUTREACH       = 1
+    CATEGORY_RESEARCH       = 2
+    CATEGORY_SERVICE        = 3
+    CATEGORY_INTERNSHIP     = 4
+    CATEGORY_ORGANIZATIONAL = 5
+
+    CATEGORY_CHOICES = (
+        (CATEGORY_OUTREACH, u'Outreach'),
+        (CATEGORY_RESEARCH, u'Research'),
+        (CATEGORY_SERVICE, u'Service'),
+        (CATEGORY_INTERNSHIP, u'Internship'),
+        (CATEGORY_ORGANIZATIONAL, u'Organizational'),
+        (CATEGORY_OTHER, u'Other'),
+    )
+
     title           = models.CharField(max_length=255)
     description     = models.TextField()
     image           = models.ImageField(upload_to='project_images')
     #active          = models.BooleanField(default=False)
     status          = models.IntegerField(choices=STATUS_CHOICES)
+    category        = models.IntegerField(choices=CATEGORY_CHOICES, default=CATEGORY_OTHER)
     year            = models.IntegerField()
-    members         = models.ManyToManyField(Member, through="ProjectMember")
+    members         = models.ManyToManyField(Member, through='ProjectMember')
 
     def __unicode__(self):
         return unicode('%s %d' % (self.title, self.year))
