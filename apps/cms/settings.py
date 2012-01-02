@@ -43,5 +43,6 @@ SPONSORS = [ dict(zip(['name', 'logo_path'], x)) for x in [
                 ('Duke Energy', 'duke_energy.jpg'),
                 ('Tekelec', 'tekelec.jpg'),
                 ('I-Cubed', 'i-cubed.jpg'),
-                ('TCS', 'tcs.jpg')
+                ('TCS', 'tcs.jpg'),
+                ('Lowes\'s Companies', 'lowes.jpg'),
                 ] ]
