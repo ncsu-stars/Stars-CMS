@@ -78,7 +78,7 @@
     <dd>
         <ul>
             {% for blog in recent_blogs %}
-                <li><a href="{% url cms:blog_url pk=member.pk %}">{{ blog.title }}</a> - {{ blog.date }}</li>
+                <li><a href="{% url cms:blog_post_url pk=member.pk blog_pk=blog.pk %}">{{ blog.title }}</a> - {{ blog.date }}</li>
             {% endfor%}
         </ul>
     </dd>
