@@ -128,6 +128,8 @@ class ProjectView(ListView):
     def get_context_data(self, **kwargs):
         context = super(ProjectView, self).get_context_data(**kwargs)
 
+        context['project_groups'] = [ {'group': x[1], 'projects': context['projects'].filter(category=x[0])} for x in Project.CATEGORY_CHOICES ]
+
         context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
         next_year = int(context['year']) + 1
         context['year2'] = next_year

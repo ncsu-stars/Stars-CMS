@@ -1,5 +1,9 @@
 {% extends 'base.html' %}
 
+{% block extracss %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
+{% endblock extracss %}
+
 {% block title %}Projects {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
 {% block extrajs %}
@@ -14,6 +18,23 @@
 <h1>Projects {{ year }} &ndash; {{ year2 }}</h1>
 
 {% if projects %}
+
+<div class="span-18 last index-outer-wrapper">
+    <div class="index-inner-wrapper">
+    {% for project_group in project_groups %}
+        {% if project_group.projects %}
+            <div class="index">
+            <h3>{{ project_group.group }}</h3>
+            <ul>
+            {% for project in project_group.projects %}
+                <li><a href="{% url cms:projects_year_url year=project.year %}#{{ project.pk }}">{{ project.title }}</a></li>
+            {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
+    {% endfor %}
+    </div>
+</div>
 
 {% for project in projects %}
 <div class="span-18 last">
@@ -37,11 +58,11 @@
     <dt>Members</dt>
     <dd>
         <ul class="unstyled">
-        {% for project_member in project.members.all %}
+        {% for project_member in project.projectmember_set.all %}
             {% if project_member.member %}
             <li><a href="{% url cms:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
             {% else %}
-            <li>{{ project_member.volunteer_name }}</li>
+            <li>{{ project_member.volunteer_name }} (Volunteer)</li>
             {% endif %}
         {% endfor %}
         </ul>
