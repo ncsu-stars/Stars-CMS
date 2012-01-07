@@ -19,8 +19,7 @@
 
 {% if projects %}
 
-<div class="span-18 last index-outer-wrapper">
-    <div class="index-inner-wrapper">
+<div class="span-18 last">
     {% for project_group in project_groups %}
         {% if project_group.projects %}
             <div class="index">
@@ -33,7 +32,6 @@
             </div>
         {% endif %}
     {% endfor %}
-    </div>
 </div>
 
 {% for project in projects %}

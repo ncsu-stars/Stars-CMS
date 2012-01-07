@@ -1,14 +1,11 @@
 div.index {
-    float: left;
-    padding: 6pt;
-}
-
-div.index-inner-wrapper {
     display: inline-block;
+    vertical-align: top;
+    padding: 6pt;
     text-align: left;
+    width: 200px;
 }
 
-div.index-outer-wrapper {
-    text-align: center;
+div.index ul {
+    margin-bottom: 0;
 }
-

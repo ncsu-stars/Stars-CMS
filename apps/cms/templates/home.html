@@ -36,7 +36,7 @@ $(window).load(function() {
 
 <h1>Welcome to the NCSU STARS website</h1>
 <p>
-    The NCSU STARS (Students & Technology in Academia, Research and Service) Student Leadership Corps (SLC) is a student organization that provides students with the opportunity to learn more about computer science careers, participate in service and outreach programs to local schools, engage in research, meet with leaders in the computer field, all while earning a stipend!
+    The NCSU STARS (Students &amp; Technology in Academia, Research and Service) Student Leadership Corps (SLC) is a student organization that provides students with the opportunity to learn more about computer science careers, participate in service and outreach programs to local schools, engage in research, meet with leaders in the computer field, all while earning a stipend!
     <br /><br />
     The NCSU SLC is part of the larger STARS Alliance, a system of regional partnerships among colleges and universities, industry, primary schools and the community to collaboratively implement programs for student recruitment and success in computing.
     <br /><br />
@@ -51,7 +51,7 @@ $(window).load(function() {
     <h3>Recent Blog Posts</h3>
     <ul>
         {% for blog in blog_posts %}
-        <li><a href="{{ blog.get_absolute_url }}">{{ blog }}</a></li>
+        <li><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a> by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author }}</a></li>
         {% endfor %}
     </ul>
 </div>

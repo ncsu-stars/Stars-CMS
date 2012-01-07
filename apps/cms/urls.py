@@ -52,6 +52,7 @@ urlpatterns += (
     url(r'^tags/$', TagCloudView.as_view(), name='tag_cloud_url'),
 )
 
-urlpatterns += (
-    url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-)
+if settings.DEBUG:
+    urlpatterns += (
+        url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+    )

@@ -13,8 +13,7 @@
 <br /><h1>Members {{ year }} &ndash; {{ year2 }}</h1>
 {% if members %}
 <article>
-<div class="span-18 last index-outer-wrapper">
-    <div class="index-inner-wrapper">
+<div class="span-18 last">
     {% for project_member_group in project_member_groups %}
         {% if project_member_group.members or project_member_group.project_members %}
             <div class="index">
@@ -30,7 +29,6 @@
             </div>
         {% endif %}
     {% endfor %}
-    </div>
 </div>
 <div class="span-18">
     {% for member in members %}
