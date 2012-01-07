@@ -32,12 +32,12 @@
     {% endfor %}
     </div>
 </div>
-<div class="span-12">
+<div class="span-18">
     {% for member in members %}
         <div class="badge">
             <a href="{% url cms:profile_url pk=member.pk %}"><img class="member_pic" src="{{ MEDIA_URL }}/{{member.image}}"/></a>
             <div class="member_info">
-                <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2> from {{ member.hometown }}<br/>
+                <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a><small>from {{ member.hometown }}</small></h2>
                 {% if member.homepage %}
                 Website: <a href="{{ member.homepage }}">{{ member.homepage }}</a>
                 {% endif %}

@@ -8,7 +8,7 @@
     <!--[if lt IE 8]>
         <link rel="stylesheet" href="css/blueprint/ie.css" type="text/css" media="screen, projection">
     <![endif]-->
-    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/assets/css/bootstrap-1.2.0.min.css">
+    <link rel="stylesheet" href="http://twitter.github.com/bootstrap/1.4.0/bootstrap.min.css">
     <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/formly.min.css" />
     <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/nivo.slider.css" />
     <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/themes/default/default.css" />
@@ -31,6 +31,14 @@
 
     <script type="text/javascript">
         $(document).ready(function() {
+            function fadeTopBar() {
+                if($('body').scrollTop() > 30) {
+                    $('.topbar').css('opacity', 0.7);
+                } else {
+                    $('.topbar').css('opacity', 1.0);
+                }
+            }
+
             $('input.search').blur(function() {
                 if($(this).val() === '') {
                     $(this).val('Search...');
@@ -38,16 +46,42 @@
             }).click(function() {
                 $(this).val('');
             });
+
+            $(window).scroll(fadeTopBar);
+
+            $('.topbar').hover(
+                function() {
+                    $('.topbar').css('opacity', 1.0);
+                }, function() {
+                    fadeTopBar();
+                }
+            );
         });
     </script>
     {% block extrajs %}{% endblock extrajs %}
 </head>
 
 <body>
-    <div class="container">
+    {% load filters %}
+    {% if user|is_slc_leader %}
+    <div class="topbar">
+        <div class="topbar-inner">
+            <div class="container">
+                <a class="brand" href="{% url cms:homepage_url %}">Stars CMS</a>
+                <ul class="nav">
+                    <li><a href="{% url cms:homepage_url %}">Admin Home</a></li>
+                    <li><a href="{% url cms:create_project_url %}">Create Project</a></li>
+                    <li><a href="{% url cms:create_member_url %}">Create Member</a></li>
+                    <li><a href="#">Create Page</a></li>
+                    <li><a href="#">Create News</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    {% endif %}
+    <div class="container" style="padding-top: 40px">
         <div class="span-24">
             <span class="right" style="padding-right: 20px;">
-                {% load filters %}
                 {% if user|logged_in %}
                     Welcome back {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
                 {% else %}

@@ -9,10 +9,10 @@ from django.contrib.auth.models import User
 from cms.models import Member, Project, ProjectMember, BlogPost, Tag
 
 class MemberForm(ModelForm):
-	class Meta:
-		model = Member
-		exclude = ('user',)
-		
+    class Meta:
+        model = Member
+        exclude = ('user',)
+        
 class MemberAdminForm(ModelForm):
     first_name = forms.CharField(max_length=50, required=True)
     last_name = forms.CharField(max_length=50, required=True)
@@ -35,10 +35,10 @@ class ProjectAdminForm(ModelForm):
         fields = ('title', 'coordinators',)
 
 class ProjectForm(ModelForm):
-	class Meta:
-		model = Project
+    class Meta:
+        model = Project
 
 class BlogForm(ModelForm):
-	class Meta:
-		model = BlogPost
-		exclude = ('author',)
+    class Meta:
+        model = BlogPost
+        exclude = ('author',)

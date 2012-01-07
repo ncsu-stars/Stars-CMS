@@ -266,7 +266,7 @@ class AddBlogView(CreateView):
     def post(self, request, *args, **kwargs):
         member = get_object_or_404(Member, pk=self.kwargs.get('pk', None))
         form = BlogForm(request.POST)
-
+        
         if form.is_valid():
             self.object = form.save(commit=False)
             self.object.author = member
@@ -306,7 +306,7 @@ class TagCloudView(JSONResponseMixin, View):
     def post(self, request, *args, **kwargs):
         tag_name = request.POST.get('tag', None)
         if tag_name is not None:
-            blog_post = get_object_or_404(BlogPost, pk=request.POST.get(['blog_id'], None), author__pk=request.POST.get(['member_id'], None))
+            #blog_post = get_object_or_404(BlogPost, pk=request.POST.get(['blog_id'], None), author__pk=request.POST.get(['member_id'], None))
             tag = Tag.objects.get_or_create(name=tag_name)
 
         return HttpResponse()

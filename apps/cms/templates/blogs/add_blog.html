@@ -14,29 +14,6 @@
 {% else %}
 <form id="addBlogForm" width="700px" method="post" action="{% url cms:add_blog_url pk=member.pk %}">
 {% endif %}
-    {% csrf_token %}
-    {% if form.errors %}
-        {% for field in form %}
-            {% if field.errors %}
-                <div class="formlyRequired" style="display: block">
-                    {{ field.label }}: {{ field.errors|first }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    <fieldset>
-        <legend>Add Post</legend>
-        {% for field in form %}
-        <div class="clearfix">
-            <label for="id_{{ field.name }}">{{ field.label }}</label>
-            <div class="input">
-                {{ field }}
-            </div>
-        </div>
-        {% endfor %}
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Add Post" />
-            <button class="btn">Cancel</button>
-    </fieldset>
+{% include 'blogs/blog_form.html' with legend="Add Post" %}
 </form>
 {% endblock content %}
