@@ -51,7 +51,7 @@ $(window).load(function() {
     <h3>Recent Blog Posts</h3>
     <ul>
         {% for blog in blog_posts %}
-        <li><a href="{{ blog.get_absolute_url }}">{{ blog }}</a></li>
+        <li><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a> by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author }}</a></li>
         {% endfor %}
     </ul>
 </div>
