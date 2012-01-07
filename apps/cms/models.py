@@ -125,6 +125,9 @@ class ProjectMember(models.Model):
     volunteer_name  = models.CharField(max_length=255, blank=True)
     is_coordinator  = models.BooleanField()
 
+    class Meta:
+        ordering    = [ '-is_coordinator', 'member__user__first_name', 'volunteer_name' ]
+
     def is_volunteer(self):
         return self.member is None
 
