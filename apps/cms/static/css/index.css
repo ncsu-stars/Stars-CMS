@@ -1,14 +1,6 @@
 div.index {
-    float: left;
-    padding: 6pt;
-}
-
-div.index-inner-wrapper {
     display: inline-block;
+    vertical-align: top;
+    padding: 6pt;
     text-align: left;
 }
-
-div.index-outer-wrapper {
-    text-align: center;
-}
-
