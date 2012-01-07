@@ -7,8 +7,21 @@ from django.contrib.auth.models import User
 import django.contrib.localflavor.us.us_states as states
 
 from cms.managers import BlogPostManager
+from cms.storage import OverwriteStorage
 
+import os
 
+MEMBER_IMAGE_FOLDER = 'member'
+def make_member_image_name(instance, filename):
+    if instance.pk is None:
+        raise Exception('save Member instance before saving ImageField')
+    return os.path.join(MEMBER_IMAGE_FOLDER, str(instance.pk) + os.path.splitext(filename)[1].lower())
+
+PROJECT_IMAGE_FOLDER = 'project'
+def make_project_image_name(instance, filename):
+    if instance.pk is None:
+        raise Exception('save Project instance before saving ImageField')
+    return os.path.join(PROJECT_IMAGE_FOLDER, str(instance.pk) + os.path.splitext(filename)[1].lower())
 
 class Member(models.Model):
     GROUP_CHOICES = (
@@ -41,7 +54,7 @@ class Member(models.Model):
     interests       = models.TextField(blank=True)
     homepage        = models.URLField(verify_exists=False, blank=True)
     blurb           = models.TextField(blank=True)
-    image           = models.ImageField(upload_to='user_images', blank=True)
+    image           = models.ImageField(upload_to=make_member_image_name, storage=OverwriteStorage(), blank=True)
     status          = models.IntegerField(choices=STATUS_CHOICES)
     #activation_key  = models.CharField(max_length=255, blank=True)
 
@@ -97,7 +110,7 @@ class Project(models.Model):
 
     title           = models.CharField(max_length=255)
     description     = models.TextField()
-    image           = models.ImageField(upload_to='project_images')
+    image           = models.ImageField(upload_to=make_project_image_name, storage=OverwriteStorage())
     #active          = models.BooleanField(default=False)
     status          = models.IntegerField(choices=STATUS_CHOICES)
     category        = models.IntegerField(choices=CATEGORY_CHOICES, default=CATEGORY_OTHER)
