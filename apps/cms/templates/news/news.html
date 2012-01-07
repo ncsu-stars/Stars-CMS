@@ -4,13 +4,15 @@
 
 {% block content %}
 <article>
-	{% for news in news_list %}
-	<h1>{{ news.title }}<span>posted on {{ news.date }}</span></h1>
-	{{ news.description }}<br />
-	<span class="right">
-		<a href="{% url cms:news_detail_url pk=news.pk slug=news.slug %}">Click for more info...</a>
-	</span>
-	{% endfor %}
-	<h1>Test</h1>
+    <h1>News</h1>
+    {% for news in news_list %}
+    <h2>{{ news.title }}<span>posted on {{ news.date }}</span></h2>
+    {{ news.description }}<br />
+    <span class="right">
+        <a href="{% url cms:news_detail_url pk=news.pk slug=news.slug %}">Click for more info...</a>
+    </span>
+    {% empty %}
+    No news is available.
+    {% endfor %}
 </article>
 {% endblock content %}

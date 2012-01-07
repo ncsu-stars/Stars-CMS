@@ -4,6 +4,7 @@
 
 {% block content %}
 <article>
-	<h1>{{ news.title }}<span>on {{ news.date }}</h1>
-	{{ news.content }}
+    <h1>{{ news.title }}<small>on {{ news.date }}</small></h1>
+    {{ news.content }}
+</article>
 {% endblock content %}
