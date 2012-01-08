@@ -7,9 +7,14 @@
     $(document).ready(function() {
         //Quick and dirty fix for the select height
         $('select[multiple=multiple]').css('height', '100px');
+        $('textarea').css('width', '400px');
 
-        $('button.btn').click(function() {
-            window.location = '{% url cms:projects_url %}';
+        $('#cancel').click(function(e) {
+            e.preventDefault();
+
+            if(confirm('Are you sure you want to leave this page?')) {
+                window.location = '{% url cms:projects_url %}';
+            }
         });
     });
 </script>
@@ -43,7 +48,7 @@
         {% endfor %}
         <div class="actions">
             <input type="submit" class="btn primary" value="Save" />
-            <button class="btn">Cancel</button>
+            <button id="cancel" class="btn">Cancel</button>
     </fieldset>
 </form>
 {% endblock content %}
