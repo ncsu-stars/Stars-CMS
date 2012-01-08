@@ -21,7 +21,7 @@ class MemberAdminForm(ModelForm):
     
     class Meta:
         model = Member
-        fields = ('first_name', 'last_name', 'email', 'unity_id', 'group', 'classification',)
+        fields = ('unity_id', 'first_name', 'last_name', 'email', 'group', 'classification',)
         
 class ProjectAdminForm(ModelForm):
     #members = Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact= \

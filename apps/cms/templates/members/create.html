@@ -3,6 +3,47 @@
 {% block title %}Create Member{% endblock title %}
 
 {% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function() {
+    var get_user = function(username) {
+        var change_form = function(first_name, last_name, email, classification) {
+            $('#id_first_name').val(first_name);
+            $('#id_last_name').val(last_name);
+            $('#id_email').val(email);
+
+            if(classification == null) {
+                $('#id_group').val(null);
+                $('#id_classification').val(null);
+            } else if(classification.toLowerCase() === 'graduate') {
+                $('#id_group').val('graduate');
+                $('#id_classification').val(null);
+            } else {
+                $('#id_group').val('undergraduate');
+                $('#id_classification').val(classification.toLowerCase());
+            }
+        }
+
+        $.getJSON('/directory/', {'user': username}, function(data, status, xhr) {
+            if(data && data.name && data.email) {
+                var first_name = data.name.substring(0, data.name.indexOf(' ')),
+                    last_name = data.name.substring(data.name.lastIndexOf(' ')).trim(),
+                    email = data.email,
+                    classification = data.classification;
+
+                change_form(first_name, last_name, email, classification);
+            } else {
+                change_form(null, null, null, null);
+            }
+        });
+    };
+
+    $('#id_unity_id').keyup(function() {
+        if($(this).val().length) {
+            get_user($(this).val());
+        } 
+    });
+});
+</script>
 {% endblock extrajs %}
 
 {% block content %}
