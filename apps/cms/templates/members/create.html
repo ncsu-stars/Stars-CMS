@@ -5,6 +5,9 @@
 {% block extrajs %}
 <script type="text/javascript">
 $(document).ready(function() {
+    var timer = null,
+        timeout = 500;
+
     var get_user = function(username) {
         var change_form = function(first_name, last_name, email, classification) {
             $('#id_first_name').val(first_name);
@@ -38,9 +41,17 @@ $(document).ready(function() {
     };
 
     $('#id_unity_id').keyup(function() {
-        if($(this).val().length) {
-            get_user($(this).val());
-        } 
+        var that = this;
+
+        timer = setTimeout(function() {
+            if($(that).val().length) {
+                get_user($(that).val());
+            } 
+        }, timeout);
+    });
+
+    $('#id_unity_id').keydown(function() {
+        clearTimeout(timer);
     });
 });
 </script>
