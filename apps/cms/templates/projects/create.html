@@ -3,6 +3,17 @@
 {% block title %}Create Project{% endblock title %}
 
 {% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#cancel').click(function(e) {
+        e.preventDefault();
+
+        if(confirm('Are you sure you want to leave this page?')) {
+            window.location = '{% url cms:projects_url %}';
+        }
+    });
+});
+</script>
 {% endblock extrajs %}
 
 {% block extracss %}
@@ -41,7 +52,7 @@
         {% endfor %}
         <div class="actions">
             <input type="submit" class="btn primary" value="Create" />
-            <button class="btn">Cancel</button>
+            <button id="cancel" class="btn">Cancel</button>
         </div>
     </fieldset>
 </form>
