@@ -6,20 +6,20 @@
 <script type="text/javascript">
     $('document').ready(function() {
         //Quick and dirty fix for a form issue
-    	$('label[for=image-clear_id]').remove();
+        $('label[for=image-clear_id]').remove();
 
-    	$('button.btn').click(function() {
-			window.location = '{% url cms:profile_url pk=user.pk %}';
-		});
+        $('button.btn').click(function() {
+            window.location = '{% url cms:profile_url pk=member.pk %}';
+        });
     });
 </script>
 {% endblock extrajs %}
 
 {% block content %}
 {% if form.is_multipart %}
-<form id="profileForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:edit_profile_url pk=user.pk %}">
+<form id="profileForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:edit_profile_url pk=member.pk %}">
 {% else %}
-<form id="profileForm" width="700px" method="post" action="{% url cms:edit_profile_url pk=user.pk %}">
+<form id="profileForm" width="700px" method="post" action="{% url cms:edit_profile_url pk=member.pk %}">
 {% endif %}
     {% csrf_token %}
     {% if form.errors %}
