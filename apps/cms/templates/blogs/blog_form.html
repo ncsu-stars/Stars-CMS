@@ -41,7 +41,7 @@
             e.preventDefault();
 
             if(confirm('Are you sure you want to leave this page?')) {
-                window.location = '{% url cms:blog_url pk=user.pk %}';
+                window.location = '{% url cms:blog_url pk=member.pk %}';
             }
         });
     });
