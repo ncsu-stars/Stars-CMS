@@ -139,6 +139,8 @@ from ncsu.wrap.settings import *
 #WRAP_PUBLIC_KEY_PATH = os.path.join('apps', WRAP_PUBLIC_KEY_PATH)
 WRAP_PUBLIC_KEY_PATH = BASE_DIR + '/../apps/' + WRAP_PUBLIC_KEY_PATH
 
+from ncsu.directory.settings import *
+
 STATIC_ROOT = '/static'
 STATIC_URL = '/static/'
 

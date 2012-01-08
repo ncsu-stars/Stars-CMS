@@ -9,6 +9,8 @@ from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, Blo
 from cms.views import BlogsMonthView, CreateProjectView, CreateMemberView, ActivateMemberView
 from cms.views import DeleteProjectView
 
+from ncsu.directory.views import json_directory_query
+
 urlpatterns = (
     url(r'^$', HomepageView.as_view(), name='homepage_url'),
     url(r'^news/$', NewsView.as_view(), name='news_url'),
@@ -50,6 +52,10 @@ urlpatterns += (
 
 urlpatterns += (
     url(r'^tags/$', TagCloudView.as_view(), name='tag_cloud_url'),
+)
+
+urlpatterns += (
+    url(r'^directory/$', json_directory_query),
 )
 
 if settings.DEBUG:
