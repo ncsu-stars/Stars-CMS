@@ -31,7 +31,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'donotrespond@stars.csc.ncsu.edu'
 
 # Used for now to get the SLC leader
-SLC_LEADER = 'Arpan Chakraborty'
+SLC_LEADER = 'Mark Draelos'#'Arpan Chakraborty'
 
 SPONSOR_LOGO_URL = 'images/logos/sponsors/'
 SPONSORS = [ dict(zip(['name', 'logo_path'], x)) for x in [
