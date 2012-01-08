@@ -266,7 +266,7 @@ class AddBlogView(CreateView):
     def post(self, request, *args, **kwargs):
         member = get_object_or_404(Member, pk=self.kwargs.get('pk', None))
         form = BlogForm(request.POST)
-        
+
         if form.is_valid():
             self.object = form.save(commit=False)
             self.object.author = member
@@ -341,7 +341,7 @@ class CreateProjectView(CreateView):
             if form.is_valid():
                 project = form.save(commit=False)
                 project.year = settings.CURRENT_YEAR
-                project.status = 0 # Empty, so a coordinator can fill out the project information
+                project.status = Project.STATUS_EMPTY # so a coordinator can fill out the project information
                 project.save()
 
                 signals.assign_coordinators.send(sender=None, project=project, members=form.cleaned_data['coordinators'])
@@ -361,7 +361,7 @@ class DeleteProjectView(DeleteView):
             return super(DeleteProjectView, self).dispatch(request, *args, **kwargs)
         else:
             return HttpResponseForbidden('You do not have permission to delete projects.')
-    
+
     def get_success_url(self):
         return reverse('cms:projects_url')
 
@@ -390,9 +390,10 @@ class CreateMemberView(CreateView):
                 last_name = request.POST['last_name']
                 group = request.POST['group']
                 classification = request.POST['classification']
+                status = Member.STATUS_EMPTY # so a member can fill out their information
 
                 user = User.objects.create(username=unity_id, email=email, first_name=first_name, last_name=last_name)
-                member, project_member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification)
+                member, project_member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
 
                 return HttpResponseRedirect(reverse('cms:members_url'))
             else:

@@ -11,18 +11,18 @@ from cms.models import Member, Project, ProjectMember, BlogPost, Tag
 class MemberForm(ModelForm):
     class Meta:
         model = Member
-        exclude = ('user',)
-        
+        exclude = ('user', 'status')
+
 class MemberAdminForm(ModelForm):
     first_name = forms.CharField(max_length=50, required=True)
     last_name = forms.CharField(max_length=50, required=True)
     unity_id = forms.CharField(max_length=8, required=True, label='Unity ID')
     email = forms.EmailField(required=True)
-    
+
     class Meta:
         model = Member
         fields = ('unity_id', 'first_name', 'last_name', 'email', 'group', 'classification',)
-        
+
 class ProjectAdminForm(ModelForm):
     #members = Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact= \
     #    settings.CURRENT_YEAR).distinct().values_list('member')).order_by('user__first_name', 'user__last_name')
@@ -37,6 +37,7 @@ class ProjectAdminForm(ModelForm):
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
+        exclude = ('status',)
 
 class BlogForm(ModelForm):
     class Meta:
