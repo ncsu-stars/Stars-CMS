@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock title %}
+
+{% block content %}
+{% load filters %}
+<h1>{{ page.title }}
+    <small>
+        {% if user|can_edit_page:page %}
+        <a href="{% url cms:edit_page_url pk=page.pk %}">edit</a>
+        {% endif %}
+    </small>
+</h1>
+<p>
+    {{ page.content|stripjs }}
+</p>
+{% endblock content %}

@@ -86,7 +86,7 @@
                     <li><a href="{% url cms:homepage_url %}">Admin Home</a></li>
                     <li><a href="{% url cms:create_project_url %}">Create Project</a></li>
                     <li><a href="{% url cms:create_member_url %}">Create Member</a></li>
-                    <li><a href="#">Create Page</a></li>
+                    <li><a href="{% url cms:create_page_url %}">Create Page</a></li>
                     <li><a href="#">Create News</a></li>
                 </ul>
             </div>
@@ -118,6 +118,12 @@
                     <a href="{% url cms:projects_url %}">Projects</a><br />
                     <a href="{% url cms:members_url %}">Members</a><br />
                     <a href="{% url cms:blogs_url %}">Blogs</a><br />
+                </div>
+                <hr />
+                <div>
+                    {% for page in pages %}
+                    <a href="{% url cms:page_url slug=page.slug %}">{{ page }}</a><br />
+                    {% endfor %}
                 </div>
             </nav>
         </div>

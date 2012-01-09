@@ -10,7 +10,7 @@ from django.shortcuts import get_object_or_404
 from datetime import datetime
 
 from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag
-from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm
+from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm, PageForm
 
 from cms import signals
 from cms import academic_year
@@ -414,3 +414,38 @@ class ActivateMemberView(UpdateView):
 
     def render_to_response(self, context):
         return TemplateView.render_to_response(self, context)
+
+class CreatePageView(CreateView):
+    model = Page
+    form_class = PageForm
+    template_name = 'pages/create.html'
+
+    def render_to_response(self, context):
+        if permissions.can_user_create_page(self.request.user):
+            return CreateView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page.')
+
+    def post(self, request, *args, **kwargs):
+        if permissions.can_user_create_page(self.request.user):
+            form = PageForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+
+                return HttpResponseRedirect(reverse('cms:homepage_url'))
+            else:
+                self.render_to_response(self.get_context_data(form=form))
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page.')
+
+class EditPageView(UpdateView):
+    model = Page
+    form_class = PageForm
+    template_name = 'pages/edit.html'
+
+    def render_to_response(self, context):
+        if permissions.can_user_edit_page(self.request.user, context['page']):
+            return UpdateView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to edit this page.')
