@@ -8,8 +8,12 @@
         //Quick and dirty fix for a form issue
         $('label[for=image-clear_id]').remove();
 
-        $('button.btn').click(function() {
-            window.location = '{% url cms:profile_url pk=member.pk %}';
+        $('#cancel').click(function(e) {
+            e.preventDefault();
+
+            if(confirm('Are you sure you want to leave this page?')) {
+                window.location = '{% url cms:profile_url pk=member.pk %}';
+            }
         });
     });
 </script>
@@ -43,7 +47,7 @@
         {% endfor %}
         <div class="actions">
             <input type="submit" class="btn primary" value="Save" />
-            <button class="btn">Cancel</button>
+            <button type="button" id="cancel" class="btn">Cancel</button>
     </fieldset>
 </form>
 {% endblock content %}
