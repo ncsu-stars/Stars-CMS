@@ -93,7 +93,7 @@
                     <span id="logo">NCSU Stars Alliance</span>
                 </div>
             </div>
-            <div style="text-align: center; display: table-cell; vertical-align: middle;    ">
+            <div style="text-align: center; display: table-cell; vertical-align: middle;">
                 <div class="span-8 last">
                 {% block head %} {% endblock head %}
                 </div>
@@ -119,7 +119,7 @@
                 {% if user|logged_in %}
                 Welcome {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
                 {% else %}
-                Please <a href="{% url cms:login_url %}">login</a>
+                <a href="{% url cms:login_url %}">Please login</a>
                 {% endif %}
             </span>
         </div>
