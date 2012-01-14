@@ -84,16 +84,15 @@
     </div>
     {% endif %}
     <div class="container" style="padding-top: 10px">
-        <div class="span-19">
-            <span class="right" style="padding-right: 10px;">
-                {% if user|logged_in %}
-                    Welcome back {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
-                {% else %}
-                    Please <a href="{% url cms:login_url %}">login</a>
-                {% endif %}
-            </span>
-            <div id="logo" class="center">
+        <div class="span-24">
+            <div id="logo" class="span-8" style="padding-left: 10px">
+                <img width="260px" src="{{ STATIC_URL }}images/people_banner.jpg" />
+            </div>
+            <div id="logo" class="span-8">
                 <img src="{{ STATIC_URL }}images/text-logo-grey.png" />
+            </div>
+            <div class="span-8 right last" style="padding-left: 10px">
+                {% block head %} {% endblock head %}
             </div>
         </div>
 
