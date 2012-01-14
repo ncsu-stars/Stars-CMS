@@ -5,13 +5,14 @@
 {% endblock extracss %}
 {% block title %}Members {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
-{% block head %} <h1>Members {{ year }} &ndash; {{ year2 }}</h1> {% endblock head %}
+{% block head %} <h1 style="text-align:right;">Members</h1> {% endblock head %}
 
 {% block content %}
 
-<h4 class="span-9">{% if prev_year %}<a href="{% url cms:members_year_url year=prev_year%}">&laquo; Members {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}</h4>
-<h4 class="span-9 last" style="text-align: right;">{% if next_year %}<a href="{% url cms:members_year_url year=next_year%}">Members {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% else %}&nbsp;{% endif %}</h4>
-
+<h4 class="span-6">{% if prev_year %}<a href="{% url cms:members_year_url year=prev_year%}">&laquo; Members {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}</h4>
+<h2 class="span-12" style="text-align: center;">Members {{ year }} &ndash; {{ year2 }}</h2>
+<h4 class="span-6 last" style="text-align: right;">{% if next_year %}<a href="{% url cms:members_year_url year=next_year%}">Members {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% else %}&nbsp;{% endif %}</h4>
+<br/><br/>
 {% if members %}
 
 <div class="span-18">
@@ -33,7 +34,7 @@
             </div>
             <div class="member_participation">Current Projects<br/>
                     {% for project in member.get_current_projects %}
-                        <a href="{% url cms:projects_url %}">{{project.title }}</a><br/>
+                        <a href="{% url cms:projects_year_url year=year %}#{{ project.pk }}">{{project.title }}</a><br/>
                     {% endfor %}
             </div>
         </div>
