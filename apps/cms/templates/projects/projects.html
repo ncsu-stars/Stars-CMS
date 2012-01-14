@@ -39,7 +39,7 @@
 {% if project.image %}
 <img class="span-6" style="margin-bottom: 2em;" src="{{ MEDIA_URL }}{{ project.image }}" width="35%" />
 {% else %}
-<div class="span-6">No image available.</div>
+<img class="span-6" style="margin-bottom: 2em;" src="{{ STATIC_URL }}images/octocat.jpg" width="35%" />
 {% endif %}
 <dl class="span-10 last">
     <a name="{{ project.pk }}"></a>
