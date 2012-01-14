@@ -23,20 +23,15 @@ $(window).load(function() {
 {% block content %}
 <div class="span-16">
 <h1>Welcome to STARS at NCSU</h1>
-            <div style="display: table-cell; vertical-align: middle; padding: 5px;">
-                <img class="span-14" src="{{ STATIC_URL }}images/people_banner.jpg" />
+            <div class="span-16 last" style="text-align: center; margin-bottom: 10px;">
+                <img src="{{ STATIC_URL }}images/people_banner.jpg" />
             </div>
-            <p><p>
-    The NCSU STARS (Students &amp; Technology in Academia, Research and Service) Student Leadership Corps (SLC) is a student organization that provides students with the opportunity to learn more about computer science careers, participate in service and outreach programs to local schools, engage in research, meet with leaders in the computer field, all while earning a stipend!
-    <br /><br />
-    The NCSU SLC is part of the larger STARS Alliance, a system of regional partnerships among colleges and universities, industry, primary schools and the community to collaboratively implement programs for student recruitment and success in computing.
-    <br /><br />
-    If you are a college student in the Raleigh area and would like to learn more about joining STARS SLC, follow the Joining Stars link. To learn more about what NCSU STARS students do every week, view their blogs.
-    <br /><br />
-    STARS is funded by the National Science Foundation.
-    <br /><br />
-    NCSU STARS would like to thank their local sponsors below for their contributions to the Raleigh community.
-    <p>
+            <p>The NCSU STARS (<strong><u>S</u></strong>tudents &amp; <u><strong>T</strong></u>echnology in <u><strong>A</strong></u>cademia, <u><strong>R</strong></u>esearch and <u><strong>S</strong></u>ervice) Student Leadership Corps (SLC) is a student organization that provides students with the opportunity to learn more about computer science careers, participate in service and outreach programs to local schools, engage in research, meet with leaders in the computer field, all while earning a stipend!</p>
+            <p>The NCSU SLC is part of the larger <a href="http://www.starsalliance.org/">STARS  Alliance</a>, a system of regional partnerships among colleges and universities, industry, primary schools and the community to collaboratively implement programs for student recruitment and success in computing.</p>
+            <p>If you are a college student in the Raleigh area and would like to learn more about joining STARS SLC, follow the <a href="/page/s/joining">Joining Stars</a> link.  To learn more about what NCSU STARS students do every week, view their <a href="{% url cms:blogs_url %}">blogs</a>.</p>
+            <p>STARS is funded by the <a href="http://www.nsf.gov">National Science Foundation</a>.</p>
+            <p>NCSU STARS would like to thank their local sponsors below for their contributions to the Raleigh community.</p>
+
 </div>
 <div class="span-8 last">
     <h3>Recent Blog Posts</h3>
@@ -45,7 +40,7 @@ $(window).load(function() {
         <li><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a> by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author }}</a></li>
         {% endfor %}
     </ul>
-</div> 
+</div>
 <div class="span-24 last" style="text-align: center">
 <p><p>
     {% for sponsor in sponsors %} <img alt="{{ sponsor.name }}" src="{{ STATIC_URL }}{{ SPONSOR_LOGO_URL }}{{ sponsor.logo_path }}" width="9%" /> {% endfor %}

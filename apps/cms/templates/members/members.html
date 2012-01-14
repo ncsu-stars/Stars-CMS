@@ -13,7 +13,7 @@
 <br/><br/>
 {% if members %}
 
-<div class="span-18">
+<div class="span-18" style="margin-top: 20px;">
     {% for member in members %}
         <div class="badge">
             <div class="member_pic"><a href="{% url cms:profile_url pk=member.pk %}">
@@ -38,7 +38,7 @@
         </div>
     {% endfor %}
 </div>
-<div class="span-6 last">
+<div class="span-6 last" style="margin-top: 20px;">
     {% for project_member_group in project_member_groups %}
         {% if project_member_group.members or project_member_group.project_members %}
             <div class="index">
