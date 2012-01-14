@@ -91,17 +91,12 @@
     {% endif %}
     <div class="container" style="padding-top: 10px;">
         <div style="display: table-row;">
-            <div style="display: table-cell; vertical-align: middle; padding: 5px;">
-                <img class="span-8" src="{{ STATIC_URL }}images/people_banner.jpg" />
+            <div class="center" style="text-align-center">
+                <img width="210px" src="{{ STATIC_URL }}images/STARS_Logo.png" />
             </div>
             <div style="display: table-cell; vertical-align: middle;">
-                <div class="span-8" style="text-align: center">
+                <div class="span-12" style="text-align: center">
                     <span id="logo">NCSU Stars Alliance</span>
-                </div>
-            </div>
-            <div style="text-align: center; display: table-cell; vertical-align: middle;    ">
-                <div class="span-8 last">
-                {% block head %} {% endblock head %}
                 </div>
             </div>
         </div>
@@ -125,7 +120,7 @@
                 {% if user|logged_in %}
                 Welcome {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
                 {% else %}
-                Please <a href="{% url cms:login_url %}">login</a>
+                <a href="{% url cms:login_url %}">Please login</a>
                 {% endif %}
             </span>
         </div>

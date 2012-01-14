@@ -34,6 +34,10 @@
     background: -moz-linear-gradient(top, @top 0%, @bottom 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, @top), color-stop(100%, @bottom));
     background: -webkit-linear-gradient(top, @top 0%, @bottom 100%);
+    background-image: -o-linear-gradient(top, @top, @bottom);
+    background-image: linear-gradient(top, @top, @bottom);
+    background-image: -ms-linear-gradient(top, @top, @bottom);
+    /*filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#049cdb', endColorstr='#0064cd', GradientType=0);*/
 }
 
 .text-shadow() {
@@ -47,6 +51,10 @@ body {
     font: 400 12px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: #FFFFFF;
     color: #222222;
+
+    textarea {
+        width: 400px;
+    }
 
     a {
         color: #E21737;
@@ -62,12 +70,24 @@ body {
         line-height: 18px;
     }
 
+    .btn.primary {
+        color: white;
+        background-color: #E21737;
+        background-repeat: repeat-x;
+
+        .gradient(#E21737, #B6122C);
+        
+        text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+        border-color: #0064CD #0064CD #003F81;
+        border-color: rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.1) rgba(0, 0, 0, 0.25);
+    }
+
     .container {
         width: 950px;
         margin: 0 auto;
 
         #logo {
-            font-size: 2.5em;
+            font-size: 3.5em;
             text-align: center;
             font-weight: lighter;
 
