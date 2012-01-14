@@ -83,32 +83,45 @@
         </div>
     </div>
     {% endif %}
-    <div class="container" style="padding-top: 10px">
-        <div class="span-24">
-            <div id="logo" class="span-8" style="padding-left: 10px">
-                <img width="260px" src="{{ STATIC_URL }}images/people_banner.jpg" />
+    <div class="container" style="padding-top: 10px;">
+        <div style="display: table-row;">
+            <div style="display: table-cell; vertical-align: middle; padding: 5px;">
+                <img class="span-8" src="{{ STATIC_URL }}images/people_banner.jpg" />
             </div>
-            <div id="logo" class="span-8">
-                <img src="{{ STATIC_URL }}images/text-logo-grey.png" />
+            <div style="display: table-cell; vertical-align: middle;">
+                <div class="span-8" style="text-align: center">
+                    <span id="logo">NCSU Stars Alliance</span>
+                </div>
             </div>
-            <div class="span-8 right last" style="padding-left: 10px">
+            <div style="text-align: center; display: table-cell; vertical-align: middle;    ">
+                <div class="span-8 last">
                 {% block head %} {% endblock head %}
+                </div>
             </div>
         </div>
-
         <div id="mainNav" class="span-24">
-            <ul>
+            <ul class="span-15">
                 <li><a href="{% url cms:homepage_url %}">Home</a></li>
                 <li><a href="{% url cms:projects_url %}">Projects</a></li>
                 <li><a href="{% url cms:members_url %}">Members</a></li>
                 <li><a href="{% url cms:blogs_url %}">Blogs</a></li>
-                {% if user|logged_in and user.get_profile %}
+                <!--{% if user|logged_in and user.get_profile %}
                 <li><a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a></li>
                 {% endif %}
                 {% if user|logged_in %}
                 <li><a href="#">My Blog</a></li>
-                {% endif %}
+                {% endif %}-->
+                {% for page in pages %}
+                <li><a href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
+                {% endfor %}
             </ul>
+            <span class="span-8 last">
+                {% if user|logged_in %}
+                Welcome {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
+                {% else %}
+                Please <a href="{% url cms:login_url %}">login</a>
+                {% endif %}
+            </span>
         </div>
 
         <div class="span-24 last">
