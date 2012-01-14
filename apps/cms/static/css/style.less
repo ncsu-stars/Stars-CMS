@@ -36,6 +36,10 @@
     background: -webkit-linear-gradient(top, @top 0%, @bottom 100%);
 }
 
+.text-shadow() {
+    text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.7);
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -61,6 +65,14 @@ body {
     .container {
         width: 950px;
         margin: 0 auto;
+
+        #logo {
+            font-size: 2.5em;
+            text-align: center;
+            font-weight: lighter;
+
+            .text-shadow();
+        }
 
         #mainNav {
             color: #FFFFFF;
