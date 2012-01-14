@@ -34,7 +34,7 @@
             </div>
             <div class="member_participation">Current Projects<br/>
                     {% for project in member.get_current_projects %}
-                        <a href="{% url cms:projects_url %}">{{project.title }}</a><br/>
+                        <a href="{% url cms:projects_year_url year=year %}#{{ project.pk }}">{{project.title }}</a><br/>
                     {% endfor %}
             </div>
         </div>
