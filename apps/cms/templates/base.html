@@ -83,9 +83,9 @@
         </div>
     </div>
     {% endif %}
-    <div class="container" style="padding-top: 40px">
+    <div class="container" style="padding-top: 10px">
         <div class="span-19">
-            <span class="right" style="padding-right: 20px;">
+            <span class="right" style="padding-right: 10px;">
                 {% if user|logged_in %}
                     Welcome back {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
                 {% else %}
@@ -112,7 +112,7 @@
             </ul>
         </div>
 
-        <div class="span-18 last">
+        <div class="span-24 last">
             {% block content %}{% endblock content %}
         </div>
 
