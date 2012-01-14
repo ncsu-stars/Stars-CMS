@@ -173,12 +173,16 @@ class News(models.Model):
 class Page(models.Model):
     title           = models.CharField(max_length=255)
     content         = models.TextField()
-    slug            = models.SlugField(max_length=100)
+    slug            = models.SlugField(max_length=100, unique=True)
     pub_front_page  = models.BooleanField(default=False)
     pub_menu        = models.BooleanField(default=False)
 
     def __unicode__(self):
         return unicode(self.title)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('cms:page_url', (), {'slug': self.slug})
 
 class Tag(models.Model):
     name            = models.CharField(max_length=255)

@@ -43,3 +43,11 @@ def can_user_edit_blogpost(user, blogpost):
     # only blogpost authors and the SLC leader can edit blogposts
     # through the main interface
     return (user == blogpost.author.user) or is_user_slc_leader(user)
+
+def can_user_create_page(user):
+    # only the SLC leader can create pages through the main interface
+    return is_user_slc_leader(user)
+
+def can_user_edit_page(user, page):
+    # only the SLC leader can edit pages through the main interface
+    return is_user_slc_leader(user)

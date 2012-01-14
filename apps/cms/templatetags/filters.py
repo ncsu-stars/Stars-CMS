@@ -28,23 +28,27 @@ def logged_in(user):
 
 @register.filter
 def is_slc_leader(user):
-	return permissions.is_user_slc_leader(user)
+    return permissions.is_user_slc_leader(user)
 
 @register.filter
 def can_edit_project(user, project):
-	return permissions.can_user_edit_project(user, project)
+    return permissions.can_user_edit_project(user, project)
 
 @register.filter
 def can_edit_member(user, member):
-	return permissions.can_user_edit_member(user, member)
+    return permissions.can_user_edit_member(user, member)
 
 @register.filter
 def can_edit_blogpost(user, blogpost):
-	return permissions.can_user_edit_blogpost(user, blogpost)
+    return permissions.can_user_edit_blogpost(user, blogpost)
+
+@register.filter
+def can_edit_page(user, page):
+    return permissions.can_user_edit_page(user, page)
 
 @register.filter
 def is_project_coordinator(member, project):
-	return project.is_member_coordinator(member)
+    return project.is_member_coordinator(member)
 
 # ref: http://stackoverflow.com/questions/7385751/how-to-display-month-name-by-number
 @register.filter

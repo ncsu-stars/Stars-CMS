@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Page{% endblock title %}
+
+{% block extrajs %}
+<script type="text/javascript">
+    $('#cancel').click(function(e) {
+        e.preventDefault();
+
+        if(confirm('Are you sure you want to leave this page?')) {
+            window.location = '{% url cms:members_url %}';
+        }
+    });
+});
+</script>
+{% endblock extrajs %}
+
+{% block content %}
+{% if form.is_multipart %}
+<form id="createPageForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:create_page_url %}">
+{% else %}
+<form id="createPageForm" width="700px" method="post" action="{% url cms:create_page_url %}">
+{% endif %}
+    {% csrf_token %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% if field.errors %}
+                <div class="formlyRequired" style="display: block">
+                    {{ field.label }}: {{ field.errors|first }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <fieldset>
+        <legend>Create Page</legend>
+        {% for field in form %}
+        <div class="clearfix">
+            <label for="id_{{ field.label }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Create" />
+            <button type="button" id="cancel" class="btn">Cancel</button>
+        </div>
+    </fieldset>
+</form>
+{% endblock content %}
