@@ -3,7 +3,7 @@
 {% load filters %}
 
 {% block title %}{{ page.title }}{% endblock title %}
-
+{% block current_page %}current="top_{{ page.pk }}";{% endblock current_page %}
 {% block content %}
 <h1>{{ page.title }}
     <small>
