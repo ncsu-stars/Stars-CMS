@@ -1,0 +1,5 @@
+
+{% for blog in blog_posts %}
+    <h2><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a>
+    <small>by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author.user.get_full_name }}</a> &ndash; {{ blog.date|date:"F j" }}</small></h2>
+{% endfor %}
