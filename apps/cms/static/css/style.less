@@ -39,7 +39,7 @@
 body {
     margin: 0;
     padding: 0;
-    min-height: 800px;
+    min-height: 600px;
     font: 400 12px/20px "Helvetica Neue", Helvetica, Arial, sans-serif;
     background-color: #FFFFFF;
     color: #222222;
@@ -47,6 +47,11 @@ body {
     a {
         color: #E21737;
         text-decoration: none;
+    }
+
+    a:hover {
+        color: #B6122C;
+        text-decoration: underline;
     }
 
     div {
@@ -67,15 +72,17 @@ body {
             font-size: 1.4em;
             font-weight: 800;
 
+            span {
+                margin-top: 10px;
+            }
+
             ul {
                 list-style-type: none;
                 margin-top: 10px;
-                text-align: center;
 
                 li {
                     display: inline;
-                    margin: 0px 20px 0px 20px;
-
+                    margin: 0px 10px 0px 10px;
                     a, a:hover {
                         text-decoration: none;
                         color: #FFFFFF;
