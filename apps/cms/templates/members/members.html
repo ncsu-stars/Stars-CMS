@@ -5,8 +5,6 @@
 {% endblock extracss %}
 {% block title %}Members {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
-{% block head %} <h1 style="text-align:right;">Members</h1> {% endblock head %}
-
 {% block content %}
 
 <h4 class="span-6">{% if prev_year %}<a href="{% url cms:members_year_url year=prev_year%}">&laquo; Members {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}</h4>
