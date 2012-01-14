@@ -42,25 +42,32 @@
 
 {% block content %}
 {% load filters %}
-<h1>{{ member }} {% if user|can_edit_member:member%}<small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small> {% endif %}
-<small><a href="{% url cms:blog_url pk=member.pk %}">blog posts</a></small>
+<h1>{{ member }}
+    <small>({{ member.group }})</small>
+    {% if user|can_edit_member:member%}
+    <small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small>
+    {% endif %}
+    <small><a href="{% url cms:blog_url pk=member.pk %}">blog posts</a></small>
 </h1>
+
 {% if member.image %}
 <img class="span-6" src="{{ MEDIA_URL }}{{ member.image }}" width="33%" />
 {% else %}
 <div class="span-6" width="33%">No image available.</div>
 {% endif %}
 <dl class="span-10 last">
-<dt>Group</dt> <dd>{{ member.group }}</dd>
-{% if member.classification %}
-<dt>Classification</dt> <dd>{{ member.classification }}</dd>
-{% endif %}
-<dt>Hometown</dt> <dd>{{ member.hometown }}</dd>
-<dt>Interests</dt> <dd>{{ member.interests }}</dd>
-<dt>Homepage</dt> <dd>{% if member.homepage %}<a href="{{ member.homepage }}">{{ member.homepage }}</a>{% else %}None{% endif %}</dd>
-<dt>Blurb</dt> <dd>{{ member.blurb }}</dd>
-
-{% if project_groups %}
+    <div>{{ member.blurb }}</div>
+    {% if member.classification %}
+    <dt>Classification</dt> <dd>{{ member.classification }}</dd>
+    {% endif %}
+    <dt>Hometown</dt> <dd>{{ member.hometown }}</dd>
+    <dt>Homepage</dt> <dd>{% if member.homepage %}<a href="{{ member.homepage }}">{{ member.homepage }}</a>{% else %}None{% endif %}</dd>
+</dl>
+<dl class="span-18">
+    <dt>Interests</dt> <dd>{{ member.interests }}</dd>
+</dl>
+<dl class="span-9">
+    {% if project_groups %}
     <dt>Projects</dt>
     {% for group in project_groups %}
         <dd>{{ group.year }}
@@ -71,8 +78,9 @@
             </ul>
         </dd>
     {% endfor %}
-{% endif %}
-
+    {% endif %}
+</dl>
+<dl class="span-9 last">
 {% if recent_blogs %}
     <dt>Recent Blogs</dt>
     <dd>
@@ -83,7 +91,6 @@
         </ul>
     </dd>
 {% endif %}
-
 </dl>
 {% endblock content %}
 
