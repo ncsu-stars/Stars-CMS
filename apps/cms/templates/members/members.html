@@ -3,6 +3,7 @@
 <link rel="stylesheet" href="{{ STATIC_URL }}css/badge.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
 {% endblock extracss %}
+{% block current_page %}current="#top_members";{% endblock current_page %}
 {% block title %}Members {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
 {% block head %} <h1 style="text-align:right;">Members</h1> {% endblock head %}

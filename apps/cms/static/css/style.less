@@ -95,15 +95,24 @@ body {
 
             ul {
                 list-style-type: none;
-                margin-top: 10px;
 
                 li {
-                    display: inline;
+                    display: block;
+                    float: left;
+                    height: 40px;
+                    line-height: 40px;
+                    padding: 0px 10px 0px 10px;
                     margin: 0px 10px 0px 10px;
                     a, a:hover {
                         text-decoration: none;
                         color: #FFFFFF;
                     }
+                }
+                li:hover {
+                    background-color: #B6122C;
+                }
+                .current_nav{
+                    background-color: #666666;
                 }
             }
         }

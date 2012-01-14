@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block title %}{{ page.title }}{% endblock title %}
-
+{% block current_page %}current="top_{{ page.pk }}";{% endblock current_page %}
 {% block content %}
 {% load filters %}
 <h1>{{ page.title }}

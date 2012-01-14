@@ -48,6 +48,12 @@
                     fadeTopBar();
                 }
             );
+            
+            var current = "";
+            {% block current_page %}{% endblock current_page %}
+            if (current!=""){
+                $(current).addClass("current_nav");
+            }
         });
     </script>
 
@@ -101,10 +107,10 @@
         </div>
         <div id="mainNav" class="span-24">
             <ul class="span-15">
-                <li><a href="{% url cms:homepage_url %}">Home</a></li>
-                <li><a href="{% url cms:projects_url %}">Projects</a></li>
-                <li><a href="{% url cms:members_url %}">Members</a></li>
-                <li><a href="{% url cms:blogs_url %}">Blogs</a></li>
+                <li id="top_home"><a href="{% url cms:homepage_url %}">Home</a></li>
+                <li id="top_projects"><a href="{% url cms:projects_url %}">Projects</a></li>
+                <li id="top_members"><a href="{% url cms:members_url %}">Members</a></li>
+                <li id="top_blogs"><a href="{% url cms:blogs_url %}">Blogs</a></li>
                 <!--{% if user|logged_in and user.get_profile %}
                 <li><a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a></li>
                 {% endif %}
@@ -112,7 +118,7 @@
                 <li><a href="#">My Blog</a></li>
                 {% endif %}-->
                 {% for page in pages %}
-                <li><a href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
+                <li><a id="top_{{ page.pk }}" href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
                 {% endfor %}
             </ul>
             <span class="span-8 last">
