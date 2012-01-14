@@ -1,38 +1,34 @@
 {% extends 'base.html' %}
 
+{% load filters %}
+
 {% block title %}Blogs {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
-{% block extrajs %}
-
-{% endblock %}
+{% block head %}
+<h1>Blogs</h1>
+{% endblock head %}
 
 {% block content %}
-{% load filters %}
-<h4 class="span-9">{% if prev_year %}<a href="{% url cms:blogs_year_url year=prev_year%}">&laquo; Blogs {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}</h4>
-<h4 class="span-9 last" style="text-align: right;">{% if next_year %}<a href="{% url cms:blogs_year_url year=next_year%}">Blogs {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% else %}&nbsp;{% endif %}</h4>
-<h5 class="span-18 last" style="text-align: center;">{% if months %} {% for month in months %} <a href="{% url cms:blogs_month_url year=month.year month=month.month %}">{{ month|date:"F" }}</a> {% endfor %} {% endif %}</h5>
-
-<h1>Blogs {{ year }} &ndash; {{ year2 }}</h1>
+<h4 class="span-6">{% if prev_year %}<a href="{% url cms:blogs_year_url year=prev_year%}">&laquo; Blogs {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}</h4>
+<h2 class="span-12" style="text-align: center;">Blogs {{ year }} &ndash; {{ year2 }}</h2>
+<h4 class="span-6 last" style="text-align: right;">{% if next_year %}<a href="{% url cms:blogs_year_url year=next_year%}">Blogs {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% else %}&nbsp;{% endif %}</h4>
+<h5 class="span-24 last" style="text-align: center;">{% if months %} {% for month in months %} <a href="{% url cms:blogs_month_url year=month.year month=month.month %}">{{ month|date:"F" }}</a> {% endfor %} {% endif %}</h5>
 
 {% if blog_posts %}
-    {% for blog in blog_posts %}
-        <h2><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a>
-        <small>by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author.user.get_full_name }}</a> &ndash; {{ blog.date|date:"F j" }} &ndash; {{ blog.date|date:"H:i" }}</small></h2>
-    {% endfor %}
-
-    {% if is_paginated %}
-        <div>
-        {% if page_obj.has_previous %} <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a> {% endif %}
-        Page {{ page_obj.number }} of {{ paginator.num_pages }}
-        {% if page_obj.has_next %} <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a> {% endif %}
-        </div>
-        <div>
-        {% for page in paginator.page_range %}
-            <a href="?page={{ page }}">{{ page }}</a>
-        {% endfor %}
-        </div>
-    {% endif %}
+    {% include 'blogs/blog_badge.html' %}
 {% else %}
     No blogs available.
 {% endif %}
+
+{% if is_paginated %}
+    <div class="span-24 last" style="text-align: center;">
+    Page {{ page_obj.number }} of {{ paginator.num_pages }}<br />
+    {% if page_obj.has_previous %} <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a> {% endif %}
+    {% for page in paginator.page_range %}
+        <a href="?page={{ page }}">{{ page }}</a>
+    {% endfor %}
+    {% if page_obj.has_next %} <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a> {% endif %}
+    </div>
+{% endif %}
+
 {% endblock content %}

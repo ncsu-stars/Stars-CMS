@@ -166,10 +166,10 @@ class BlogsYearView(ListView):
     model = BlogPost
     template_name = 'blogs/blogs_year.html'
     context_object_name = 'blog_posts'
-    paginate_by = 25
+    paginate_by = 5
 
     def get_queryset(self):
-        return BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('date')
+        return BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('-date')
 
     def get_context_data(self, **kwargs):
         context = super(BlogsYearView, self).get_context_data(**kwargs)
@@ -201,10 +201,10 @@ class BlogsMonthView(ListView):
     model = BlogPost
     template_name = 'blogs/blogs_month.html'
     context_object_name = 'blog_posts'
-    paginate_by = 25
+    paginate_by = 5
 
     def get_queryset(self):
-        return BlogPost.objects.filter(date__year=self.kwargs.get('year', settings.CURRENT_YEAR)).filter(date__month=self.kwargs.get('month', time.localtime().tm_mon)).order_by('date')
+        return BlogPost.objects.filter(date__year=self.kwargs.get('year', settings.CURRENT_YEAR)).filter(date__month=self.kwargs.get('month', time.localtime().tm_mon)).order_by('-date')
 
     def get_context_data(self, **kwargs):
         context = super(BlogsMonthView, self).get_context_data(**kwargs)
