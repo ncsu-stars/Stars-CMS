@@ -39,14 +39,6 @@
                 }
             }
 
-            $('input.search').blur(function() {
-                if($(this).val() === '') {
-                    $(this).val('Search...');
-                }
-            }).click(function() {
-                $(this).val('');
-            });
-
             $(window).scroll(fadeTopBar);
 
             $('.topbar').hover(
@@ -109,7 +101,6 @@
 
         <div class="span-5">
             <nav id="main" class="left">
-                <input type="text" class="center search" value="Search..." style="width: 150px;" />
                 <div class="menu" class="center">
                     <a href="{% url cms:homepage_url %}">Home</a><br />
                     {% if user|logged_in and user.get_profile %}
