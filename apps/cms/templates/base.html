@@ -83,19 +83,22 @@
         </div>
     </div>
     {% endif %}
-    <div class="container" style="padding-top: 10px">
-        <div class="span-24">
-            <div id="logo" class="span-8" style="padding-left: 10px">
-                <img width="260px" src="{{ STATIC_URL }}images/people_banner.jpg" />
+    <div class="container" style="padding-top: 10px;">
+        <div style="display: table-row;">
+            <div style="display: table-cell; vertical-align: middle;">
+                <img class="span-8" src="{{ STATIC_URL }}images/people_banner.jpg" />
             </div>
-            <div id="logo" class="span-8">
-                <img src="{{ STATIC_URL }}images/text-logo-grey.png" />
+            <div style="display: table-cell; vertical-align: middle;">
+                <div id="logo" class="span-8">
+                    <img src="{{ STATIC_URL }}images/text-logo-grey.png" />
+                </div>
             </div>
-            <div class="span-8 right last" style="padding-left: 10px">
+            <div style="text-align: center; display: table-cell; vertical-align: middle;    ">
+                <div class="span-8 last">
                 {% block head %} {% endblock head %}
+                </div>
             </div>
         </div>
-
         <div id="mainNav" class="span-24">
             <ul>
                 <li><a href="{% url cms:homepage_url %}">Home</a></li>
