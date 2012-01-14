@@ -60,7 +60,6 @@
     </script>
 
     <script type="text/javascript">
-
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-19754192-4']);
         _gaq.push(['_trackPageview']);
@@ -70,7 +69,6 @@
         ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
         var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
-
     </script>
     {% block extrajs %}{% endblock extrajs %}
 </head>
@@ -94,7 +92,7 @@
     </div>
     {% endif %}
     <div class="container" style="padding-top: 40px">
-        <div class="span-24">
+        <div class="span-19">
             <span class="right" style="padding-right: 20px;">
                 {% if user|logged_in %}
                     Welcome back {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
@@ -107,19 +105,19 @@
             </div>
         </div>
 
-        <div class="span-5">
-            <nav id="main" class="left">
-                <input type="text" class="center search" value="Search..." style="width: 150px;" />
-                <div class="menu" class="center">
-                    <a href="{% url cms:homepage_url %}">Home</a><br />
-                    {% if user|logged_in and user.get_profile %}
-                    <a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a><br />
-                    {% endif %}
-                    <a href="{% url cms:projects_url %}">Projects</a><br />
-                    <a href="{% url cms:members_url %}">Members</a><br />
-                    <a href="{% url cms:blogs_url %}">Blogs</a><br />
-                </div>
-            </nav>
+        <div id="mainNav" class="span-24">
+            <ul>
+                <li><a href="{% url cms:homepage_url %}">Home</a></li>
+                <li><a href="{% url cms:projects_url %}">Projects</a></li>
+                <li><a href="{% url cms:members_url %}">Members</a></li>
+                <li><a href="{% url cms:blogs_url %}">Blogs</a></li>
+                {% if user|logged_in and user.get_profile %}
+                <li><a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a></li>
+                {% endif %}
+                {% if user|logged_in %}
+                <li><a href="#">My Blog</a></li>
+                {% endif %}
+            </ul>
         </div>
 
         <div class="span-18 last">
