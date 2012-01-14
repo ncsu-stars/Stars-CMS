@@ -20,22 +20,9 @@ $(window).load(function() {
 {% endblock extrajs %}
 
 {% block content %}
-<div id="photos" class="theme-default" style="width: 618px">
-    <div class="ribbon"></div>
-    <div id="slider" class="nivoSlider">
-        <img src="{{ STATIC_URL }}images/toystory.jpg" alt="" />
-        <img src="{{ STATIC_URL }}images/up.jpg" alt="" title="Caption" /></a>
-        <img src="{{ STATIC_URL }}images/walle.jpg" alt="" />
-        <img src="{{ STATIC_URL }}images/nemo.jpg" alt="" title="#htmlcaption" />
-    </div>
-    <div id="htmlcaption" class="nivo-html-caption">
-        A <a href="#">link</a> using html
-    </div>
-    <br />
-</div>
+<div class="span-16">
+<h1>Welcome to STARS at NCSU</h1>
 
-<h1>Welcome to the NCSU STARS website</h1>
-<p>
     The NCSU STARS (Students &amp; Technology in Academia, Research and Service) Student Leadership Corps (SLC) is a student organization that provides students with the opportunity to learn more about computer science careers, participate in service and outreach programs to local schools, engage in research, meet with leaders in the computer field, all while earning a stipend!
     <br /><br />
     The NCSU SLC is part of the larger STARS Alliance, a system of regional partnerships among colleges and universities, industry, primary schools and the community to collaboratively implement programs for student recruitment and success in computing.
@@ -45,19 +32,21 @@ $(window).load(function() {
     STARS is funded by the National Science Foundation.
     <br /><br />
     NCSU STARS would like to thank their local sponsors below for their contributions to the Raleigh community.
-</p>
-
-<div class="span-8">
+</div>
+<div class="span-8 last">
     <h3>Recent Blog Posts</h3>
     <ul>
         {% for blog in blog_posts %}
         <li><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a> by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author }}</a></li>
         {% endfor %}
     </ul>
+</div> 
+<div class="span-16 last">
+<p>
+    <h3>Sponsors</h3>
+    {% for sponsor in sponsors %} <img alt="{{ sponsor.name }}" src="{{ STATIC_URL }}{{ SPONSOR_LOGO_URL }}{{ sponsor.logo_path }}" width="9%" /> {% endfor %}
 </div>
 
-<div class="span-9 prepend-1 last">
-    <h3>Sponsors</h3>
-    {% for sponsor in sponsors %} <img alt="{{ sponsor.name }}" src="{{ STATIC_URL }}{{ SPONSOR_LOGO_URL }}{{ sponsor.logo_path }}" width="25%" /> {% endfor %}
-</div>
 {% endblock content %}
+
+
