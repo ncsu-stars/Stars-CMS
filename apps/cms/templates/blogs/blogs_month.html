@@ -4,10 +4,6 @@
 
 {% block title %}Blogs {{ month|month_name }} {{ year }}{% endblock title %}
 
-{% block head %}
-<h1>Blogs</h1>
-{% endblock head %}
-
 {% block content %}
 <h4 class="span-6"><a href="{% url cms:blogs_month_url year=prev_year month=prev_month %}">&laquo; Blogs {{ prev_month|month_name }} {{ prev_year }}</a></h4>
 <h2 class="span-12" style="text-align: center;">Blogs {{ month|month_name }} {{ year }}</h2>

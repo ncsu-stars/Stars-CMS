@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
+{% load filters %}
+
 {% block title %}{{ page.title }}{% endblock title %}
 
 {% block content %}
-{% load filters %}
 <h1>{{ page.title }}
     <small>
         {% if user|can_edit_page:page %}

@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
 
 {% block title %}Blog posts{% endblock title %}
-
+{% block extracss %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/badge.css">
+{% endblock extracss %}
 {% block content %}
 {% if member == user.get_profile %}
     <h6><a href="{% url cms:add_blog_url pk=member.pk %}">Add a blog post</a></h6>

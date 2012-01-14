@@ -1,0 +1,37 @@
+.badge{
+    padding: 5px;
+    margin-bottom: 20px;
+    border-color: #CCCCCC;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 5px;
+    margin: 5px;
+}
+
+.badge .detail {
+    display: table-cell;
+    vertical-align: top;
+}
+.badge h3 {
+    line-height: 24px;
+}
+.badge h5 {
+    line-height: 18px;
+}
+.badge .pic img{
+    width: 75px;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+.badge .pic{
+    display: table-cell;
+    vertical-align: middle;
+}
+.badge .details{
+    margin-left: 10px;
+}
+
+.badge .snippet{
+    height: 60px;
+    overflow: hidden;
+}
