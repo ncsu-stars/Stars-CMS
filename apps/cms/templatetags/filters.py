@@ -54,3 +54,7 @@ def is_project_coordinator(member, project):
 @register.filter
 def month_name(month_number):
     return calendar.month_name[month_number]
+
+@register.filter
+def projects_by_year(member, year):
+    return member.project_set.filter(year=year)

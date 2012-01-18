@@ -1,4 +1,7 @@
 {% extends 'base.html' %}
+
+{% load filters %}
+
 {% block extracss %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/badge.css">
 <link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
@@ -31,8 +34,8 @@
                 Website: <a href="{{ member.homepage }}">{{ member.homepage }}</a>
                 {% endif %}
             </div>
-            <div class="member_participation">Current Projects<br/>
-                    {% for project in member.get_current_projects %}
+            <div class="member_participation">Current Projects:<br/>
+                    {% for project in member|projects_by_year:year %}
                         <a href="{% url cms:projects_year_url year=year %}#{{ project.pk }}">{{project.title }}</a><br/>
                     {% endfor %}
             </div>
