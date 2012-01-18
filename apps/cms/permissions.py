@@ -6,7 +6,7 @@ def is_user_slc_leader(user):
     if user.is_anonymous():
         return False
     else:
-        return (user.get_full_name() == settings.SLC_LEADER)
+        return (user.get_full_name() in settings.SLC_LEADERS)
 
 def can_user_create_project(user):
     # only the SLC leader can create projects through the main interface
