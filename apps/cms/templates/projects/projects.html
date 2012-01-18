@@ -5,7 +5,7 @@
 {% block extracss %}
 <link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
 {% endblock extracss %}
-
+{% block current_page %}current="#top_projects";{% endblock current_page %}
 {% block title %}Projects {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
 {% block content %}

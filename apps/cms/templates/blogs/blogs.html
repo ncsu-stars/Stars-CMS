@@ -1,17 +1,18 @@
 {% extends 'base.html' %}
 
 {% block title %}Blog posts{% endblock title %}
-{% block extracss %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/badge.css">
-{% endblock extracss %}
+
 {% block content %}
+
 {% if member == user.get_profile %}
     <h6><a href="{% url cms:add_blog_url pk=member.pk %}">Add a blog post</a></h6>
 {% endif %}
 <h1>{{ member }}'s Blog</h1>
-{% for blog in blog_posts %}
-    <h2><a href="{% url cms:blog_post_url pk=member.pk blog_pk=blog.pk %}">{{ blog.title }}</a> <small>posted on {{ blog.date }}</small></h1>
-{% empty %}
-{{ member }} has not posted blogs.
-{% endfor %}
+
+{% if blog_posts %}
+    {% include 'blogs/blog_badge.html' %}
+{% else %}
+    No blogs available.
+{% endif %}
+
 {% endblock content %}

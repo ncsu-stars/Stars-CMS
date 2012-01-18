@@ -48,7 +48,7 @@
                     fadeTopBar();
                 }
             );
-            
+
             var current = "";
             {% block current_page %}{% endblock current_page %}
             if (current!=""){
@@ -113,7 +113,7 @@
                 <li><a href="#">My Blog</a></li>
                 {% endif %}-->
                 {% for page in pages %}
-                <li><a id="top_{{ page.pk }}" href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
+                <li id="top_{{ page.pk }}"><a href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
                 {% endfor %}
             </ul>
             <span class="span-8 last">
