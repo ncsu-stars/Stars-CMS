@@ -50,48 +50,62 @@
     <small><a href="{% url cms:blog_url pk=member.pk %}">blog posts</a></small>
 </h1>
 
-{% if member.image %}
-<img class="span-6" src="{{ MEDIA_URL }}{{ member.image }}" width="33%" />
-{% else %}
-<div class="span-6" width="33%">No image available.</div>
-{% endif %}
-<dl class="span-10 last">
-    <div>{{ member.blurb }}</div>
-    {% if member.classification %}
-    <dt>Classification</dt> <dd>{{ member.classification }}</dd>
-    {% endif %}
-    <dt>Hometown</dt> <dd>{{ member.hometown }}</dd>
-    <dt>Homepage</dt> <dd>{% if member.homepage %}<a href="{{ member.homepage }}">{{ member.homepage }}</a>{% else %}None{% endif %}</dd>
-</dl>
-<dl class="span-18">
-    <dt>Interests</dt> <dd>{{ member.interests }}</dd>
-</dl>
-<dl class="span-9">
-    {% if project_groups %}
-    <dt>Projects</dt>
-    {% for group in project_groups %}
-        <dd>{{ group.year }}
+<div style="display: table-row;">
+
+<div style="display: table-cell; vertical-align: top;">
+    <div class="span-6" style="text-align: center;">
+        {% if member.image %}
+        <img src="{{ MEDIA_URL }}{{ member.image }}" width="100%" />
+        {% else %}
+        <img src="{{ STATIC_URL }}/images/placeholder.png" />
+        {% endif %}
+    </div>
+</div>
+
+<div style="display: table-cell; vertical-align: top;">
+    <div class="span-12" style="margin-bottom: 2em;">
+        {{ member.blurb|stripjs }}
+    </div>
+
+    <dl class="span-6">
+        {% if project_groups %}
+        <dt>Projects</dt>
+        {% for group in project_groups %}
+            <dd>{{ group.year }}
+                <ul>
+                    {% for project_member in group.project_members %}
+                        <li><a href="{% url cms:projects_year_url year=group.year %}#{{ project_member.project.pk }}">{{ project_member.project.title }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
+                    {% endfor %}
+                </ul>
+            </dd>
+        {% endfor %}
+        {% endif %}
+    </dl>
+    <dl class="span-6 last">
+    {% if recent_blogs %}
+        <dt>Recent Blogs</dt>
+        <dd>
             <ul>
-                {% for project_member in group.project_members %}
-                    <li><a href="{% url cms:projects_year_url year=group.year %}#{{ project_member.project.pk }}">{{ project_member.project.title }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
-                {% endfor %}
+                {% for blog in recent_blogs %}
+                    <li><a href="{% url cms:blog_post_url pk=member.pk blog_pk=blog.pk %}">{{ blog.title }}</a> - {{ blog.date|date:"F j" }}</li>
+                {% endfor%}
             </ul>
         </dd>
-    {% endfor %}
     {% endif %}
-</dl>
-<dl class="span-9 last">
-{% if recent_blogs %}
-    <dt>Recent Blogs</dt>
-    <dd>
-        <ul>
-            {% for blog in recent_blogs %}
-                <li><a href="{% url cms:blog_post_url pk=member.pk blog_pk=blog.pk %}">{{ blog.title }}</a> - {{ blog.date }}</li>
-            {% endfor%}
-        </ul>
-    </dd>
-{% endif %}
-</dl>
+    </dl>
+</div>
+
+<div style="display: table-cell; vertical-align: top;">
+    <dl class="span-5 last" style="margin-right: 2em;">
+        {% if member.classification %}<dt>Classification</dt> <dd>{{ member.classification }}</dd>{% endif %}
+        {% if member.hometown %}<dt>Hometown</dt> <dd>{{ member.hometown }}</dd>{% endif %}
+        <dt>Interests</dt> <dd>{{ member.interests }}</dd>
+        {% if member.homepage %}<dt>Homepage</dt> <dd><a href="{{ member.homepage }}">{{ member.homepage }}</a></dd>{% endif %}
+    </dl>
+</div>
+
+</div>
+
 {% endblock content %}
 
 
