@@ -91,36 +91,40 @@
     {% endif %}
     <div class="container" style="padding-top: 10px;">
         <div style="display: table-row;">
-            <div class="center" style="text-align-center">
-                <img width="210px" src="{{ STATIC_URL }}images/STARS_Logo.png" />
+            <div class="span-6" style="display: table-cell; vertical-align: middle; text-align: center;">
+                <img width="200px" src="{{ STATIC_URL }}images/STARS_Logo.png" />
             </div>
             <div style="display: table-cell; vertical-align: middle;">
                 <div class="span-12" style="text-align: center">
                     <span id="logo">NCSU Stars Alliance</span>
                 </div>
             </div>
+            <div class="span-6 last" style="display: table-cell; vertical-align: bottom; text-align: right;">
+            {% if user|logged_in %}
+                {% if user.get_profile %}
+                Welcome <a href="{% url cms:profile_url pk=user.get_profile.pk %}">{{ user.get_full_name|default:"No Name" }}</a>!<br />
+                <a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a> | <a href="{% url cms:blog_url pk=user.get_profile.pk %}">My Blog</a>
+                {% else %}
+                Welcome No Profile!
+                {% endif %}
+            {% endif %}
+            </div>
         </div>
-        <div id="mainNav" class="span-24">
-            <ul class="span-15">
+        <div id="mainNav" class="span-24 last">
+            <ul class="span-21">
                 <li id="top_home"><a href="{% url cms:homepage_url %}">Home</a></li>
                 <li id="top_projects"><a href="{% url cms:projects_url %}">Projects</a></li>
                 <li id="top_members"><a href="{% url cms:members_url %}">Members</a></li>
                 <li id="top_blogs"><a href="{% url cms:blogs_url %}">Blogs</a></li>
-                <!--{% if user|logged_in and user.get_profile %}
-                <li><a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a></li>
-                {% endif %}
-                {% if user|logged_in %}
-                <li><a href="#">My Blog</a></li>
-                {% endif %}-->
                 {% for page in pages %}
                 <li id="top_{{ page.pk }}"><a href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
                 {% endfor %}
             </ul>
-            <span class="span-8 last">
+            <span class="span-2 last">
                 {% if user|logged_in %}
-                Welcome {{ user.get_full_name }}. <a href="{% url cms:logout_url %}">Logout</a>
+                <a href="{% url cms:logout_url %}">Logout</a>
                 {% else %}
-                <a href="{% url cms:login_url %}">Please login</a>
+                <a href="{% url cms:login_url %}">Login</a>
                 {% endif %}
             </span>
         </div>
@@ -129,8 +133,8 @@
             {% block content %}{% endblock content %}
         </div>
 
-        <div class="span-24" style="text-align: center;">
-            &copy; 2011 NCSU STARS SLC
+        <div class="span-24 last" style="text-align: center;">
+            &copy; {% now "Y" %} NCSU STARS SLC
         </div>
     </div>
 </body>
