@@ -91,24 +91,31 @@
     {% endif %}
     <div class="container" style="padding-top: 10px;">
         <div style="display: table-row;">
-            <div class="span-6" style="display: table-cell; vertical-align: middle; text-align: center;">
-                <img width="200px" src="{{ STATIC_URL }}images/STARS_Logo.png" />
+            <div style="display: table-cell; vertical-align: middle; text-align: center;">
+                <div class="span-6">
+                    <img width="200px" src="{{ STATIC_URL }}images/STARS_Logo.png" />
+                </div>
             </div>
             <div style="display: table-cell; vertical-align: middle;">
                 <div class="span-12" style="text-align: center">
                     <span id="logo">NCSU Stars Alliance</span>
                 </div>
             </div>
-            <div class="span-6 last" style="display: table-cell; vertical-align: bottom; text-align: right;">
-            {% if user|logged_in %}
-                {% if user.get_profile %}
-                Welcome <a href="{% url cms:profile_url pk=user.get_profile.pk %}">{{ user.get_full_name|default:"No Name" }}</a>!<br />
-                <a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a> | <a href="{% url cms:blog_url pk=user.get_profile.pk %}">My Blog</a>
-                {% else %}
-                Welcome No Profile!
-                {% endif %}
-            {% endif %}
+            <div style="display: table-cell; vertical-align: middle; text-align: center;">
+                <div class="span-6 last">
+                    <img width="100px" src="{{ STATIC_URL }}images/nsf.jpg" />
+                </div>
             </div>
+        </div>
+        <div id="mainNavTop" class="span-24 last" style="text-align: right;">
+        {% if user|logged_in %}
+            {% if user.get_profile %}
+            Welcome <a href="{% url cms:profile_url pk=user.get_profile.pk %}">{{ user.get_full_name|default:"No Name" }}</a>!
+            <a href="{% url cms:profile_url pk=user.get_profile.pk %}">My Profile</a> | <a href="{% url cms:blog_url pk=user.get_profile.pk %}">My Blog</a>
+            {% else %}
+            Welcome No Profile!
+            {% endif %}
+        {% endif %}
         </div>
         <div id="mainNav" class="span-24 last">
             <ul class="span-21">
@@ -133,7 +140,7 @@
             {% block content %}{% endblock content %}
         </div>
 
-        <div class="span-24 last" style="text-align: center;">
+        <div class="span-24 last" style="text-align: center; margin-top: 1em;">
             &copy; {% now "Y" %} NCSU STARS SLC
         </div>
     </div>
