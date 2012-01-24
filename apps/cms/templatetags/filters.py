@@ -47,6 +47,10 @@ def can_edit_page(user, page):
     return permissions.can_user_edit_page(user, page)
 
 @register.filter
+def can_user_post_as_member(user, member):
+    return permissions.can_user_post_as_member(user, member)
+
+@register.filter
 def is_project_coordinator(member, project):
     return project.is_member_coordinator(member)
 

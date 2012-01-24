@@ -1,0 +1,17 @@
+{% block extracss %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/blog_badge.css">
+{% endblock extracss %}
+{% load filters %}
+{% for blog in blog_posts %}
+
+<div class="span-9 {% cycle '' 'last' %}">
+<div class="badge">
+    <div class="detail">
+        <h3><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a></h5>
+        <h5>{{ blog.date|date:"F j, Y" }}</h5>
+        <div class="snippet">{{ blog.post|striptags|truncatewords_html:20 }}</div>
+    </div>
+</div>
+</div>
+
+{% endfor %}

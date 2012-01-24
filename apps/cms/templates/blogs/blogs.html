@@ -1,18 +1,47 @@
 {% extends 'base.html' %}
 
-{% block title %}Blog posts{% endblock title %}
+{% block title %}Blog Posts{% endblock title %}
+
+{% load filters %}
 
 {% block content %}
 
-{% if member == user.get_profile %}
-    <h6><a href="{% url cms:add_blog_url pk=member.pk %}">Add a blog post</a></h6>
+<h1><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a>'s Blog
+{% if user|can_user_post_as_member:member %}
+    <small><a href="{% url cms:add_blog_url pk=member.pk %}">add post</a></small>
 {% endif %}
-<h1>{{ member }}'s Blog</h1>
+</h1>
 
+<div class="span-6">
+    {% if member.image %}
+    <img src="{{ MEDIA_URL }}{{ member.image }}" width="100%" />
+    {% else %}
+    No image available
+    {% endif %}
+
+    <dl>
+        <dt>Blurb</dt> <dd>{{ member.blurb }}</dd>
+        <dt>Interests</dt> <dd>{{ member.interests }}</dd>
+    </dl>
+</div>
+
+<div class="span-18 last">
 {% if blog_posts %}
-    {% include 'blogs/blog_badge.html' %}
+    {% include 'blogs/blog_minibadge.html' %}
 {% else %}
     No blogs available.
+{% endif %}
+</div>
+
+{% if is_paginated %}
+    <div class="prepend-6 span-18 last" style="text-align: center;">
+    Page {{ page_obj.number }} of {{ paginator.num_pages }}<br />
+    {% if page_obj.has_previous %} <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a> {% endif %}
+    {% for page in paginator.page_range %}
+        <a href="?page={{ page }}">{{ page }}</a>
+    {% endfor %}
+    {% if page_obj.has_next %} <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a> {% endif %}
+    </div>
 {% endif %}
 
 {% endblock content %}

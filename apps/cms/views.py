@@ -226,9 +226,10 @@ class BlogsMonthView(ListView):
 class BlogView(ListView):
     template_name = 'blogs/blogs.html'
     context_object_name = 'blog_posts'
+    paginate_by = 10
 
     def get_queryset(self):
-        return BlogPost.objects.filter(author__pk=self.kwargs.get('pk', None))
+        return BlogPost.objects.filter(author__pk=self.kwargs.get('pk', None)).order_by('-date')
 
     def get_context_data(self, **kwargs):
         context = super(BlogView, self).get_context_data(**kwargs)

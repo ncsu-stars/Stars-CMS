@@ -12,7 +12,7 @@
         {% else %}
             <img src="/static/images/placeholder.png"/>
         {% endif %}</a></div>
-    <div class="detail">        
+    <div class="detail">
         <h3><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a></h3>
         <h5><a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author.user.get_full_name }}</a> &ndash; {{ blog.date|date:"F j" }}</h5>
         <div class="snippet">{{ blog.post|striptags|truncatewords_html:20 }}</div>
