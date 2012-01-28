@@ -36,6 +36,7 @@ class HomepageView(TemplateView):
         context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:5]
         context['SPONSOR_LOGO_URL'] = settings.SPONSOR_LOGO_URL
         context['sponsors'] = settings.SPONSORS
+        context['front_pages'] = Page.objects.filter(pub_front_page=True).order_by('weight')
 
         return context
 
@@ -116,6 +117,15 @@ class PageDetailView(DetailView):
     model = Page
     template_name = 'pages/page.html'
     context_object_name = 'page'
+
+class PageAllView(ListView):
+    model = Page
+    template_name = 'pages/all.html'
+    context_object_name = 'pages'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Page.objects.all().order_by('title')
 
 class ProjectView(ListView):
     model = Project

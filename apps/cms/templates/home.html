@@ -42,6 +42,17 @@ $(window).load(function() {
         {% endfor %}
     </ul>
 </div>
+
+<div class="span-8 last">
+    <h3>Pages</h3>
+    <ul>
+    {% for page in front_pages %}
+        <li><a href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
+    {% endfor %}
+    </ul>
+    <p style="text-align: center;"><a href="{% url cms:pages_all_url %}">See all pages</a></p>
+</div>
+
 <div class="span-24 last" style="text-align: center">
 <p><p>
     {% for sponsor in sponsors %} <img alt="{{ sponsor.name }}" src="{{ STATIC_URL }}{{ SPONSOR_LOGO_URL }}{{ sponsor.logo_path }}" width="9%" /> {% endfor %}
