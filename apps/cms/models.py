@@ -174,8 +174,9 @@ class Page(models.Model):
     title           = models.CharField(max_length=255)
     content         = models.TextField()
     slug            = models.SlugField(max_length=100, unique=True)
-    pub_front_page  = models.BooleanField(default=False)
-    pub_menu        = models.BooleanField(default=False)
+    weight          = models.IntegerField(default=0)
+    pub_front_page  = models.BooleanField(default=False, verbose_name='Publish on homepage')
+    pub_menu        = models.BooleanField(default=False, verbose_name='Publish on top menu')
 
     def __unicode__(self):
         return unicode(self.title)
