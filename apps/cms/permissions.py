@@ -26,6 +26,10 @@ def can_user_edit_project(user, project):
     except Member.DoesNotExist:
         return False
 
+def can_user_delete_project(user, project):
+    # only the SLC leader can delete projects through the main interface
+    return is_user_slc_leader(user)
+
 def can_user_create_member(user):
     # only the SLC leader can create members through the main interface
     return is_user_slc_leader(user)
@@ -33,6 +37,10 @@ def can_user_create_member(user):
 def can_user_edit_member(user, member):
     # only the user that owns a member profile and the SLC leader can perform edits
     # through the main interface
+    return (user == member.user) or is_user_slc_leader(user)
+
+def can_user_delete_member(user, member):
+    # only the SLC leader can delete members through the main interface
     return (user == member.user) or is_user_slc_leader(user)
 
 def can_user_post_as_member(user, member):
@@ -51,3 +59,8 @@ def can_user_create_page(user):
 def can_user_edit_page(user, page):
     # only the SLC leader can edit pages through the main interface
     return is_user_slc_leader(user)
+
+def can_user_delete_page(user, page):
+    # only the SLC leader can delete pages through the main interface
+    return is_user_slc_leader(user)
+
