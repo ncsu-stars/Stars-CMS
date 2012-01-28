@@ -110,7 +110,7 @@ class Project(models.Model):
 
     title           = models.CharField(max_length=255)
     description     = models.TextField()
-    image           = models.ImageField(upload_to=make_project_image_name, storage=OverwriteStorage())
+    image           = models.ImageField(upload_to=make_project_image_name, storage=OverwriteStorage(), blank=True)
     #active          = models.BooleanField(default=False)
     status          = models.IntegerField(choices=STATUS_CHOICES)
     category        = models.IntegerField(choices=CATEGORY_CHOICES, default=CATEGORY_OTHER)
