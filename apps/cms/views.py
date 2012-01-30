@@ -102,6 +102,62 @@ class MembersView(ListView):
             return HttpResponseRedirect(reverse('cms:members_url'))
         else:
             return super(MembersView, self).render_to_response(context)
+            
+class DeleteMemberView(DeleteView):
+    model = Member
+    template_name = 'members/delete_member.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if permissions.is_user_slc_leader(request.user):
+            return super(DeleteMemberView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to delete members.')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.user.delete()
+        return HttpResponseRedirect(self.get_success_url())
+            
+    def get_success_url(self):
+        return reverse('cms:delete_member_list_url')
+        
+        
+class ListMembersToDeleteView(ListView):
+    model = Project
+    template_name = 'members/delete_member_list.html'
+
+    
+    def get_context_data(self, **kwargs):
+        context = super(ListMembersToDeleteView, self).get_context_data(**kwargs)
+
+        # NOTE: "year" is a field lookup type so must use "year__exact" instead
+        project_members = ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR))
+        context['members'] = Member.objects.filter(pk__in=project_members.values_list('member')).order_by('user__first_name', 'user__last_name').distinct()
+
+        context['project_member_groups'] = [ {'group': x[1], 'members': Member.objects.filter(pk__in=project_members.filter(member__group=x[0]).values_list('member')).distinct().order_by('user__first_name', 'user__last_name')} for x in Member.GROUP_CHOICES ]
+        context['project_member_groups'] += [ {'group': 'Volunteer', 'project_members': project_members.filter(member=None).order_by('volunteer_name')} ]
+
+        context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
+        next_year = int(context['year']) + 1
+        context['year2'] = next_year
+        prev_year = int(context['year']) - 1
+
+        if Project.objects.filter(year=next_year).count() > 0:
+            context['next_year'] = next_year
+            context['next_year2'] = next_year + 1
+        if Project.objects.filter(year=prev_year).count() > 0:
+            context['prev_year'] = prev_year
+            context['prev_year2'] = prev_year + 1
+
+        return context
+        
+    def dispatch(self, request, *args, **kwargs):
+        if permissions.is_user_slc_leader(request.user):
+            return super(ListView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to delete members.')
+
+
 
 class NewsView(ListView):
     model = News
@@ -117,6 +173,36 @@ class PageDetailView(DetailView):
     model = Page
     template_name = 'pages/page.html'
     context_object_name = 'page'
+
+class DeletePageView(DeleteView):
+    model = Page
+    template_name = 'pages/delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        if permissions.is_user_slc_leader(request.user):
+            return super(DeletePageView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to delete projects.')
+
+    def get_success_url(self):
+        return reverse('cms:delete_page_list_url')     
+         
+class ListPagesToDeleteView(ListView):
+    model = Page
+    template_name = 'pages/delete_list.html'
+    context_object_name = 'pages'
+    paginate_by = 10
+
+    def get_queryset(self):
+        return Page.objects.all().order_by('title')
+        
+    def dispatch(self, request, *args, **kwargs):
+        if permissions.is_user_slc_leader(request.user):
+            return super(ListView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to delete members.')
+
+
 
 class PageAllView(ListView):
     model = Page
