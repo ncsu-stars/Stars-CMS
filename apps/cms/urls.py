@@ -7,7 +7,7 @@ from cms.views import HomepageView, ProfileView, NewsView, NewsDetailView, PageD
 from cms.views import ProjectView, MembersView, EditProfileView, EditProjectView, BlogView
 from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, BlogsYearView
 from cms.views import BlogsMonthView, CreateProjectView, CreateMemberView, ActivateMemberView
-from cms.views import DeleteProjectView, CreatePageView, EditPageView, PageAllView
+from cms.views import DeleteProjectView, CreatePageView, EditPageView, PageAllView, DeleteMemberView, ListMembersToDeleteView, ListPagesToDeleteView, DeletePageView
 
 from ncsu.directory.views import json_directory_query
 
@@ -19,8 +19,10 @@ urlpatterns = (
 
 urlpatterns += (
     url(r'^page/create/$', CreatePageView.as_view(), name='create_page_url'),
+    url(r'^page/delete/$', ListPagesToDeleteView.as_view(), name='delete_page_list_url'),
     url(r'^page/s/(?P<slug>\w+)/$', PageDetailView.as_view(), name='page_url'),
     url(r'^page/(?P<pk>\d+)/edit/$', EditPageView.as_view(), name='edit_page_url'),
+    url(r'^page/(?P<pk>\d+)/delete/$', DeletePageView.as_view(), name='delete_page_url'),
     url(r'^page/all/$', PageAllView.as_view(), name='pages_all_url'),
 )
 
@@ -54,6 +56,8 @@ urlpatterns += (
     url(r'^member/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/$', BlogPostView.as_view(), name='blog_post_url'),
     url(r'^member/(?P<pk>\d+)/blog/add/$', AddBlogView.as_view(), name='add_blog_url'),
     url(r'^member/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/edit/$', EditBlogView.as_view(), name='edit_blog_url'),
+    url(r'^member/(?P<pk>\d+)/delete/$', DeleteMemberView.as_view(), name='delete_member_url'),
+    url(r'^member/delete/$', ListMembersToDeleteView.as_view(), name='delete_member_list_url'),
 )
 
 urlpatterns += (

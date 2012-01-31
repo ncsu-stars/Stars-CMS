@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Project{% endblock title %}
+
+
+{% block content %}
+{% load filters %}
+{% if user|is_slc_leader %}
+<h3>Select the member you would like to delete</h3>
+    {% for project_member_group in project_member_groups %}
+        {% if project_member_group.members or project_member_group.project_members %}
+            <div class="index">
+            <h3>{{ project_member_group.group }}</h3>
+            <ul>
+            {% for member in project_member_group.members %}
+                <li><a href="{% url cms:delete_member_url pk=member.pk %}">{{ member }}</a></li>
+            {% endfor %}
+            {% for project_member in project_member_group.project_members %}
+                <li>{{ project_member.volunteer_name }}</li>
+            {% endfor %}
+            </ul>
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% endblock content %}
