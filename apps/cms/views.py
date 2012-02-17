@@ -490,7 +490,10 @@ class CreateMemberView(CreateView):
                 status = Member.STATUS_EMPTY # so a member can fill out their information
 
                 user = User.objects.create(username=unity_id, email=email, first_name=first_name, last_name=last_name)
-                member, project_member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
+                # why is project_member returned here?
+                # that belongs with project editing
+                #member, project_member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
+                member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
 
                 return HttpResponseRedirect(reverse('cms:members_url'))
             else:

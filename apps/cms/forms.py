@@ -26,7 +26,7 @@ class MemberAdminForm(ModelForm):
 class ProjectAdminForm(ModelForm):
     #members = Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact= \
     #    settings.CURRENT_YEAR).distinct().values_list('member')).order_by('user__first_name', 'user__last_name')
-    members = Member.get_current_members()
+    members = Member.get_possible_project_members()
 
     coordinators = forms.ModelMultipleChoiceField(queryset=members)
 

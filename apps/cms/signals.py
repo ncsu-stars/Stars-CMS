@@ -29,7 +29,9 @@ def create_profile_handler(sender, **kwargs):
     message = render_to_string('emails/new_member_email.txt', context)
     send_mail(subject, message, settings.DEFAULT_FROM_EMAIL, [user.email])
 
-    return (member, project_member,)
+    # I don't know why project_member is returned here but it definitely isn't defined here
+    #return (member, project_member,)
+    return (member,)
 
 # Create project member profiles and send each coordinator an email
 def assign_coordinators_handler(sender, **kwargs):

@@ -22,7 +22,7 @@ LOGOUT_URL = reverse_lazy('cms:logout_url')
 
 ANONYMOUS_USER_ID = -1
 
-CURRENT_YEAR = 2010
+CURRENT_YEAR = 2011
 
 # Remove in production
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -31,7 +31,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 DEFAULT_FROM_EMAIL = 'donotrespond@stars.csc.ncsu.edu'
 
 # Used for now to get the SLC leader
-SLC_LEADERS = [ 'Arpan Chakraborty', 'Kristy Boyer']
+SLC_LEADERS = [ 'Arpan Chakraborty', 'Kristy Boyer', ]
 
 SPONSOR_LOGO_URL = 'images/logos/sponsors/'
 SPONSORS = [ dict(zip(['name', 'logo_path'], x)) for x in [

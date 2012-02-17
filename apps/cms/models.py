@@ -72,9 +72,12 @@ class Member(models.Model):
         return Project.objects.filter(pk__in=ProjectMember.objects.filter(member__pk=self.pk, is_coordinator=True).values_list('project__pk', flat=True))
 
     @staticmethod
-    def get_current_members():
-        return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__exact= \
-            settings.CURRENT_YEAR).distinct().values_list('member')).order_by('user__first_name', 'user__last_name')
+    def get_possible_project_members():
+	    # need to allow member one year old as well since activity status is predicated on project membership
+		# but you can't create a project for a new year without a project coordinator
+		# hence, the one year offset avoids the chicken-and-the-egg problem
+        return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__gte= \
+            settings.CURRENT_YEAR-1).distinct().values_list('member')).order_by('user__first_name', 'user__last_name')
 
     class Meta:
         verbose_name        = 'member'
