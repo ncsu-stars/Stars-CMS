@@ -16,7 +16,7 @@ from cms import signals
 from cms import academic_year
 from cms import permissions
 
-import time
+import re, time
 
 class JSONResponseMixin(object):
     def get_json_response(self, json, **kwargs):
@@ -464,6 +464,7 @@ class DeleteProjectView(DeleteView):
 
 class CreateMemberView(CreateView):
     model = Member
+    object = model
     form_class = MemberAdminForm
     template_name = 'members/create.html'
 
@@ -489,15 +490,23 @@ class CreateMemberView(CreateView):
                 classification = request.POST['classification']
                 status = Member.STATUS_EMPTY # so a member can fill out their information
 
-                user = User.objects.create(username=unity_id, email=email, first_name=first_name, last_name=last_name)
-                # why is project_member returned here?
-                # that belongs with project editing
-                #member, project_member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
-                member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
+                if User.objects.filter(username=unity_id).exists():
+                    form._errors['unity_id'] = form.error_class(['User with that Unity ID already exists'])
+                    return self.render_to_response(self.get_context_data(form=form))
+                elif re.match('^.+\\@ncsu.edu', email) is None:
+                    form._errors['email'] = form.error_class(['The email must be an NCSU email address'])
+                    return self.render_to_response(self.get_context_data(form=form))
+                else:
+                    user = User.objects.create(username=unity_id, email=email, first_name=first_name, last_name=last_name)
+                    # why is project_member returned here?
+                    # that belongs with project editing
+                    #member, project_member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
+                    member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
 
-                return HttpResponseRedirect(reverse('cms:members_url'))
+                    return HttpResponseRedirect(reverse('cms:members_url'))
+                
             else:
-                self.render_to_response(self.get_context_data(form=form))
+                return self.render_to_response(self.get_context_data(form=form))
         else:
             return HttpResponseForbidden('You do not have permission to access this page.')
 
