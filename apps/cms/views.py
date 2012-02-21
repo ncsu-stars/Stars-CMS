@@ -517,6 +517,7 @@ class ActivateMemberView(UpdateView):
 
 class CreatePageView(CreateView):
     model = Page
+    object = model
     form_class = PageForm
     template_name = 'pages/create.html'
 
@@ -535,7 +536,7 @@ class CreatePageView(CreateView):
 
                 return HttpResponseRedirect(reverse('cms:homepage_url'))
             else:
-                self.render_to_response(self.get_context_data(form=form))
+                return self.render_to_response(self.get_context_data(form=form))
         else:
             return HttpResponseForbidden('You do not have permission to access this page.')
 
