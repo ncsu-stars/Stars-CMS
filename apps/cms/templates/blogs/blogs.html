@@ -20,8 +20,8 @@
     {% endif %}
 
     <dl>
-        <dt>Blurb</dt> <dd>{{ member.blurb }}</dd>
-        <dt>Interests</dt> <dd>{{ member.interests }}</dd>
+        <dt>Blurb</dt> <dd>{{ member.blurb|stripjs }}</dd>
+        <dt>Interests</dt> <dd>{{ member.interests|stripjs }}</dd>
     </dl>
 </div>
 
