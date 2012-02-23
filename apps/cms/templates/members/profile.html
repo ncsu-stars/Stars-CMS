@@ -99,7 +99,7 @@
     <dl class="span-5 last" style="margin-right: 2em;">
         {% if member.classification %}<dt>Classification</dt> <dd>{{ member.classification }}</dd>{% endif %}
         {% if member.hometown %}<dt>Hometown</dt> <dd>{{ member.hometown }}</dd>{% endif %}
-        <dt>Interests</dt> <dd>{{ member.interests }}</dd>
+        <dt>Interests</dt> <dd>{{ member.interests|stripjs }}</dd>
         {% if member.homepage %}<dt>Homepage</dt> <dd><a href="{{ member.homepage }}">{{ member.homepage }}</a></dd>{% endif %}
     </dl>
 </div>
