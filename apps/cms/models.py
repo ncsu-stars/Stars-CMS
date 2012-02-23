@@ -5,6 +5,7 @@ from django.conf import settings
 from django.db.models import signals
 from django.contrib.auth.models import User
 import django.contrib.localflavor.us.us_states as states
+from django.db.models import Q
 
 from cms.managers import BlogPostManager
 from cms.storage import OverwriteStorage
@@ -74,10 +75,10 @@ class Member(models.Model):
     @staticmethod
     def get_possible_project_members():
 	    # need to allow member one year old as well since activity status is predicated on project membership
-		# but you can't create a project for a new year without a project coordinator
-		# hence, the one year offset avoids the chicken-and-the-egg problem
-        return Member.objects.filter(pk__in=ProjectMember.objects.filter(project__year__gte= \
-            settings.CURRENT_YEAR-1).distinct().values_list('member')).order_by('user__first_name', 'user__last_name')
+	    # but you can't create a project for a new year without a project coordinator
+        # hence, the one year offset avoids the chicken-and-the-egg problem
+        return Member.objects.filter(Q(status=Member.STATUS_ACTIVE) | Q(pk__in=ProjectMember.objects.filter(project__year__gte= \
+            settings.CURRENT_YEAR-1).distinct().values_list('member'))).order_by('user__first_name', 'user__last_name')
 
     class Meta:
         verbose_name        = 'member'
