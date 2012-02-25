@@ -43,7 +43,7 @@
 {% block content %}
 {% load filters %}
 <h1>{{ member }}
-    <small>({{ member.group }})</small>
+    <small>({{ member.get_group_display }})</small>
     {% if user|can_edit_member:member%}
     <small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small>
     {% endif %}
