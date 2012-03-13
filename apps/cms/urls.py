@@ -46,18 +46,18 @@ urlpatterns += (
 )
 
 urlpatterns += (
-    url(r'^member/create/$', CreateMemberView.as_view(), name='create_member_url'),
-    url(r'^member/activate/(?P<key>\w+)/$', ActivateMemberView.as_view(), name='activate_member_url'),
-    url(r'^member/all/$', MembersView.as_view(), name='members_url'),
-    url(r'^member/all/(?P<year>\d+)/$', MembersView.as_view(), name='members_year_url'),
-    url(r'^member/(?P<pk>\d+)/$', ProfileView.as_view(), name='profile_url'),
-    url(r'^member/(?P<pk>\d+)/edit/$', EditProfileView.as_view(), name='edit_profile_url'),
-    url(r'^member/(?P<pk>\d+)/blog/$', BlogView.as_view(), name='blog_url'),
-    url(r'^member/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/$', BlogPostView.as_view(), name='blog_post_url'),
-    url(r'^member/(?P<pk>\d+)/blog/add/$', AddBlogView.as_view(), name='add_blog_url'),
-    url(r'^member/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/edit/$', EditBlogView.as_view(), name='edit_blog_url'),
-    url(r'^member/(?P<pk>\d+)/delete/$', DeleteMemberView.as_view(), name='delete_member_url'),
-    url(r'^member/delete/$', ListMembersToDeleteView.as_view(), name='delete_member_list_url'),
+    url(r'^people/create/$', CreateMemberView.as_view(), name='create_member_url'),
+    url(r'^people/activate/(?P<key>\w+)/$', ActivateMemberView.as_view(), name='activate_member_url'),
+    url(r'^people/all/$', MembersView.as_view(), name='members_url'),
+    url(r'^people/all/(?P<year>\d+)/$', MembersView.as_view(), name='members_year_url'),
+    url(r'^people/(?P<pk>\d+)/$', ProfileView.as_view(), name='profile_url'),
+    url(r'^people/(?P<pk>\d+)/edit/$', EditProfileView.as_view(), name='edit_profile_url'),
+    url(r'^people/(?P<pk>\d+)/blog/$', BlogView.as_view(), name='blog_url'),
+    url(r'^people/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/$', BlogPostView.as_view(), name='blog_post_url'),
+    url(r'^people/(?P<pk>\d+)/blog/add/$', AddBlogView.as_view(), name='add_blog_url'),
+    url(r'^people/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/edit/$', EditBlogView.as_view(), name='edit_blog_url'),
+    url(r'^people/(?P<pk>\d+)/delete/$', DeleteMemberView.as_view(), name='delete_member_url'),
+    url(r'^people/delete/$', ListMembersToDeleteView.as_view(), name='delete_member_list_url'),
 )
 
 urlpatterns += (
