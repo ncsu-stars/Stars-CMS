@@ -158,7 +158,6 @@ class ListMembersToDeleteView(ListView):
             return HttpResponseForbidden('You do not have permission to delete members.')
 
 
-
 class NewsView(ListView):
     model = News
     template_name = 'news/news.html'
@@ -252,11 +251,13 @@ class EditProjectView(UpdateView):
     form_class = ProjectForm
     template_name = 'projects/edit_project.html'
 
-    def render_to_response(self, context):
-        if permissions.can_user_edit_project(self.request.user, context['project']):
-            return UpdateView.render_to_response(self, context)
-        else:
-            return HttpResponseForbidden('You do not have permission to edit this project.')
+    def dispatch(self, request, *args, **kwargs):
+        project = get_object_or_404(Project, pk=kwargs.get('pk', None))
+
+        if permissions.can_user_edit_project(request.user, project):
+            return super(EditProjectView, self).dispatch(request, *args, **kwargs)
+        return HttpResponseForbidden('You do not have permission to edit this project.')
+            
 
 class BlogsYearView(ListView):
     model = BlogPost
