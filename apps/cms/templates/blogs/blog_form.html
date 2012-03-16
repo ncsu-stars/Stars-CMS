@@ -27,7 +27,8 @@
                         'csrfmiddlewaretoken': csrf
                     });
 
-                    $('#id_tags').append('<option value="' + new_value + '">' + new_tag + '</option>');
+                    $('#id_tags').append('<option value="' + new_value + '">' + new_tag + '</option>')
+                        .attr('selected', 'selected');
                 } else {
                     var value = $('#id_tags option:[text="' + new_tag + '"]').val();
                     $('#id_tags option:[value=' + value + ']').attr('selected', 'selected');
