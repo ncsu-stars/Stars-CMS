@@ -47,6 +47,9 @@
     {% if user|can_edit_member:member%}
     <small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small>
     {% endif %}
+    {% if user|can_delete_member:member %}
+    <small><a href="{% url cms:delete_member_url pk=member.pk %}">delete</a></small>
+    {% endif %}
     <small><a href="{% url cms:blog_url pk=member.pk %}">blog posts</a></small>
 </h1>
 

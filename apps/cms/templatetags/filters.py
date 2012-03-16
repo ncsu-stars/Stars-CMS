@@ -33,10 +33,18 @@ def is_slc_leader(user):
 @register.filter
 def can_edit_project(user, project):
     return permissions.can_user_edit_project(user, project)
-
+    
+@register.filter
+def can_delete_project(user, project):
+    return permissions.can_user_delete_project(user, project)
+    
 @register.filter
 def can_edit_member(user, member):
     return permissions.can_user_edit_member(user, member)
+    
+@register.filter
+def can_delete_member(user, member):
+    return permissions.can_user_delete_member(user, member)
 
 @register.filter
 def can_edit_blogpost(user, blogpost):
@@ -45,7 +53,11 @@ def can_edit_blogpost(user, blogpost):
 @register.filter
 def can_edit_page(user, page):
     return permissions.can_user_edit_page(user, page)
-
+    
+@register.filter
+def can_delete_page(user, page):
+    return permissions.can_user_delete_page(user, page)
+    
 @register.filter
 def can_user_post_as_member(user, member):
     return permissions.can_user_post_as_member(user, member)
