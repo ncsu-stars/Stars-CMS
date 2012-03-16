@@ -9,7 +9,7 @@ $(document).ready(function() {
         e.preventDefault();
         e.stopPropagation();
 
-        var url = '{% url cms:delete_member_list_url %}';
+        var url = '{% url cms:profile_url pk=member.pk %}';
         window.location.href = url;
     });
 });
@@ -18,7 +18,7 @@ $(document).ready(function() {
 
 {% block content %}
 {% load filters %}
-{% if user|is_slc_leader %}
+{% if user|can_delete_member:member %}
 <form id="deleteMember" method="post" action="{% url cms:delete_member_url pk=member.pk %}">
     {% csrf_token %}
     <h1>Are you sure you want to delete {{ member }}</h1>
