@@ -102,7 +102,7 @@ class MembersView(ListView):
             return HttpResponseRedirect(reverse('cms:members_url'))
         else:
             return super(MembersView, self).render_to_response(context)
-            
+
 class DeleteMemberView(DeleteView):
     model = Member
     template_name = 'members/delete_member.html'
@@ -117,16 +117,16 @@ class DeleteMemberView(DeleteView):
         self.object = self.get_object()
         self.object.user.delete()
         return HttpResponseRedirect(self.get_success_url())
-            
+
     def get_success_url(self):
         return reverse('cms:delete_member_list_url')
-        
-        
+
+
 class ListMembersToDeleteView(ListView):
     model = Project
     template_name = 'members/delete_member_list.html'
 
-    
+
     def get_context_data(self, **kwargs):
         context = super(ListMembersToDeleteView, self).get_context_data(**kwargs)
 
@@ -150,7 +150,7 @@ class ListMembersToDeleteView(ListView):
             context['prev_year2'] = prev_year + 1
 
         return context
-        
+
     def dispatch(self, request, *args, **kwargs):
         if permissions.is_user_slc_leader(request.user):
             return super(ListView, self).dispatch(request, *args, **kwargs)
@@ -185,8 +185,8 @@ class DeletePageView(DeleteView):
             return HttpResponseForbidden('You do not have permission to delete projects.')
 
     def get_success_url(self):
-        return reverse('cms:delete_page_list_url')     
-         
+        return reverse('cms:delete_page_list_url')
+
 class ListPagesToDeleteView(ListView):
     model = Page
     template_name = 'pages/delete_list.html'
@@ -195,7 +195,7 @@ class ListPagesToDeleteView(ListView):
 
     def get_queryset(self):
         return Page.objects.all().order_by('title')
-        
+
     def dispatch(self, request, *args, **kwargs):
         if permissions.is_user_slc_leader(request.user):
             return super(ListView, self).dispatch(request, *args, **kwargs)
@@ -251,6 +251,24 @@ class EditProjectView(UpdateView):
     model = Project
     form_class = ProjectForm
     template_name = 'projects/edit_project.html'
+
+    def post(self, request, *args, **kwargs):
+        form = ProjectForm(request.POST)
+
+        if form.is_valid():
+            # check if project coordinator demotion is allowed
+            project = get_object_or_404(Project, pk=self.kwargs.get('pk', None))
+            if not permissions.can_user_demote_project_coordinators(request.user, project):
+                # ensure that no project coordinators have been removed
+                for projectmember in project.projectmember_set.all():
+                    if projectmember.is_coordinator and projectmember.member not in form.cleaned_data.get('members', []):
+                        form._errors['members'] = form.error_class(['Demotion of project coordinator %s is not allowed.' % (projectmember.get_full_name(),)])
+
+                if len(form._errors) > 0:
+                    self.object = project
+                    return self.form_invalid(form)
+
+        return super(EditProjectView, self).post(request, *args, **kwargs)
 
     def render_to_response(self, context):
         if permissions.can_user_edit_project(self.request.user, context['project']):
@@ -504,7 +522,7 @@ class CreateMemberView(CreateView):
                     member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
 
                     return HttpResponseRedirect(reverse('cms:members_url'))
-                
+
             else:
                 return self.render_to_response(self.get_context_data(form=form))
         else:
