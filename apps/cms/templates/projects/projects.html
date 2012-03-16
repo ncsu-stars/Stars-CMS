@@ -30,7 +30,7 @@
         {% if user|can_edit_project:project %}
         <small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>
         {% endif %}
-        {% if user|is_slc_leader %}
+        {% if user|can_delete_project:project %}
         <small><a href="{% url cms:delete_project_url pk=project.pk %}">delete</a></small>
         {% endif %}
     </h3>

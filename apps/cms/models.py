@@ -83,7 +83,7 @@ class Member(models.Model):
     class Meta:
         verbose_name        = 'member'
         verbose_name_plural = 'members'
-        ordering            = ['user__last_name']
+        ordering            = ['user__first_name']
 
 class Project(models.Model):
     STATUS_EMPTY    = 0 # this project is pending "creation" by coordinator
