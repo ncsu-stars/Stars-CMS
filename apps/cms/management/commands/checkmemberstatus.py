@@ -95,8 +95,8 @@ class Command(BaseCommand):
 
         listed_pks = map(lambda x: x.pk, listed_members)
 
-        members_to_activate = Member.objects.filter(pk__in=listed_pks, status=Member.STATUS_ARCHIVED)
-        members_to_archive = Member.objects.filter(~Q(pk__in=listed_pks) & ~Q(status=Member.STATUS_ARCHIVED))
+        members_to_activate = Member.objects.filter(Q(pk__in=listed_pks) & (Q(status=Member.STATUS_ARCHIVED) | Q(user__is_active=False)))
+        members_to_archive = Member.objects.filter(~Q(pk__in=listed_pks) & (~Q(status=Member.STATUS_ARCHIVED) | Q(user__is_active=True)))
 
         print '====== ACTIVATE ======'
         for m in members_to_activate:
@@ -118,14 +118,14 @@ class Command(BaseCommand):
             m.status = Member.STATUS_ACTIVE
             m.save()
 
-            m.user.active = True
+            m.user.is_active = True
             m.user.save()
 
         for m in members_to_archive:
             m.status = Member.STATUS_ARCHIVED
             m.save()
 
-            m.user.active = False
+            m.user.is_active = False
             m.user.save()
 
         print 'Done'
