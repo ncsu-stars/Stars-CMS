@@ -93,8 +93,6 @@ class Command(BaseCommand):
                 except User.DoesNotExist:
                     print 'username %s not found' % (user_id,)
 
-        f.close()
-
         listed_pks = map(lambda x: x.pk, listed_members)
 
         members_to_activate = Member.objects.filter(pk__in=listed_pks, status=Member.STATUS_ARCHIVED)
