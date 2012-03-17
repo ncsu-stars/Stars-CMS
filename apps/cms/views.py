@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView, DeleteView
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from datetime import datetime
 
@@ -77,9 +78,14 @@ class MembersView(ListView):
 
         # NOTE: "year" is a field lookup type so must use "year__exact" instead
         project_members = ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR))
-        context['members'] = Member.objects.filter(pk__in=project_members.values_list('member')).order_by('user__first_name', 'user__last_name').distinct()
+        # active members are shown unconditinoally for current year
+        if int(self.kwargs.get('year', settings.CURRENT_YEAR)) == settings.CURRENT_YEAR:
+            active_query = Q(status=Member.STATUS_ACTIVE)
+        else:
+            active_query = Q()
+        context['members'] = Member.objects.filter(Q(pk__in=project_members.values_list('member')) | active_query).order_by('user__first_name', 'user__last_name').distinct()
 
-        context['project_member_groups'] = [ {'group': x[1], 'members': Member.objects.filter(pk__in=project_members.filter(member__group=x[0]).values_list('member')).distinct().order_by('user__first_name', 'user__last_name')} for x in Member.GROUP_CHOICES ]
+        context['project_member_groups'] = [ {'group': x[1], 'members': context['members'].filter(group=x[0])} for x in Member.GROUP_CHOICES ]
         context['project_member_groups'] += [ {'group': 'Volunteer', 'project_members': project_members.filter(member=None).order_by('volunteer_name')} ]
 
         context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
@@ -149,7 +155,7 @@ class DeletePageView(DeleteView):
             return HttpResponseForbidden('You do not have permission to delete projects.')
 
     def get_success_url(self):
-        return reverse('cms:pages_all_url')     
+        return reverse('cms:pages_all_url')
 
 class PageAllView(ListView):
     model = Page
