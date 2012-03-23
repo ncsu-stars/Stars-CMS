@@ -32,12 +32,12 @@ class ProjectAdminForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ('title', 'coordinators',)
+        fields = ('coordinators',)
 
 class ProjectForm(ModelForm):
     class Meta:
         model = Project
-        exclude = ('status',)
+        exclude = ('status','year')
 
     # special handling of ManyToMany members field
     # ref: http://stackoverflow.com/questions/387686/what-are-the-steps-to-make-a-modelform-work-with-a-manytomany-relationship-with
