@@ -32,7 +32,7 @@ class ProjectAdminForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ('title', 'coordinators',)
+        fields = ('coordinators',)
 
 class ProjectForm(ModelForm):
     class Meta:
