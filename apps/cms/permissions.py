@@ -30,6 +30,10 @@ def can_user_delete_project(user, project):
     # only the SLC leader can delete projects through the main interface
     return is_user_slc_leader(user)
 
+def can_user_demote_project_coordinators(user, project):
+    # only the SLC leader can demote project coordinators through the main interface
+    return is_user_slc_leader(user)
+
 def can_user_create_member(user):
     # only the SLC leader can create members through the main interface
     return is_user_slc_leader(user)
@@ -41,7 +45,7 @@ def can_user_edit_member(user, member):
 
 def can_user_delete_member(user, member):
     # only the SLC leader can delete members through the main interface
-    return (user == member.user) or is_user_slc_leader(user)
+    return is_user_slc_leader(user)
 
 def can_user_post_as_member(user, member):
     # only the user that owns a member profile can post to that member's blog

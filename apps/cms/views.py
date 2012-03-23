@@ -6,6 +6,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User, Group
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView, DeleteView
 from django.shortcuts import get_object_or_404
+from django.db.models import Q
 
 from datetime import datetime
 
@@ -77,9 +78,14 @@ class MembersView(ListView):
 
         # NOTE: "year" is a field lookup type so must use "year__exact" instead
         project_members = ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR))
-        context['members'] = Member.objects.filter(pk__in=project_members.values_list('member')).order_by('user__first_name', 'user__last_name').distinct()
+        # active members are shown unconditinoally for current year
+        if int(self.kwargs.get('year', settings.CURRENT_YEAR)) == settings.CURRENT_YEAR:
+            active_query = Q(status=Member.STATUS_ACTIVE)
+        else:
+            active_query = Q()
+        context['members'] = Member.objects.filter(Q(pk__in=project_members.values_list('member')) | active_query).order_by('user__first_name', 'user__last_name').distinct()
 
-        context['project_member_groups'] = [ {'group': x[1], 'members': Member.objects.filter(pk__in=project_members.filter(member__group=x[0]).values_list('member')).distinct().order_by('user__first_name', 'user__last_name')} for x in Member.GROUP_CHOICES ]
+        context['project_member_groups'] = [ {'group': x[1], 'members': context['members'].filter(group=x[0])} for x in Member.GROUP_CHOICES ]
         context['project_member_groups'] += [ {'group': 'Volunteer', 'project_members': project_members.filter(member=None).order_by('volunteer_name')} ]
 
         context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
@@ -102,7 +108,7 @@ class MembersView(ListView):
             return HttpResponseRedirect(reverse('cms:members_url'))
         else:
             return super(MembersView, self).render_to_response(context)
-            
+
 class DeleteMemberView(DeleteView):
     model = Member
     template_name = 'members/delete.html'
@@ -118,7 +124,7 @@ class DeleteMemberView(DeleteView):
         self.object = self.get_object()
         self.object.user.delete()
         return HttpResponseRedirect(self.get_success_url())
-            
+
     def get_success_url(self):
         return reverse('cms:members_url')
 
@@ -149,7 +155,7 @@ class DeletePageView(DeleteView):
             return HttpResponseForbidden('You do not have permission to delete projects.')
 
     def get_success_url(self):
-        return reverse('cms:pages_all_url')     
+        return reverse('cms:pages_all_url')
 
 class PageAllView(ListView):
     model = Page
@@ -199,13 +205,35 @@ class EditProjectView(UpdateView):
     form_class = ProjectForm
     template_name = 'projects/edit_project.html'
 
+    def post(self, request, *args, **kwargs):
+        form = ProjectForm(request.POST)
+
+        if form.is_valid():
+            # check if project coordinator demotion is allowed
+            project = get_object_or_404(Project, pk=self.kwargs.get('pk', None))
+            if not permissions.can_user_demote_project_coordinators(request.user, project):
+                # ensure that no project coordinators have been removed
+                for projectmember in project.projectmember_set.all():
+                    if projectmember.is_coordinator and projectmember.member not in form.cleaned_data.get('members', []):
+                        form._errors['members'] = form.error_class(['Demotion of project coordinator %s is not allowed.' % (projectmember.get_full_name(),)])
+
+                if len(form._errors) > 0:
+                    self.object = project
+                    return self.form_invalid(form)
+
+        return super(EditProjectView, self).post(request, *args, **kwargs)
+
+    def render_to_response(self, context):
+        if permissions.can_user_edit_project(self.request.user, context['project']):
+            return UpdateView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to edit this project.')
     def dispatch(self, request, *args, **kwargs):
         project = get_object_or_404(Project, pk=kwargs.get('pk', None))
 
         if permissions.can_user_edit_project(request.user, project):
             return super(EditProjectView, self).dispatch(request, *args, **kwargs)
         return HttpResponseForbidden('You do not have permission to edit this project.')
-            
 
 class BlogsYearView(ListView):
     model = BlogPost
@@ -454,7 +482,7 @@ class CreateMemberView(CreateView):
                     member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)
 
                     return HttpResponseRedirect(reverse('cms:members_url'))
-                
+
             else:
                 return self.render_to_response(self.get_context_data(form=form))
         else:
