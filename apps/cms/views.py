@@ -498,6 +498,10 @@ class CreateMemberView(CreateView):
                     return self.render_to_response(self.get_context_data(form=form))
                 else:
                     user = User.objects.create(username=unity_id, email=email, first_name=first_name, last_name=last_name)
+                    # indicates WRAP login only
+                    user.set_unusable_password()
+                    user.save()
+
                     # why is project_member returned here?
                     # that belongs with project editing
                     #member, project_member = signals.create_profile.send(sender=None, user=user, group=group, classification=classification, status=status)

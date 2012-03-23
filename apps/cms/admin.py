@@ -10,7 +10,7 @@ class ProjectAdmin(admin.ModelAdmin):
     list_display = ('title', 'year', 'status')
     list_filter = ('year', 'status')
     ordering = ('-year', 'title', 'status')
-    search_fields = ('title', 'description', 'members__member__user__last_name', 'members__member__user__first_name')
+    search_fields = ('title', 'description', 'members__user__last_name', 'members__user__first_name')
     inlines = [ ProjectMemberInline ]
 
 class ProjectMemberAdmin(admin.ModelAdmin):
