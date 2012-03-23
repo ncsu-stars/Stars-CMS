@@ -17,7 +17,7 @@ def create_profile_handler(sender, **kwargs):
     group = kwargs.get('group', None)
     classification = kwargs.get('classification', None)
     
-    member = Member(user=user, group=group, status=0, classification=classification)
+    member = Member(user=user, group=group, status=Member.STATUS_EMPTY, classification=classification)
     member.save()
 
     context = {

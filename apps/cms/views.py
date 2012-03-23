@@ -62,11 +62,28 @@ class EditProfileView(UpdateView):
     form_class = MemberForm
     template_name = 'members/edit_profile.html'
 
-    def render_to_response(self, context):
-        if permissions.can_user_edit_member(self.request.user, context['member']):
-            return UpdateView.render_to_response(self, context)
+    def dispatch(self, request, *args, **kwargs):
+        member = get_object_or_404(Member, pk=kwargs.get('pk', None))
+
+        if permissions.can_user_edit_member(request.user, member):
+            return super(EditProfileView, self).dispatch(request, *args, **kwargs)
         else:
             return HttpResponseForbidden('You do not have permission to edit this profile.')
+
+    def post(self, request, *args, **kwargs):
+        form = MemberForm(request.POST)
+
+        if form.is_valid():
+            member = get_object_or_404(Member, pk=self.kwargs.get('pk', None))
+
+            if member.status is None or member.status == Member.STATUS_EMPTY:
+                member.status = Member.STATUS_ACTIVE
+                member.save()
+
+        return super(EditProfileView, self).post(request, *args, **kwargs)
+
+    def get_success_url(self):
+        return reverse('cms:members_url')
 
 class MembersView(ListView):
     model = Member
@@ -221,6 +238,10 @@ class EditProjectView(UpdateView):
                     self.object = project
                     return self.form_invalid(form)
 
+            if project.status is None or project.status == Project.STATUS_EMPTY:
+                project.status = Project.STATUS_ACTIVE
+                project.save()
+
         return super(EditProjectView, self).post(request, *args, **kwargs)
 
     def render_to_response(self, context):
@@ -228,6 +249,7 @@ class EditProjectView(UpdateView):
             return UpdateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to edit this project.')
+    
     def dispatch(self, request, *args, **kwargs):
         project = get_object_or_404(Project, pk=kwargs.get('pk', None))
 
