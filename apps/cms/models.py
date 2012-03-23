@@ -77,8 +77,9 @@ class Member(models.Model):
 	    # need to allow member one year old as well since activity status is predicated on project membership
 	    # but you can't create a project for a new year without a project coordinator
         # hence, the one year offset avoids the chicken-and-the-egg problem
-        return Member.objects.filter(Q(status=Member.STATUS_ACTIVE) | Q(pk__in=ProjectMember.objects.filter(project__year__gte= \
-            settings.CURRENT_YEAR-1).distinct().values_list('member'))).order_by('user__first_name', 'user__last_name')
+        #return Member.objects.filter(Q(status=Member.STATUS_ACTIVE) | Q(pk__in=ProjectMember.objects.filter(project__year__gte= \
+        #    settings.CURRENT_YEAR-1).distinct().values_list('member'))).order_by('user__first_name', 'user__last_name')
+        return Member.objects.exclude(status=Member.STATUS_ARCHIVED).order_by('user__first_name', 'user__last_name')
 
     class Meta:
         verbose_name        = 'member'
