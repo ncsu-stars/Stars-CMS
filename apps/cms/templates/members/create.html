@@ -27,11 +27,27 @@ $(document).ready(function() {
         }
 
         $.getJSON('/directory/', {'user': username}, function(data, status, xhr) {
+            console.log(data);
             if(data && data.name && data.email) {
                 var first_name = data.name.substring(0, data.name.indexOf(' ')),
-                    last_name = data.name.substring(data.name.lastIndexOf(' ')).trim(),
-                    email = data.email,
-                    classification = data.classification;
+                    last_name = null;
+
+                if(data.name.split(' ').length > 3) {
+                    last_name = data.name.split(' ')[2].trim();
+                } else if(data.name.split(' ') < 3) {
+                    last_name = data.name.substring(data.name.lastIndexOf(' ')).trim();
+                } else {
+                    if(data.name.split(' ')[2].match(/^M*(?:D?C{0,3}|C[MD])(?:L?X{0,3}|X[CL])(?:V?I{0,3}|I[XV])$/i)) {
+                        last_name = data.name.split(' ')[1].trim();
+                    }
+
+                    if(data.name.split(' ')[2].indexOf('.') !== -1) {
+                        last_name = data.name.split(' ')[1].trim();
+                    }
+                }
+
+                var email = data.email,
+                classification = data.classification;
 
                 change_form(first_name, last_name, email, classification);
             } else {
