@@ -56,4 +56,5 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.messages.context_processors.messages',
     'cms.context_processors.pages',
     'cms.context_processors.member_empty',
+    'cms.context_processors.project_empty',
 )

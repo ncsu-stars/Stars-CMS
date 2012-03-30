@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 
+{% load filters %}
+
 {% block title %}Home{% endblock title %}
 {% block current_page %}current="#top_home";{% endblock current_page %}
 
@@ -24,6 +26,21 @@ $(window).load(function() {
 $(window).load(function() {
     if(confirm('You have an empty member profile!  Would you like create one now?')) {
         var url = '{% url cms:edit_profile_url pk=empty_profile.pk %}';
+        window.location.href = url;
+    }
+});
+</script>
+{% endif %}
+
+{% if empty_projects %}
+<script type="text/javascript">
+$(window).load(function() {
+    if(confirm('You coordinate projects with empty listings!\n\n' +
+        {% for project in empty_projects %}
+            '\t{{ project.title|stripjs|escapejs }}\n' +
+        {% endfor %}
+                '\nWould you like create {{ empty_projects|first|field:"title"|stripjs|escapejs }} now?')) {
+        var url = '{% url cms:edit_project_url pk=empty_projects|first|field:"pk" %}';
         window.location.href = url;
     }
 });

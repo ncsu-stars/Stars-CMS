@@ -74,3 +74,7 @@ def month_name(month_number):
 @register.filter
 def projects_by_year(member, year):
     return member.project_set.filter(year=year)
+
+@register.filter
+def field(object, fieldname):
+    return getattr(object, fieldname)
