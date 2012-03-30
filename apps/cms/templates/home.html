@@ -18,6 +18,18 @@ $(window).load(function() {
     });
 });
 </script>
+
+{% if empty_profile %}
+<script type="text/javascript">
+$(window).load(function() {
+    if(confirm('You have an empty member profile!  Would you like create one now?')) {
+        var url = '{% url cms:edit_profile_url pk=empty_profile.pk %}';
+        window.location.href = url;
+    }
+});
+</script>
+{% endif %}
+
 {% endblock extrajs %}
 
 
