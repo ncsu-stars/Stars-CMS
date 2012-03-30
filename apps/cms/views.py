@@ -165,7 +165,7 @@ class DeletePageView(DeleteView):
     template_name = 'pages/delete.html'
 
     def dispatch(self, request, *args, **kwargs):
-        page = get_object_or_404(Page, pk=kwargs.get("pk",None))
+        page = get_object_or_404(Page, pk=kwargs.get('pk', None))
         if permissions.can_user_delete_page(request.user, page):
             return super(DeletePageView, self).dispatch(request, *args, **kwargs)
         else:
@@ -249,7 +249,7 @@ class EditProjectView(UpdateView):
             return UpdateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to edit this project.')
-    
+
     def dispatch(self, request, *args, **kwargs):
         project = get_object_or_404(Project, pk=kwargs.get('pk', None))
 

@@ -9,6 +9,7 @@
         $('#not_ncsu').click(function() {
             $('#not_ncsu').hide();
             $('#normal_login').show();
+            $('#wrap_login').hide();
         });
     });
 </script>
@@ -33,7 +34,7 @@
             {% endif %}
         {% endfor %}
     {% endif %}
-    <fieldset>
+    <fieldset id="wrap_login">
         <legend>WRAP Login</legend>
         {% if form.token %}
             {% if form.token.properties.name %}
