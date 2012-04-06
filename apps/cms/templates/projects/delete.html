@@ -23,7 +23,7 @@ $(document).ready(function() {
     {% csrf_token %}
     <h1>Are you sure you want to delete {{ project }}</h1>
     <input type="submit" class="btn danger" value="Yes, delete project" />
-    <input type="submit" id="not_delete" class="btn primary" value="No, do not delete project" />
+    <button type="button" id="not_delete" class="btn primary">No, do not delete project</button>
 </form>
 {% endif %}
 {% endblock content %}
