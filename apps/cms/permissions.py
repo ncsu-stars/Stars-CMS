@@ -3,7 +3,7 @@ from cms.models import Member, Project, ProjectMember, BlogPost
 from django.conf import settings
 
 def is_user_slc_leader(user):
-    if user.is_anonymous():
+    if user is None or user.is_anonymous():
         return False
     else:
         return (user.get_full_name() in settings.SLC_LEADERS)
