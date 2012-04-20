@@ -29,15 +29,21 @@
             <div class="member_info">
                 <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2>
                 <small>from {{ member.hometown }}</small><br/>
-                <a href="{% url cms:blog_url pk=member.pk%}">View blog posts</a><br/>
+                {% if member.blogpost_set.all %}
+                    <a href="{% url cms:blog_url pk=member.pk%}">View blog posts</a>
+                {% endif %}
+                <br/>
                 {% if member.homepage %}
                 Website: <a href="{{ member.homepage }}">{{ member.homepage }}</a>
                 {% endif %}
             </div>
-            <div class="member_participation">Current Projects:<br/>
+            <div class="member_participation">
+                {% if member|projects_by_year:year %}
+                    Current Projects:<br/>
                     {% for project in member|projects_by_year:year %}
                         <a href="{% url cms:projects_year_url year=year %}#{{ project.pk }}">{{project.title }}</a><br/>
                     {% endfor %}
+                {% endif %}
             </div>
         </div>
     {% endfor %}
