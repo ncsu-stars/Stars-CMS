@@ -7,25 +7,25 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Deleting field 'BlogPost.post_ptr'
         db.delete_column('cms_blogpost', 'post_ptr_id')
 
         # Adding field 'BlogPost.id'
-        db.add_column('cms_blogpost', 'id', self.gf('django.db.models.fields.AutoField')(default=1, primary_key=True), keep_default=False)
+        db.add_column('cms_blogpost', 'id', self.gf('django.db.models.fields.AutoField')(primary_key=True), keep_default=False)
 
         # Adding field 'BlogPost.title'
         db.add_column('cms_blogpost', 'title', self.gf('django.db.models.fields.CharField')(default=1, max_length=255), keep_default=False)
 
         # Adding field 'BlogPost.date'
-        db.add_column('cms_blogpost', 'date', self.gf('django.db.models.fields.DateTimeField')(default=1), keep_default=False)
+        db.add_column('cms_blogpost', 'date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now), keep_default=False)
 
         # Adding field 'BlogPost.post'
         db.add_column('cms_blogpost', 'post', self.gf('django.db.models.fields.TextField')(default=1), keep_default=False)
 
 
     def backwards(self, orm):
-        
+
         # User chose to not deal with backwards NULL issues for 'BlogPost.post_ptr'
         raise RuntimeError("Cannot reverse this migration. 'BlogPost.post_ptr' and its values cannot be restored.")
 

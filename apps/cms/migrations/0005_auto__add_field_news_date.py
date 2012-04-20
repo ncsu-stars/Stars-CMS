@@ -7,13 +7,13 @@ from django.db import models
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
-        
+
         # Adding field 'News.date'
-        db.add_column('cms_news', 'date', self.gf('django.db.models.fields.DateTimeField')(default=1), keep_default=False)
+        db.add_column('cms_news', 'date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now), keep_default=False)
 
 
     def backwards(self, orm):
-        
+
         # Deleting field 'News.date'
         db.delete_column('cms_news', 'date')
 
