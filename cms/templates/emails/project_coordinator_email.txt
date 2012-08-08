@@ -1,0 +1,8 @@
+Hello {{ coordinator }},
+
+Your project has been created for this year. Please go to:
+{{ project_url }}
+and fill out the information for your project.
+
+Thank you,
+STARS Administration

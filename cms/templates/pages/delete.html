@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Page{% endblock title %}
+
+{% block extrajs %}
+<script type="text/javascript">
+$(document).ready(function() {
+    $('#not_delete').click(function(e) {
+        e.preventDefault();
+        e.stopPropagation();
+
+        var url = '{% url cms:pages_all_url %}';
+        window.location.href = url;
+    });
+});
+</script>
+{% endblock extrajs %}
+
+{% block content %}
+{% load filters %}
+{% if user|can_delete_page:page %}
+<form id="deletePage" method="post" action="{% url cms:delete_page_url pk=page.pk %}">
+    {% csrf_token %}
+    <h1>Are you sure you want to delete {{ page.title }}</h1>
+    <input type="submit" class="btn danger" value="Yes, delete page" />
+    <button type="button" id="not_delete" class="btn primary">No, do not delete page</button>
+</form>
+{% endif %}
+{% endblock content %}

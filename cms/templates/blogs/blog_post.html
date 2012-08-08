@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ blog.title }}{% endblock title %}
+
+{% block content %}
+{% load filters %}
+<h1>{{ blog.title }}<br />
+    <small>
+        posted on {{ blog.date }} by {{ member }}
+        {% ifnotequal blog.date|date:"d m y h:i:s" blog.edit_date|date:"d m y h:i:s" %}
+        <br/>last edited on {{ blog.edit_date }}
+        {% endifnotequal %}
+        {% load filters %}
+        {% if user|can_edit_blogpost:blog %}
+        <a href="{% url cms:edit_blog_url pk=member.pk blog_pk=blog.pk %}">edit</a>
+        {% endif %}
+    </small>
+</h1>
+<p><small>Tags: {{ blog.tags.all|join:", " }}</small></p>
+<p>
+    {{ blog.post|stripjs }}
+</p>
+{% endblock content %}

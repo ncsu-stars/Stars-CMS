@@ -1,0 +1,11 @@
+div.index {
+    display: inline-block;
+    vertical-align: top;
+    padding: 6pt;
+    text-align: left;
+    width: 200px;
+}
+
+div.index ul {
+    margin-bottom: 0;
+}

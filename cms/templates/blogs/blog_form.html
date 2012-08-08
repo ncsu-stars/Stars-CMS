@@ -1,0 +1,80 @@
+{% block extrajs %}
+<script type="text/javascript">
+    $(document).ready(function() {
+        $('textarea').css('width', '400px');
+
+        /*AnyTime.picker("id_date", {
+            format: "%Y-%m-%d %H:%i:%s"
+        });*/
+
+        $('#tag').focus(function() {
+            $(this).val('');
+        });
+
+        $('#add_tag').click(function() {
+            var new_value = parseInt($('#id_tags option:last').val()) + 1;
+            var new_tag = $('#tag').val();
+
+            if(new_tag.length) {
+                var child = $('#id_tags option:[text="' + new_tag + '"]');
+
+                if(!child.length) {
+                    var csrf = $('input[name=csrfmiddlewaretoken]').val();
+                    $.post('{% url cms:tag_cloud_url %}', {
+                        'tag': new_tag,
+                        'blog_id': {% if blog.pk %}{{ blog.pk }}{% else %}-1{% endif %},
+                        'member_id': {{ member.pk }},
+                        'csrfmiddlewaretoken': csrf
+                    });
+
+                    $('#id_tags').append('<option value="' + new_value + '">' + new_tag + '</option>')
+                        .attr('selected', 'selected');
+                } else {
+                    var value = $('#id_tags option:[text="' + new_tag + '"]').val();
+                    $('#id_tags option:[value=' + value + ']').attr('selected', 'selected');
+                }
+            } else {
+                alert('Cannot have an empty tag');
+            }
+        });
+
+        $('#cancel').click(function(e) {
+            e.preventDefault();
+
+            if(confirm('Are you sure you want to leave this page?')) {
+                window.location = '{% url cms:blog_url pk=member.pk %}';
+            }
+        });
+    });
+</script>
+{% endblock extrajs %}
+
+{% csrf_token %}
+{% if form.errors %}
+    {% for field in form %}
+        {% if field.errors %}
+            <div class="formlyRequired" style="display: block">
+                {{ field.label }}: {{ field.errors|first }}
+            </div>
+        {% endif %}
+    {% endfor %}
+{% endif %}
+<fieldset>
+    <legend>{{ legend }}</legend>
+    {% for field in form %}
+    <div class="clearfix">
+        <label for="id_{{ field.name }}">{{ field.label }}</label>
+        <div class="input">
+            {% if field.label == 'Tags' %}
+                {{ field }}<br />
+                <input type="text" id="tag" value="Or add a tag..." /> <input type="button" class="btn" id="add_tag" value="Add" />
+            {% else %}
+                {{ field }}
+            {% endif %}
+        </div>
+    </div>
+    {% endfor %}
+    <div class="actions">
+        <input type="submit" class="btn primary" value="Submit Post" />
+        <button type="button" id="cancel" class="btn">Cancel</button>
+</fieldset>
