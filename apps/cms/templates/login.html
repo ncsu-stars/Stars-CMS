@@ -2,19 +2,6 @@
 
 {% block title %}Login{% endblock title %}
 
-{% block extrajs %}
- <script type="text/javascript">
-    $(document).ready(function() {
-        $('#normal_login').hide();
-        $('#not_ncsu').click(function() {
-            $('#not_ncsu').hide();
-            $('#normal_login').show();
-            $('#wrap_login').hide();
-        });
-    });
-</script>
-{% endblock extrajs %}
-
 {% block content %}
 <form id="loginForm" width="400px" method="post" action="{% url cms:login_url %}">
     {% csrf_token %}
@@ -34,28 +21,6 @@
             {% endif %}
         {% endfor %}
     {% endif %}
-    <fieldset id="wrap_login">
-        <legend>WRAP Login</legend>
-        {% if form.token %}
-            {% if form.token.properties.name %}
-                <div> Authentication token found for <b>{{ form.token.properties.name }} ({{ form.token.user_id }})</b>. </div>
-            {% else %}
-                <div> Authentication token found for <b>{{ form.token.user_id }}</b>. </div>
-            {% endif %}
-        {% else %}
-                <div> No valid authentication token found. </div>
-        {% endif %}
-
-        <div class="actions">
-        {% if form.token %}
-                <input type="submit" class="btn primary" name="token_login" value="Login" />
-                <input type="submit" class="btn" name="token_redirect" value="Reauthenticate" />
-        {% else %}
-                <input type="submit" class="btn" name="token_redirect" value="Authenticate" />
-        {% endif %}
-        </div>
-    </fieldset>
-    <a id="not_ncsu" href="javascript:void;">Not an NCSU student?</a>
     <fieldset id="normal_login">
         <legend>Login</legend>
         {% for field in form %}

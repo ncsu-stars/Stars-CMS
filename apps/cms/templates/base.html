@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>NCSU STARS - {% block title %}{% endblock title %}</title>
+    <title>{{ SLC_NAME }}- {% block title %}{% endblock title %}</title>
 
     <link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/screen.css" type="text/css" media="screen, projection" />
     <link rel="stylesheet" href="{{ STATIC_URL }}css/blueprint/print.css" type="text/css" media="print" />
@@ -99,7 +99,7 @@
             </div>
             <div style="display: table-cell; vertical-align: middle;">
                 <div class="span-12" style="text-align: center">
-                    <span id="logo">NCSU STARS Alliance</span>
+                    <span id="logo">{{ SLC_NAME }}</span>
                 </div>
             </div>
             <div style="display: table-cell; vertical-align: middle; text-align: center;">
@@ -142,7 +142,7 @@
         </div>
 
         <div class="span-24 last" style="text-align: center; margin-top: 1em;">
-            &copy; {% now "Y" %} NCSU STARS SLC
+            &copy; {% now "Y" %} {{ SLC_NAME }}
         </div>
     </div>
 </body>

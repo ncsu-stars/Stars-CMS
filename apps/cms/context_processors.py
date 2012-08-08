@@ -1,3 +1,5 @@
+from django.conf import settings
+
 from cms.models import Page, Member, Project, ProjectMember
 
 def pages(request):
@@ -27,3 +29,6 @@ def project_empty(request):
                 return {'empty_projects': projects}
 
     return {}
+
+def slc_name(request):
+    return {'SLC_NAME': settings.SLC_NAME}
