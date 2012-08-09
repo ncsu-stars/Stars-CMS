@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 
 import os
-from distutils.core import setup, find_packages
+from setuptools import setup, find_packages
 
 
 def read_file(filename):
@@ -15,13 +15,13 @@ def read_file(filename):
 
 
 setup(name='STARS CMS',
-    version='1.0.1b1',
+    version='1.0.1b2',
     author='NCSU STARS',
     author_email='',
     url='https://github.com/ncsu-stars/Stars-CMS/',
     license='BSD',
     description='CMS written in Python/Django specifically for STARS SLC\'s',
-    packages=find_packages(exclude=['ncsu', 'project']),
+    packages=find_packages(exclude=['ncsu', 'ncsu.wrap', 'ncsu.login', 'project']),
     classifiers=[
         'Topic :: Internet :: WWW/HTTP :: Dynamic Content',
         'Intended Audience :: Developers',
