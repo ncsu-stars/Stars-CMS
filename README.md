@@ -1,7 +1,7 @@
 STARS CMS
 =========
 
-This is a CMS written in Django specifically for STARS SLC's. This CMS is used at North Carolina State University
+This is a CMS written in Django specifically for STARS SLC's. This CMS is used at North Carolina State University.
 
 Installation
 ------------
@@ -25,7 +25,11 @@ Make sure you have pip and virtualenv installed on your system already
 
 ### Settings
 
-Take a look at `settings.py.example` for example project settings
+Take a look at `settings.py.example` for example project settings.
+
+### URLs
+
+Use ``(r'^', include('cms.urls', namespace='cms'))`` to forward all URLs to the CMS.
 
 ### Run your server
 
