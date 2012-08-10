@@ -194,7 +194,13 @@ DEFAULT_FROM_EMAIL = 'donotrespond@email.com'
 SLC_LEADERS = [ 'Name 1', 'Name 2', ]
 
 # Used for website title
-SLC_NAME = 'NCSU STARS Alliance'
+SLC_NAME = 'Generic STARS Alliance'
+
+# Sponsor logo display on homepage
+SPONSOR_LOGO_URL = 'images/logos/sponsors/'
+SPONSORS = [ dict(zip(['name', 'logo_path'], x)) for x in [
+                ('Sample', 'sample.png'),
+                ] ]
 
 TEMPLATE_CONTEXT_PROCESSORS = (
     'django.contrib.auth.context_processors.auth',

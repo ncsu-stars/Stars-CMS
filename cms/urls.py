@@ -9,8 +9,6 @@ from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, Blo
 from cms.views import BlogsMonthView, CreateProjectView, CreateMemberView, ActivateMemberView
 from cms.views import DeleteProjectView, CreatePageView, EditPageView, PageAllView, DeleteMemberView, DeletePageView
 
-from ncsu.directory.views import json_directory_query
-
 urlpatterns = (
     url(r'^$', HomepageView.as_view(), name='homepage_url'),
     url(r'^news/$', NewsView.as_view(), name='news_url'),
@@ -40,7 +38,7 @@ urlpatterns += (
 )
 
 urlpatterns += (
-    url(r'^login/$', 'ncsu.wrap.views.login', {'template_name': 'login.html'}, name='login_url'),
+    url(r'^login/$', 'django.contrib.auth.views.login', {'template_name': 'login.html'}, name='login_url'),
     url(r'^logout/$', 'django.contrib.auth.views.logout', {'template_name': 'logout.html'}, name='logout_url'),
 )
 
@@ -60,10 +58,6 @@ urlpatterns += (
 
 urlpatterns += (
     url(r'^tags/$', TagCloudView.as_view(), name='tag_cloud_url'),
-)
-
-urlpatterns += (
-    url(r'^directory/$', json_directory_query),
 )
 
 if settings.DEBUG:
