@@ -41,7 +41,7 @@ Use ``(r'^', include('cms.urls', namespace='cms'))`` to forward all URLs to the 
 
 ### Run your server
 
-You can run the development server inside the virtual environment: ``python manage.py run server``
+You can run the development server inside the virtual environment: ``python manage.py runserver``
 
 There should be no errors and you should be able to visit the website at: ``http://localhost:8000``
 
