@@ -1,7 +1,15 @@
 STARS CMS
 =========
 
-This is a CMS written in Django specifically for STARS SLC's. This CMS is used at North Carolina State University.
+Stars-CMS is a content management system designed specificially for use with/as a STARS SLC website.  The CMS is written in Python using Django and includes the following features:
+ * management of member profiles, SLC projects, and member blogs;
+ * cross-referencing of related content for current academic (e.g., projects automatically link to participating members);
+ * generation of longitudinal project histories for members;
+ * online editing of profiles, projects, and blogs;
+ * differing levels of access for member, project coordinators, and SLC leaders; and
+ * use of Django's admin interface for low-level database manipulation.
+
+The CMS is packaged as a Django app but may be deployed as a full website.  This software currently runs the STARS SLC website at North Carolina State University.
 
 Installation
 ------------
