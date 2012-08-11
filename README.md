@@ -1,7 +1,7 @@
 STARS CMS
 =========
 
-Stars-CMS is a content management system designed specificially for use with/as a STARS SLC website.  The CMS is written in Python using Django and includes the following features:
+Stars-CMS is a content management system designed specifically for use with/as a STARS SLC website.  The CMS is written in Python using Django and includes the following features:
  * management of member profiles, SLC projects, and member blogs;
  * cross-referencing of related content for current academic (e.g., projects automatically link to participating members);
  * generation of longitudinal project histories for members;
