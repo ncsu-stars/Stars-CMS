@@ -85,6 +85,7 @@ class EditProfileView(UpdateView):
     def get_success_url(self):
         return reverse('cms:members_url')
 
+
 class MembersView(ListView):
     model = Member
     template_name = 'members/members.html'
@@ -95,15 +96,18 @@ class MembersView(ListView):
 
         # NOTE: "year" is a field lookup type so must use "year__exact" instead
         project_members = ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR))
+        member_query = Q(pk__in=project_members.values_list('member'))
+
         # active members are shown unconditinoally for current year
         if int(self.kwargs.get('year', settings.CURRENT_YEAR)) == settings.CURRENT_YEAR:
             active_query = Q(status=Member.STATUS_ACTIVE)
         else:
             active_query = Q()
-        context['members'] = Member.objects.filter(Q(pk__in=project_members.values_list('member')) | active_query).order_by('user__first_name', 'user__last_name').distinct()
 
-        context['project_member_groups'] = [ {'group': x[1], 'members': context['members'].filter(group=x[0])} for x in Member.GROUP_CHOICES ]
-        context['project_member_groups'] += [ {'group': 'Volunteer', 'project_members': project_members.filter(member=None).order_by('volunteer_name')} ]
+        context['members'] = Member.objects.filter(member_query | active_query).order_by('user__first_name', 'user__last_name').distinct()
+
+        context['project_member_groups'] = [{'group': x[1], 'members': context['members'].filter(group=x[0])} for x in Member.GROUP_CHOICES]
+        context['project_member_groups'] += [{'group': 'Volunteer', 'project_members': project_members.filter(member=None).order_by('volunteer_name')}]
 
         context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
         next_year = int(context['year']) + 1
@@ -126,6 +130,7 @@ class MembersView(ListView):
         else:
             return super(MembersView, self).render_to_response(context)
 
+
 class DeleteMemberView(DeleteView):
     model = Member
     template_name = 'members/delete.html'
@@ -144,6 +149,27 @@ class DeleteMemberView(DeleteView):
 
     def get_success_url(self):
         return reverse('cms:members_url')
+
+
+class ArchiveMemberView(DeleteView):
+    model = Member
+    template_name = 'members/archive.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        member = get_object_or_404(Member, pk=kwargs.get('pk', None))
+        if permissions.can_user_archive_member(request.user, member):
+            return super(ArchiveMemberView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to archive members.')
+
+    def delete(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.status = Member.STATUS_ARCHIVED
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('cms:members_url')
+
 
 class NewsView(ListView):
     model = News
