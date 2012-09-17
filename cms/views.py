@@ -101,6 +101,8 @@ class MembersView(ListView):
         # active members are shown unconditinoally for current year
         if int(self.kwargs.get('year', settings.CURRENT_YEAR)) == settings.CURRENT_YEAR:
             active_query = Q(status=Member.STATUS_ACTIVE)
+            if permissions.is_user_slc_leader(self.request.user):
+                active_query = active_query | Q(status=Member.STATUS_ARCHIVED)
         else:
             active_query = Q()
 
@@ -165,6 +167,7 @@ class ArchiveMemberView(DeleteView):
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.status = Member.STATUS_ARCHIVED
+        self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
     def get_success_url(self):
