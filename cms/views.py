@@ -10,7 +10,7 @@ from django.db.models import Q
 
 from datetime import datetime
 
-from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag
+from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag, Sponsor
 from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm, PageForm
 
 from cms import signals
@@ -563,3 +563,45 @@ class EditPageView(UpdateView):
             return UpdateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to edit this page.')
+
+
+class SponsorView(ListView):
+    model = Sponsor
+    template_name = 'sponsors/sponsors.html'
+    context_object_name = 'members'
+
+    def get_context_data(self, **kwargs):
+        context = super(SponsorView, self).get_context_data(**kwargs)
+        context['sponsors'] = Sponsor.objects.all()
+        return context
+
+    def render_to_response(self, context):
+        if permissions.can_user_view_sponsors(self.request.user):
+            return CreateView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page.')
+
+class CreatePageView(CreateView):
+    model = Sponsor
+    object = model
+    form_class = SponsorForm
+    template_name = 'sponsors/create.html'
+
+    def render_to_response(self, context):
+        if permissions.can_user_create_sponsor(self.request.user):
+            return CreateView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page.')
+
+    def post(self, request, *args, **kwargs):
+        if permissions.can_user_create_page(self.request.user):
+            form = PageForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+
+                return HttpResponseRedirect(reverse('cms:homepage_url'))
+            else:
+                return self.render_to_response(self.get_context_data(form=form))
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page.')

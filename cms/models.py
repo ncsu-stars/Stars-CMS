@@ -217,3 +217,18 @@ class BlogPost(models.Model):
         verbose_name        = 'blog post'
         verbose_name_plural = 'blog posts'
         ordering            = ['-date']
+
+class Sponsor(models.Model):
+    name            = models.CharField(max_length=255)
+    image           = models.ImageField(upload_to=make_project_image_name, storage=OverwriteStorage(), blank=True)
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('cms:sponsor_url', (), {})
+
+    class Meta:
+        verbose_name        = 'sponsor'
+        verbose_name_plural = 'sponsors'
