@@ -11,7 +11,7 @@ from django.db.models import Q
 from datetime import datetime
 
 from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag, Sponsor
-from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm, PageForm
+from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm, PageForm, SponsorForm
 
 from cms import signals
 from cms import academic_year
@@ -567,35 +567,24 @@ class EditPageView(UpdateView):
 
 class SponsorView(ListView):
     model = Sponsor
+    form_class = SponsorForm
     template_name = 'sponsors/sponsors.html'
-    context_object_name = 'members'
+    context_object_name = 'sponsors'
 
     def get_context_data(self, **kwargs):
-        context = super(SponsorView, self).get_context_data(**kwargs)
-        context['sponsors'] = Sponsor.objects.all()
+        context = super(ListView, self).get_context_data(**kwargs)
+        context['form'] = SponsorForm()
         return context
-
-    def render_to_response(self, context):
-        if permissions.can_user_view_sponsors(self.request.user):
-            return CreateView.render_to_response(self, context)
-        else:
-            return HttpResponseForbidden('You do not have permission to access this page.')
-
-class CreatePageView(CreateView):
-    model = Sponsor
-    object = model
-    form_class = SponsorForm
-    template_name = 'sponsors/create.html'
-
+        
     def render_to_response(self, context):
         if permissions.can_user_create_sponsor(self.request.user):
-            return CreateView.render_to_response(self, context)
+            return ListView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to access this page.')
 
     def post(self, request, *args, **kwargs):
-        if permissions.can_user_create_page(self.request.user):
-            form = PageForm(request.POST)
+        if permissions.can_user_create_sponsor(self.request.user):
+            form = SponsorForm(request.POST)
 
             if form.is_valid():
                 form.save()
@@ -605,3 +594,39 @@ class CreatePageView(CreateView):
                 return self.render_to_response(self.get_context_data(form=form))
         else:
             return HttpResponseForbidden('You do not have permission to access this page.')
+
+class CreateSponsorView(CreateView):
+    model = Sponsor
+    object = model
+    form_class = SponsorForm
+    context_object_name = 'sponsors'
+
+
+    def post(self, request, *args, **kwargs):
+        if permissions.can_user_create_sponsor(self.request.user):
+            form = SponsorForm(request.POST)
+
+            if form.is_valid():
+                form.save()
+
+                return HttpResponseRedirect(reverse('cms:homepage_url'))
+            else:
+                return self.render_to_response(self.get_context_data(form=form))
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page.')
+
+    def get_success_url(self):
+        return reverse('cms:projects_url')
+
+class DeleteSponsorView(DeleteView):
+    model = Sponsor
+
+    def dispatch(self, request, *args, **kwargs):
+        sponsor = get_object_or_404(Sponsor, pk=kwargs.get('pk', None))
+        if permissions.can_user_delete_sponsor(request.user, sponsor):
+            return super(DeleteSponsorView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to delete sponsors.')
+
+    def get_success_url(self):
+        return reverse('cms:sponsors_url')

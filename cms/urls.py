@@ -8,7 +8,7 @@ from cms.views import ProjectView, MembersView, EditProfileView, EditProjectView
 from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, BlogsYearView
 from cms.views import BlogsMonthView, CreateProjectView, CreateMemberView, ActivateMemberView
 from cms.views import DeleteProjectView, CreatePageView, EditPageView, PageAllView, DeleteMemberView, DeletePageView
-from cms.views import SponsorView, CreateSponsorView, DeleteSponsorView
+from cms.views import SponsorView, DeleteSponsorView
 
 urlpatterns = (
     url(r'^$', HomepageView.as_view(), name='homepage_url'),
@@ -63,8 +63,7 @@ urlpatterns += (
 
 urlpatterns += (
     url(r'^sponsors/$', SponsorView.as_view(), name='sponsors_url'),
-    url(r'^sponsors/add$', CreateSponsorView.as_view(), name='add_sponsors_url'),
-    url(r'^sponsors/(?P<pk>\d+)/delete$', DeleteSponsorView.as_view(), name='delete_sponsors_url'),
+    url(r'^sponsors/(?P<pk>\d+)/delete$', DeleteSponsorView.as_view(), name='delete_sponsor_url'),
 )
 
 if settings.DEBUG:

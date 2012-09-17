@@ -6,7 +6,7 @@ from django.forms import ModelForm, ModelChoiceField
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.models import User
 
-from cms.models import Member, Project, ProjectMember, BlogPost, Tag, Page
+from cms.models import Member, Project, ProjectMember, BlogPost, Tag, Page, Sponsor
 
 class MemberForm(ModelForm):
     class Meta:
@@ -71,3 +71,13 @@ class BlogForm(ModelForm):
 class PageForm(ModelForm):
     class Meta:
         model = Page
+
+class SponsorForm(ModelForm):
+    class Meta:
+        model = Sponsor
+
+    def save(self, commit=True):
+        sponsor = super(ModelForm, self).save(commit=False)
+        # save the regular fields
+        sponsor.save()
+        return sponsor

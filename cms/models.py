@@ -24,6 +24,12 @@ def make_project_image_name(instance, filename):
         raise Exception('save Project instance before saving ImageField')
     return os.path.join(PROJECT_IMAGE_FOLDER, str(instance.pk) + os.path.splitext(filename)[1].lower())
 
+SPONSOR_IMAGE_FOLDER = 'sponsor'
+def make_sponsor_image_name(instance, filename):
+    if instance.pk is None:
+        raise Exception('save Sponsor instance before saving ImageField')
+    return os.path.join(SPONSOR_IMAGE_FOLDER, str(instance.pk) + os.path.splitext(filename)[1].lower())
+
 class Member(models.Model):
     GROUP_CHOICES = (
         (u'graduate', u'Graduate'),
@@ -220,7 +226,7 @@ class BlogPost(models.Model):
 
 class Sponsor(models.Model):
     name            = models.CharField(max_length=255)
-    image           = models.ImageField(upload_to=make_project_image_name, storage=OverwriteStorage(), blank=True)
+    image           = models.ImageField(upload_to=make_sponsor_image_name, storage=OverwriteStorage(), blank=True)
 
     def __unicode__(self):
         return unicode(self.name)

@@ -78,3 +78,7 @@ def projects_by_year(member, year):
 @register.filter
 def field(object, fieldname):
     return getattr(object, fieldname)
+
+@register.filter
+def can_delete_sponsor(user):
+    return permissions.can_user_delete_sponsor(user)
