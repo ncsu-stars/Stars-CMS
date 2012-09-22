@@ -1,23 +1,20 @@
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils import simplejson
-from django.http import HttpResponse, HttpResponseRedirect, Http404, HttpResponseNotAllowed, HttpResponseForbidden
-from django.contrib.auth.decorators import login_required
-from django.contrib.auth.models import User, Group
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.contrib.auth.models import User
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView, DeleteView
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
-
-from datetime import datetime
 
 from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag
 from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm, PageForm
 
 from cms import signals
-from cms import academic_year
 from cms import permissions
 
-import re, time
+import re
+import time
 
 class JSONResponseMixin(object):
     def get_json_response(self, json, **kwargs):
@@ -101,16 +98,18 @@ class MembersView(ListView):
         # active members are shown unconditinoally for current year
         if int(self.kwargs.get('year', settings.CURRENT_YEAR)) == settings.CURRENT_YEAR:
             active_query = Q(status=Member.STATUS_ACTIVE)
-            if permissions.is_user_slc_leader(self.request.user):
-                active_query = active_query | Q(status=Member.STATUS_ARCHIVED)
         else:
             active_query = Q()
 
         context['members'] = Member.objects.filter(member_query | active_query).order_by('user__first_name', 'user__last_name').distinct()
 
+        if permissions.is_user_slc_leader(self.request.user):
+            context['archived_members'] = Member.objects.filter(status=Member.STATUS_ARCHIVED).order_by('user__first_name', 'user__last_name')
+
         context['project_member_groups'] = [{'group': x[1], 'members': context['members'].filter(group=x[0])} for x in Member.GROUP_CHOICES]
         context['project_member_groups'] += [{'group': 'Volunteer', 'project_members': project_members.filter(member=None).order_by('volunteer_name')}]
 
+        context['current_year'] = settings.CURRENT_YEAR
         context['year'] = self.kwargs.get('year', settings.CURRENT_YEAR)
         next_year = int(context['year']) + 1
         context['year2'] = next_year
@@ -167,6 +166,27 @@ class ArchiveMemberView(DeleteView):
     def delete(self, request, *args, **kwargs):
         self.object = self.get_object()
         self.object.status = Member.STATUS_ARCHIVED
+        self.object.save()
+        return HttpResponseRedirect(self.get_success_url())
+
+    def get_success_url(self):
+        return reverse('cms:members_url')
+
+
+class ReactivateMemberView(UpdateView):
+    model = Member
+    template_name = 'members/reactivate.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        member = get_object_or_404(Member, pk=kwargs.get('pk', None))
+        if permissions.can_user_reactivate_member(request.user, member):
+            return super(ReactivateMemberView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to reactivate members.')
+
+    def post(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.status = Member.STATUS_ACTIVE
         self.object.save()
         return HttpResponseRedirect(self.get_success_url())
 
@@ -543,6 +563,7 @@ class CreateMemberView(CreateView):
         else:
             return HttpResponseForbidden('You do not have permission to access this page.')
 
+
 class ActivateMemberView(UpdateView):
     model = Member
     form_class = MemberForm
@@ -556,6 +577,7 @@ class ActivateMemberView(UpdateView):
 
     def render_to_response(self, context):
         return TemplateView.render_to_response(self, context)
+
 
 class CreatePageView(CreateView):
     model = Page

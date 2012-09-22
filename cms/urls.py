@@ -7,7 +7,7 @@ from cms.views import HomepageView, ProfileView, NewsView, NewsDetailView, PageD
 from cms.views import ProjectView, MembersView, EditProfileView, EditProjectView, BlogView
 from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, BlogsYearView
 from cms.views import BlogsMonthView, CreateProjectView, CreateMemberView, ActivateMemberView
-from cms.views import DeleteProjectView, CreatePageView, EditPageView, PageAllView, ArchiveMemberView, DeleteMemberView, DeletePageView
+from cms.views import DeleteProjectView, CreatePageView, EditPageView, PageAllView, ArchiveMemberView, DeleteMemberView, ReactivateMemberView, DeletePageView
 
 urlpatterns = (
     url(r'^$', HomepageView.as_view(), name='homepage_url'),
@@ -45,6 +45,7 @@ urlpatterns += (
 urlpatterns += (
     url(r'^people/create/$', CreateMemberView.as_view(), name='create_member_url'),
     url(r'^people/activate/(?P<key>\w+)/$', ActivateMemberView.as_view(), name='activate_member_url'),
+    url(r'^people/(?P<pk>\w+)/reactivate/$', ReactivateMemberView.as_view(), name='reactivate_member_url'),
     url(r'^people/all/$', MembersView.as_view(), name='members_url'),
     url(r'^people/all/(?P<year>\d+)/$', MembersView.as_view(), name='members_year_url'),
     url(r'^people/(?P<pk>\d+)/$', ProfileView.as_view(), name='profile_url'),
