@@ -1,13 +1,15 @@
 .badge{
-    width: 650px;
     padding: 5px;
-    clear: both;
     margin-bottom: 20px;
     border-color: #CCCCCC;
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
     disaply:table;
+}
+
+.badge-archived {
+    opacity: 0.5;
 }
 
 .badge div {
