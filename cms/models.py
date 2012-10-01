@@ -233,7 +233,14 @@ class Sponsor(models.Model):
 
     @models.permalink
     def get_absolute_url(self):
-        return ('cms:sponsor_url', (), {})
+        return ('cms:sponsors_url')
+
+    def save(self):
+        img_tmp = self.image
+        self.image = None
+        super(Sponsor, self).save()
+        self.image = img_tmp
+        return super(Sponsor, self).save()
 
     class Meta:
         verbose_name        = 'sponsor'

@@ -75,9 +75,3 @@ class PageForm(ModelForm):
 class SponsorForm(ModelForm):
     class Meta:
         model = Sponsor
-
-    def save(self, commit=True):
-        sponsor = super(ModelForm, self).save(commit=False)
-        # save the regular fields
-        sponsor.save()
-        return sponsor

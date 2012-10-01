@@ -84,7 +84,7 @@ $(window).load(function() {
 
 <div class="span-24 last" style="text-align: center">
 <p><p>
-    {% for sponsor in sponsors %} <img alt="{{ sponsor.name }}" src="{{ STATIC_URL }}{{ SPONSOR_LOGO_URL }}{{ sponsor.logo_path }}" width="9%" /> {% endfor %}
+    {% for sponsor in sponsors %} {% if sponsor.image %}<img alt="{{ sponsor.name }}" src="{{ MEDIA_URL }}{{ sponsor.image }}" width="9%" /> {% endif %}{% endfor %}
 </div>
 
 {% endblock content %}
