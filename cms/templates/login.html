@@ -60,7 +60,7 @@
         <legend>Login</legend>
         {% for field in form %}
         <div class="clearfix">
-            <label for="id_{{ field.label }}">{{ field.label }}</label>
+            <label for="id_{{ field.name }}">{{ field.label }}</label>
             <div class="input">
                 {{ field }}
             </div>
