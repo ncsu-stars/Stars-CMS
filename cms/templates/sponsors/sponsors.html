@@ -31,25 +31,13 @@
         <small><a href="{% url cms:delete_sponsor_url pk=sponsor.pk %}">delete</a></small>
         {% endif %}
     </h3>
-    
-    <dd>
-        <ul class="unstyled">
-        {% for project_member in project.projectmember_set.all %}
-            {% if project_member.member %}
-            <li><a href="{% url cms:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>{% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
-            {% else %}
-            <li>{{ project_member.volunteer_name }} (Volunteer)</li>
-            {% endif %}
-        {% endfor %}
-        </ul>
-    </dd>
 </dl></div>
 {% endfor %}
 </div>
 
 
 {% else %}
-    No projects available.
+    No sponsors.
 {% endif %}
 
 

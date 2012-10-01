@@ -671,6 +671,7 @@ class CreateSponsorView(CreateView):
 
 class DeleteSponsorView(DeleteView):
     model = Sponsor
+    template_name = 'sponsors/delete.html'
 
     def dispatch(self, request, *args, **kwargs):
         sponsor = get_object_or_404(Sponsor, pk=kwargs.get('pk', None))
