@@ -51,6 +51,15 @@ def can_user_delete_member(user, member):
     # member status is not checked since the SLC leader user overrides
     return is_user_slc_leader(user)
 
+def can_user_archive_member(user, member):
+    # only the SLC leader can delete members through the main interface
+    # member status is not checked since the SLC leader user overrides
+    return is_user_slc_leader(user)
+
+def can_user_reactivate_member(user, member):
+    # only the SLC leader can reactivate members through the main interface
+    return is_user_slc_leader(user)
+
 def can_user_post_as_member(user, member):
     # only the user that owns a member profile can post to that member's blog
     # but only if that member is not archived for normal users (strictly not necessary since inactive user cannot log in)
