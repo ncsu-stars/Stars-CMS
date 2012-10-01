@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Sponsor{% endblock title %}
+
+
+{% block content %}
+{% load filters %}
+{% if user|can_delete_sponsor %}
+<form id="deleteMember" method="post" action="{% url cms:delete_sponsor_url pk=sponsor.pk %}">
+    {% csrf_token %}
+    <h1>Are you sure you want to delete {{ sponsor }}</h1>
+    <input type="submit" class="btn danger" value="Yes, delete sponsor" />
+    <a href="{% url cms:sponsors_url %}" class="btn primary">No, do not delete sponsor</a>
+</form>
+{% endif %}
+{% endblock content %}
