@@ -623,7 +623,7 @@ class DeleteSponsorView(DeleteView):
 
     def dispatch(self, request, *args, **kwargs):
         sponsor = get_object_or_404(Sponsor, pk=kwargs.get('pk', None))
-        if permissions.can_user_delete_sponsor(request.user, sponsor):
+        if permissions.can_user_delete_sponsor(request.user):
             return super(DeleteSponsorView, self).dispatch(request, *args, **kwargs)
         else:
             return HttpResponseForbidden('You do not have permission to delete sponsors.')
