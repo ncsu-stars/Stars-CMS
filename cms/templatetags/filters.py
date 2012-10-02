@@ -41,7 +41,15 @@ def can_delete_project(user, project):
 @register.filter
 def can_edit_member(user, member):
     return permissions.can_user_edit_member(user, member)
-    
+
+@register.filter
+def can_archive_member(user, member):
+    return permissions.can_user_archive_member(user, member)
+
+@register.filter
+def can_reactivate_member(user, member):
+    return permissions.can_user_reactivate_member(user, member)
+
 @register.filter
 def can_delete_member(user, member):
     return permissions.can_user_delete_member(user, member)
