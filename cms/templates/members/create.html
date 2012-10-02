@@ -1,116 +1,92 @@
 {% extends 'base.html' %}
 
+{% load bootstrap_toolkit %}
+
 {% block title %}Create Member{% endblock title %}
 
 {% block extrajs %}
-<script type="text/javascript">
-$(document).ready(function() {
-    var timer = null,
-        timeout = 500;
+    <script type="text/javascript">
+        $(document).ready(function() {
+            var timer = null,
+                timeout = 500;
 
-    var get_user = function(username) {
-        var change_form = function(first_name, last_name, email, classification) {
-            $('#id_first_name').val(first_name);
-            $('#id_last_name').val(last_name);
-            $('#id_email').val(email);
+            var get_user = function(username) {
+                var change_form = function(first_name, last_name, email, classification) {
+                    $('#id_first_name').val(first_name);
+                    $('#id_last_name').val(last_name);
+                    $('#id_email').val(email);
 
-            if(classification == null) {
-                $('#id_group').val(null);
-                $('#id_classification').val(null);
-            } else if(classification.toLowerCase() === 'graduate') {
-                $('#id_group').val('graduate');
-                $('#id_classification').val(null);
-            } else {
-                $('#id_group').val('undergraduate');
-                $('#id_classification').val(classification.toLowerCase());
-            }
-        }
-
-        $.getJSON('/directory/', {'user': username}, function(data, status, xhr) {
-            console.log(data);
-            if(data && data.name && data.email) {
-                var first_name = data.name.substring(0, data.name.indexOf(' ')),
-                    last_name = null;
-
-                if(data.name.split(' ').length > 3) {
-                    last_name = data.name.split(' ')[2].trim();
-                } else if(data.name.split(' ') < 3) {
-                    last_name = data.name.substring(data.name.lastIndexOf(' ')).trim();
-                } else {
-                    if(data.name.split(' ')[2].match(/^M*(?:D?C{0,3}|C[MD])(?:L?X{0,3}|X[CL])(?:V?I{0,3}|I[XV])$/i)) {
-                        last_name = data.name.split(' ')[1].trim();
-                    }
-
-                    if(data.name.split(' ')[2].indexOf('.') !== -1) {
-                        last_name = data.name.split(' ')[1].trim();
+                    if(classification == null) {
+                        $('#id_group').val(null);
+                        $('#id_classification').val(null);
+                    } else if(classification.toLowerCase() === 'graduate') {
+                        $('#id_group').val('graduate');
+                        $('#id_classification').val(null);
+                    } else {
+                        $('#id_group').val('undergraduate');
+                        $('#id_classification').val(classification.toLowerCase());
                     }
                 }
 
-                var email = data.email,
-                classification = data.classification;
+                $.getJSON('/directory/', {'user': username}, function(data, status, xhr) {
+                    console.log(data);
+                    if(data && data.name && data.email) {
+                        var first_name = data.name.substring(0, data.name.indexOf(' ')),
+                            last_name = null;
 
-                change_form(first_name, last_name, email, classification);
-            } else {
-                change_form(null, null, null, null);
-            }
+                        if(data.name.split(' ').length > 3) {
+                            last_name = data.name.split(' ')[2].trim();
+                        } else if(data.name.split(' ') < 3) {
+                            last_name = data.name.substring(data.name.lastIndexOf(' ')).trim();
+                        } else {
+                            if(data.name.split(' ')[2].match(/^M*(?:D?C{0,3}|C[MD])(?:L?X{0,3}|X[CL])(?:V?I{0,3}|I[XV])$/i)) {
+                                last_name = data.name.split(' ')[1].trim();
+                            }
+
+                            if(data.name.split(' ')[2].indexOf('.') !== -1) {
+                                last_name = data.name.split(' ')[1].trim();
+                            }
+                        }
+
+                        var email = data.email,
+                        classification = data.classification;
+
+                        change_form(first_name, last_name, email, classification);
+                    } else {
+                        change_form(null, null, null, null);
+                    }
+                });
+            };
+
+            $('#id_unity_id').keyup(function() {
+                var that = this;
+
+                timer = setTimeout(function() {
+                    if($(that).val().length) {
+                        get_user($(that).val());
+                    }
+                }, timeout);
+            });
+
+            $('#id_unity_id').keydown(function() {
+                clearTimeout(timer);
+            });
         });
-    };
-
-    $('#id_unity_id').keyup(function() {
-        var that = this;
-
-        timer = setTimeout(function() {
-            if($(that).val().length) {
-                get_user($(that).val());
-            } 
-        }, timeout);
-    });
-
-    $('#id_unity_id').keydown(function() {
-        clearTimeout(timer);
-    });
-
-    $('#cancel').click(function(e) {
-        e.preventDefault();
-
-        if(confirm('Are you sure you want to leave this page?')) {
-            window.location = '{% url cms:members_url %}';
-        }
-    });
-});
-</script>
+    </script>
 {% endblock extrajs %}
 
 {% block content %}
-{% if form.is_multipart %}
-<form id="createMemberForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:create_member_url %}">
-{% else %}
-<form id="createMemberForm" width="700px" method="post" action="{% url cms:create_member_url %}">
-{% endif %}
-    {% csrf_token %}
-    {% if form.errors %}
-        {% for field in form %}
-            {% if field.errors %}
-                <div class="formlyRequired" style="display: block">
-                    {{ field.label }}: {{ field.errors|first }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    <fieldset>
-        <legend>Create Member</legend>
-        {% for field in form %}
-        <div class="clearfix">
-            <label for="id_{{ field.label }}">{{ field.label }}</label>
-            <div class="input">
-                {{ field }}
+    <form id="createMemberForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url cms:create_member_url %}">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Create Member</legend>
+            {{ form|as_bootstrap:"horizontal" }}
+        </fieldset>
+        <div class="control-group">
+            <div class="controls">
+                <button type="submit" class="btn btn-primary">Create Member</button>
+                <a class="btn" href="{% url cms:members_url %}">Cancel</a>
             </div>
         </div>
-        {% endfor %}
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Create" />
-            <button type="button" id="cancel" class="btn">Cancel</button>
-        </div>
-    </fieldset>
-</form>
+    </form>
 {% endblock content %}

@@ -3,97 +3,114 @@
 {% load filters %}
 
 {% block extracss %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/badge.css">
-<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/badge.css" />
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/index.css" />
 {% endblock extracss %}
+
 {% block current_page %}current="#top_members";{% endblock current_page %}
+
 {% block title %}People {{ year }} &ndash; {{ year2 }}{% endblock title %}
 
 {% block content %}
+    <div class="row">
+        <h4 class="span3">
+            {% if prev_year %}
+                <a href="{% url cms:members_year_url year=prev_year%}">&laquo; People {{ prev_year }} &ndash; {{ prev_year2 }}</a>
+            {% else %}
+                &nbsp;
+            {% endif%}
+        </h4>
+        <h2 class="span6" style="text-align: center;">
+            People {{ year }} &ndash; {{ year2 }}
+        </h2>
+        <h4 class="span3" style="text-align: right;">
+            {% if next_year %}
+                <a href="{% url cms:members_year_url year=next_year%}">People {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>
+            {% else %}
+                &nbsp;
+            {% endif %}
+        </h4>
+    </div>
 
-<h4 class="span-6">{% if prev_year %}<a href="{% url cms:members_year_url year=prev_year%}">&laquo; People {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif%}</h4>
-<h2 class="span-12" style="text-align: center;">People {{ year }} &ndash; {{ year2 }}</h2>
-<h4 class="span-6 last" style="text-align: right;">{% if next_year %}<a href="{% url cms:members_year_url year=next_year%}">People {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% else %}&nbsp;{% endif %}</h4>
-<br/><br/>
-<div class="row">
-{% if members %}
-<div class="span12" style="margin-top: 20px;">
-    {% for member in members %}
-        <div class="badge">
-            <div class="member_pic"><a href="{% url cms:profile_url pk=member.pk %}">
-                {% if member.image %}
-                    <img src="{{ MEDIA_URL }}/{{member.image}}"/>
-                {% else %}
-                    <img src="/static/images/placeholder.png"/>
-                {% endif %}</a></div>
-            <div class="member_info">
-                <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2>
-                <small>from {{ member.hometown }}</small><br/>
-                {% if member.blogpost_set.all %}
-                    <a href="{% url cms:blog_url pk=member.pk%}">View blog posts</a>
-                {% endif %}
-                <br/>
-                {% if member.homepage %}
-                Website: <a href="{{ member.homepage }}">{{ member.homepage }}</a>
-                {% endif %}
+    <div class="row">
+        {% if members %}
+            <div class="span8">
+                {% for member in members %}
+                    <div class="badge">
+                        <div class="member_pic"><a href="{% url cms:profile_url pk=member.pk %}">
+                            {% if member.image %}
+                                <img src="{{ MEDIA_URL }}/{{member.image}}"/>
+                            {% else %}
+                                <img src="/static/images/placeholder.png"/>
+                            {% endif %}</a></div>
+                        <div class="member_info">
+                            <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2>
+                            <small>from {{ member.hometown }}</small><br/>
+                            {% if member.blogpost_set.all %}
+                                <a href="{% url cms:blog_url pk=member.pk%}">View blog posts</a>
+                            {% endif %}
+                            <br/>
+                            {% if member.homepage %}
+                            Website: <a href="{{ member.homepage }}">{{ member.homepage }}</a>
+                            {% endif %}
+                        </div>
+                        <div class="member_participation">
+                            {% if member|projects_by_year:year %}
+                                Current Projects:<br/>
+                                {% for project in member|projects_by_year:year %}
+                                    <a href="{% url cms:projects_year_url year=year %}#{{ project.pk }}">{{project.title }}</a><br/>
+                                {% endfor %}
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
             </div>
-            <div class="member_participation">
-                {% if member|projects_by_year:year %}
-                    Current Projects:<br/>
-                    {% for project in member|projects_by_year:year %}
-                        <a href="{% url cms:projects_year_url year=year %}#{{ project.pk }}">{{project.title }}</a><br/>
-                    {% endfor %}
-                {% endif %}
+            <div class="span4">
+                {% for project_member_group in project_member_groups %}
+                    {% if project_member_group.members or project_member_group.project_members %}
+                        <div class="index">
+                        <h3>{{ project_member_group.group }}</h3>
+                        <ul>
+                        {% for member in project_member_group.members %}
+                            <li><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></li>
+                        {% endfor %}
+                        {% for project_member in project_member_group.project_members %}
+                            <li>{{ project_member.volunteer_name }}</li>
+                        {% endfor %}
+                        </ul>
+                        </div>
+                    {% endif %}
+                {% endfor %}
             </div>
-        </div>
-    {% endfor %}
-</div>
-<div class="span4 last" style="margin-top: 20px;">
-    {% for project_member_group in project_member_groups %}
-        {% if project_member_group.members or project_member_group.project_members %}
-            <div class="index">
-            <h3>{{ project_member_group.group }}</h3>
-            <ul>
-            {% for member in project_member_group.members %}
-                <li><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></li>
-            {% endfor %}
-            {% for project_member in project_member_group.project_members %}
-                <li>{{ project_member.volunteer_name }}</li>
-            {% endfor %}
-            </ul>
-            </div>
+        {% else %}
+            No people available.
         {% endif %}
-    {% endfor %}
-</div>
-{% else %}
-No people available.
-{% endif %}
+    </div>
 
-</div>
-{% if archived_members and year == current_year %}
-    <br/><br/>
-    <h2 class="span16" style="text-align: center;">Archived Members</h2>
-    <br/><br/>
-    {% for member in archived_members %}
-        <div class="row">
-            <div class="span12">
-                <div class="badge badge-archived">
-                    <div class="member_pic"><a href="{% url cms:profile_url pk=member.pk %}">
-                        {% if member.image %}
-                            <img src="{{ MEDIA_URL }}/{{member.image}}"/>
-                        {% else %}
-                            <img src="/static/images/placeholder.png"/>
-                        {% endif %}</a></div>
-                    <div class="member_info">
-                        <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2>
-                        {% if member.blogpost_set.all %}
-                            <a href="{% url cms:blog_url pk=member.pk%}">View blog posts</a>
-                        {% endif %}
+    {% if archived_members and year == current_year %}
+        <h2 class="span8" style="text-align: center;">Archived Members</h2>
+        {% for member in archived_members %}
+            <div class="row">
+                <div class="span8">
+                    <div class="badge badge-archived">
+                        <div class="member_pic"><a href="{% url cms:profile_url pk=member.pk %}">
+                            {% if member.image %}
+                                <img src="{{ MEDIA_URL }}/{{member.image}}"/>
+                            {% else %}
+                                <img src="/static/images/placeholder.png"/>
+                            {% endif %}</a></div>
+                        <div class="member_info">
+                            <h2><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a></h2>
+                            {% if member.blogpost_set.all %}
+                                <a href="{% url cms:blog_url pk=member.pk%}">View blog posts</a>
+                            {% endif %}
+                        </div>
                     </div>
                 </div>
+                <div class="span4" style="text-align:center">
+                    <a class="btn" href="{% url cms:reactivate_member_url pk=member.pk%}">Reactivate User</a>
+                </div>
             </div>
-            <div class="span4 last" style="text-align:center"><a class="btn" href="{% url cms:reactivate_member_url pk=member.pk%}">Reactivate User</a></div>
-        </div>
-    {% endfor %}
-{% endif %}
+        {% endfor %}
+    {% endif %}
 {% endblock content %}
