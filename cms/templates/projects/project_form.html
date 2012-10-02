@@ -1,0 +1,13 @@
+{% load bootstrap_toolkit %}
+
+{% csrf_token %}
+<fieldset>
+    <legend>{{ legend }}</legend>
+    {{ form|as_bootstrap:"horizontal" }}
+</fieldset>
+<div class="control-group">
+    <div class="controls">
+        <button type="submit" class="btn btn-primary">{{ legend }}</button>
+        <a href="{% url cms:projects_url %}" class="btn">Cancel</a>
+    </div>
+</div>

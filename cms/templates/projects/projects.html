@@ -24,7 +24,7 @@
             Projects {{ year }} &ndash; {{ year2 }}
         </h2>
 
-        <h4 class="span-6 last" style="text-align: right;">
+        <h4 class="span3" style="text-align: right;">
             {% if next_year %}
                 <a href="{% url cms:projects_year_url year=next_year%}">Projects {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>
             {% else %}
@@ -38,43 +38,41 @@
             <div class="span9" id="projects">
             {% for project in projects %}
                 <div class="row">
-                    <div class="span8">
-                        {% if project.image %}
-                            <img class="span-6" style="margin-bottom: 2em;" src="{{ MEDIA_URL }}{{ project.image }}" width="35%" />
-                        {% else %}
-                            <!--img class="span-6" style="margin-bottom: 2em;" src="{{ STATIC_URL }}images/octocat.jpg" width="35%" /-->
-                            <div class="span-6" style="margin-bottom: 2em;"></div>
-                        {% endif %}
+                    {% if project.image %}
+                        <img class="span3" style="margin-bottom: 2em;" src="{{ MEDIA_URL }}{{ project.image }}" />
+                    {% else %}
+                        <!--img class="span-6" style="margin-bottom: 2em;" src="{{ STATIC_URL }}images/octocat.jpg" width="35%" /-->
+                        <div class="span3" style="margin-bottom: 2em;"></div>
+                    {% endif %}
 
-                        <dl class="span4">
-                            <a name="{{ project.pk }}"></a>
-                            <h3>
-                                {{ project.title }}
-                                {% if user|can_edit_project:project %}
-                                    <small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>
-                                {% endif %}
-                                {% if user|can_delete_project:project %}
-                                    <small><a href="{% url cms:delete_project_url pk=project.pk %}">delete</a></small>
-                                {% endif %}
-                            </h3>
-                            {{ project.description|stripjs }}
-                            <dt style="padding-top: 5px;">Members</dt>
-                            <dd>
-                                <ul class="unstyled">
-                                    {% for project_member in project.projectmember_set.all %}
-                                        {% if project_member.member %}
-                                            <li>
-                                                <a href="{% url cms:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>
-                                                {% if project_member.role %} ({{ project_member.role }}){% endif %}
-                                            </li>
-                                        {% else %}
-                                            <li>{{ project_member.volunteer_name }} (Volunteer)</li>
-                                        {% endif %}
-                                    {% endfor %}
-                                </ul>
-                            </dd>
-                        </dl>
-                    </div>
+                    <dl class="span6">
+                        <a name="{{ project.pk }}"></a>
+                        <h3>
+                            {{ project.title }}
+                            {% if user|can_edit_project:project %}
+                                <small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>
+                            {% endif %}
+                            {% if user|can_delete_project:project %}
+                                <small><a href="{% url cms:delete_project_url pk=project.pk %}">delete</a></small>
+                            {% endif %}
+                        </h3>
+                        {{ project.description|stripjs }}
+                        <dt style="padding-top: 5px;">Members</dt>
+                        <dd>
+                            <ul class="unstyled">
+                                {% for project_member in project.projectmember_set.all %}
+                                    {% if project_member.member %}
+                                        <li>
+                                            <a href="{% url cms:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>
+                                            {% if project_member.role %} ({{ project_member.role }}){% endif %}
+                                        </li>
+                                    {% else %}
+                                        <li>{{ project_member.volunteer_name }} (Volunteer)</li>
+                                    {% endif %}
+                                {% endfor %}
+                            </ul>
+                        </dd>
+                    </dl>
                 </div>
             {% endfor %}
         </div>

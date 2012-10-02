@@ -68,8 +68,8 @@
 <body>
     {% load filters %}
     {% if user|is_slc_leader %}
-        <div class="topbar">
-            <div class="topbar-inner">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
                 <div class="container">
                     <a class="brand" href="{% url cms:homepage_url %}">Stars CMS</a>
                     <ul class="nav">
@@ -85,7 +85,7 @@
         <div class="shiv"></div>
     {% endif %}
 
-    <div class="container" style="padding-top: 10px;">
+    <div id="body" class="container">
         <div class="row">
             <div class="span2">
                 <a href="{% url cms:homepage_url %}"><img height="125px" src="{{ STATIC_URL }}images/STARS_Logo2.jpg" /></a>
