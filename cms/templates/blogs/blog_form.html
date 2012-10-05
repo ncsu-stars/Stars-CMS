@@ -1,3 +1,5 @@
+{% load bootstrap_toolkit %}
+
 {% block extrajs %}
 <script type="text/javascript">
     $(document).ready(function() {
@@ -37,44 +39,18 @@
                 alert('Cannot have an empty tag');
             }
         });
-
-        $('#cancel').click(function(e) {
-            e.preventDefault();
-
-            if(confirm('Are you sure you want to leave this page?')) {
-                window.location = '{% url cms:blog_url pk=member.pk %}';
-            }
-        });
     });
 </script>
 {% endblock extrajs %}
 
 {% csrf_token %}
-{% if form.errors %}
-    {% for field in form %}
-        {% if field.errors %}
-            <div class="formlyRequired" style="display: block">
-                {{ field.label }}: {{ field.errors|first }}
-            </div>
-        {% endif %}
-    {% endfor %}
-{% endif %}
 <fieldset>
     <legend>{{ legend }}</legend>
-    {% for field in form %}
-    <div class="clearfix">
-        <label for="id_{{ field.name }}">{{ field.label }}</label>
-        <div class="input">
-            {% if field.label == 'Tags' %}
-                {{ field }}<br />
-                <input type="text" id="tag" value="Or add a tag..." /> <input type="button" class="btn" id="add_tag" value="Add" />
-            {% else %}
-                {{ field }}
-            {% endif %}
+    {{ form|as_bootstrap:"horizontal" }}
+    <div class="control-group">
+        <div class="controls">
+            <button type="submit" class="btn btn-primary">Submit Post</button>
+            <a class="btn" href="{% url cms:blog_url pk=member.pk %}">Cancel</a>
         </div>
     </div>
-    {% endfor %}
-    <div class="actions">
-        <input type="submit" class="btn primary" value="Submit Post" />
-        <button type="button" id="cancel" class="btn">Cancel</button>
 </fieldset>

@@ -2,18 +2,8 @@
 
 {% block title %}Add a new blog post{% endblock title %}
 
-{% block extracss %}
-{% endblock extracss %}
-
-{% block extrajs %}
-{% endblock extrajs %}
-
 {% block content %}
-{% if form.is_multipart %}
-<form id="addBlogForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:add_blog_url pk=member.pk %}">
-{% else %}
-<form id="addBlogForm" width="700px" method="post" action="{% url cms:add_blog_url pk=member.pk %}">
-{% endif %}
-{% include 'blogs/blog_form.html' with legend="Add Post" %}
-</form>
+    <form id="addBlogForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url cms:add_blog_url pk=member.pk %}">
+        {% include 'blogs/blog_form.html' with legend="Add Post" %}
+    </form>
 {% endblock content %}
