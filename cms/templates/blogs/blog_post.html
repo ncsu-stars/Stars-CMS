@@ -19,7 +19,7 @@
             </h1>
             <p><small>Tags: {{ blog.tags.all|join:", " }}</small></p>
             <p>
-                {{ blog.post|linebreaksbr|stripjs }}
+                {{ blog.post|stripjs|linebreaksbr }}
             </p>
         </div>
     </div>
