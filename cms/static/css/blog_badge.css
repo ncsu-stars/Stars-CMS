@@ -1,37 +1,25 @@
-.badge{
-    padding: 5px;
-    margin-bottom: 20px;
-    border-color: #CCCCCC;
-    border-style: solid;
-    border-width: 1px;
+.badge {
+    border: 1px solid #CCCCCC;
     border-radius: 5px;
-    margin: 5px;
+    background-color: #FFFFFF;
+    color: #222222;
+    text-shadow: none;
+    margin-bottom: 5px;
+    padding-top: 5px;
+    white-space: normal;
+    display: inline-block;
 }
 
-.badge .detail {
-    display: table-cell;
-    vertical-align: top;
-}
 .badge h3 {
-    line-height: 24px;
-}
-.badge h5 {
-    line-height: 18px;
-}
-.badge .pic img{
-    width: 75px;
-    margin-right: 10px;
-    vertical-align: middle;
-}
-.badge .pic{
-    display: table-cell;
-    vertical-align: middle;
-}
-.badge .details{
-    margin-left: 10px;
+    margin: 0;
+    line-height: 26px;
 }
 
-.badge .snippet{
-    height: 60px;
-    overflow: hidden;
+.badge h5 {
+    margin: 0;
+    line-height: 20px;
+}
+
+.badge p {
+    font-weight: normal;
 }

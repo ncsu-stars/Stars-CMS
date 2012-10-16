@@ -1,23 +1,28 @@
 {% block extracss %}
-<link rel="stylesheet" href="{{ STATIC_URL }}css/blog_badge.css">
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/blog_badge.css" />
 {% endblock extracss %}
-{% load filters %}
-{% for blog in blog_posts %}
 
-<div class="span-12 {% cycle '' 'last' %}">
-<div class="badge">
-    <div class="pic"><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">
-        {% if  blog.author.image %}
-            <img src="{{ MEDIA_URL }}/{{ blog.author.image}}"/>
-        {% else %}
-            <img src="{{ STATIC_URL }}images/placeholder.png"/>
-        {% endif %}</a></div>
-    <div class="detail">
-        <h3><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a></h3>
-        <h5><a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author.user.get_full_name }}</a> &ndash; {{ blog.date|date:"F j" }}</h5>
-        <div class="snippet">{{ blog.post|striptags|truncatewords_html:20 }}</div>
-    </div>
+<div class="row">
+    {% for blog in blog_posts %}
+        <div class="badge span9">
+            <div class="row">
+                <div class="span2">
+                    <a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">
+                        {% if  blog.author.image %}
+                            <img src="{{ MEDIA_URL }}/{{ blog.author.image}}"/>
+                        {% else %}
+                            <img src="{{ STATIC_URL }}images/placeholder.png"/>
+                        {% endif %}
+                    </a>
+                </div>
+                <div class="span7">
+                    <h3><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a></h3>
+                    <h5><a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author.user.get_full_name }}</a> &ndash; {{ blog.date|date:"F j" }}</h5>
+                    <p>{{ blog.post|striptags|truncatewords_html:50 }}</p>
+                </div>
+            </div>
+        </div>
+    {% empty %}
+        <h3>No blogs available.</h3>
+    {% endfor %}
 </div>
-</div>
-
-{% endfor %}

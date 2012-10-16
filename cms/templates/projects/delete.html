@@ -2,28 +2,14 @@
 
 {% block title %}Delete Project{% endblock title %}
 
-{% block extrajs %}
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#not_delete').click(function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        var url = '{% url cms:projects_url %}';
-        window.location.href = url;
-    });
-});
-</script>
-{% endblock extrajs %}
-
 {% block content %}
-{% load filters %}
-{% if user|can_delete_project:project %}
-<form id="deleteProject" method="post" action="{% url cms:delete_project_url pk=project.pk %}">
-    {% csrf_token %}
-    <h1>Are you sure you want to delete {{ project }}</h1>
-    <input type="submit" class="btn danger" value="Yes, delete project" />
-    <button type="button" id="not_delete" class="btn primary">No, do not delete project</button>
-</form>
-{% endif %}
+    {% load filters %}
+    {% if user|can_delete_project:project %}
+        <form method="post" action="{% url cms:delete_project_url pk=project.pk %}">
+            {% csrf_token %}
+            <h1>Are you sure you want to delete {{ project }}</h1>
+            <input type="submit" class="btn btn-danger" value="Yes, delete project" />
+            <a href="{% url cms:projects_url %}" class="btn">No, do not delete project</a>
+        </form>
+    {% endif %}
 {% endblock content %}

@@ -6,30 +6,49 @@
 {% block current_page %}current="#top_{{ page.pk }}";{% endblock current_page %}
 
 {% block content %}
-<h1>All Pages</h1>
+    <div class="row">
+        <div class="span12">
+            <h1>All Pages</h1>
 
-{% for page in pages %}
-<h2><a href="{% url cms:page_url slug=page.slug %}">{{ page.title }}</a>
-    <small>
-        {% if user|can_edit_page:page %}
-        <a href="{% url cms:edit_page_url pk=page.pk %}">edit</a>
-        {% endif %}
-        {% if user|can_delete_page:page %}
-        <a href="{% url cms:delete_page_url pk=page.pk %}">delete</a>
-        {% endif %}
-    </small>
-</h2>
-{% endfor %}
-
-{% if is_paginated %}
-    <div class="span-24 last" style="text-align: center;">
-    Page {{ page_obj.number }} of {{ paginator.num_pages }}<br />
-    {% if page_obj.has_previous %} <a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a> {% endif %}
-    {% for page in paginator.page_range %}
-        <a href="?page={{ page }}">{{ page }}</a>
-    {% endfor %}
-    {% if page_obj.has_next %} <a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a> {% endif %}
+            {% for page in pages %}
+            <h2><a href="{% url cms:page_url slug=page.slug %}">{{ page.title }}</a>
+                <small>
+                    {% if user|can_edit_page:page %}
+                    <a href="{% url cms:edit_page_url pk=page.pk %}">edit</a>
+                    {% endif %}
+                    {% if user|can_delete_page:page %}
+                    <a href="{% url cms:delete_page_url pk=page.pk %}">delete</a>
+                    {% endif %}
+                </small>
+            </h2>
+            {% endfor %}
+        </div>
     </div>
-{% endif %}
+
+    {% if is_paginated %}
+        <div class="row">
+            <div class="span6">
+                <div id="paginate" class="pagination">
+                    <ul>
+                        {% if page_obj.has_previous %}
+                            <li><a href="?page={{ page_obj.previous_page_number }}">&laquo; Previous</a></li>
+                        {% else %}
+                            <li class="disabled"><a href="#paginate">&laquo; Previous</a></li>
+                        {% endif %}
+                        {% for page in paginator.page_range %}
+                            <li {% if page_obj.number == page %}class="active"{% endif %}>
+                                <a href="?page={{ page }}">{{ page }}</a>
+                            </li>
+                        {% endfor %}
+                        {% if page_obj.has_next %}
+                            <li><a href="?page={{ page_obj.next_page_number }}">Next &raquo;</a></li>
+                        {% else %}
+                            <li class="disabled"><a href="#paginate">Next &raquo;</a></li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    {% endif %}
 
 {% endblock content %}
