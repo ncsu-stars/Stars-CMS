@@ -141,7 +141,8 @@ INSTALLED_APPS = (
     'django.contrib.admindocs',
     'django.contrib.databrowse',
     'south',
-    'cms'
+    'cms',
+    'bootstrap_toolkit'
 )
 
 # A sample logging configuration. The only tangible logging

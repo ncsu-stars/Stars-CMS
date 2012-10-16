@@ -2,28 +2,14 @@
 
 {% block title %}Archive Member{% endblock title %}
 
-{% block extrajs %}
-<script type="text/javascript">
-$(document).ready(function() {
-    $('#not_delete').click(function(e) {
-        e.preventDefault();
-        e.stopPropagation();
-
-        var url = '{% url cms:profile_url pk=member.pk %}';
-        window.location.href = url;
-    });
-});
-</script>
-{% endblock extrajs %}
-
 {% block content %}
-{% load filters %}
-{% if user|can_archive_member:member %}
-<form id="deleteMember" method="post" action="{% url cms:archive_member_url pk=member.pk %}">
-    {% csrf_token %}
-    <h1>Are you sure you want to archive {{ member }}</h1>
-    <input type="submit" class="btn danger" value="Yes, archive member" />
-    <button type="button" id="not_delete" class="btn primary">No, do not archive member</button>
-</form>
-{% endif %}
+    {% load filters %}
+    {% if user|can_archive_member:member %}
+        <form id="archiveMember" method="post" action="{% url cms:archive_member_url pk=member.pk %}">
+            {% csrf_token %}
+            <h1>Are you sure you want to archive {{ member }}?</h1>
+            <button type="submit" class="btn btn-danger">Yes, archive member</button>
+            <a class="btn" href="{% url cms:profile_url pk=member.pk %}">No, do not archive member</a>
+        </form>
+    {% endif %}
 {% endblock content %}
