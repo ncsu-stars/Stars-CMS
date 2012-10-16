@@ -201,7 +201,7 @@ class BlogPost(models.Model):
     title           = models.CharField(max_length=255)
     date            = models.DateTimeField(auto_now_add=True)
     edit_date       = models.DateTimeField(auto_now=True)
-    post            = models.TextField()
+    post            = models.TextField(help_text='HTML is allowed')
     tags            = models.ManyToManyField(Tag, blank=True, related_name='blogposts')
 
     objects         = BlogPostManager()
