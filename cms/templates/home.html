@@ -70,13 +70,4 @@
     <div class="span12 last" style="text-align: center">
         {% for sponsor in sponsors %} {% if sponsor.image %}<img alt="{{ sponsor.name }}" src="{{ MEDIA_URL }}{{ sponsor.image }}" width="86px" /> {% endif %}{% endfor %}
     </div>
-
-    <div class="row">
-        <div class="span12 center">
-        <p><p>
-            {% for sponsor in sponsors %}
-                <img alt="{{ sponsor.name }}" src="{{ STATIC_URL }}{{ SPONSOR_LOGO_URL }}{{ sponsor.logo_path }}" width="9%" />
-            {% endfor %}
-        </div>
-    </div>
 {% endblock content %}
