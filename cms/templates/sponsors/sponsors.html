@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+
+{% load filters %}
+
+{% block extracss %}
+<link rel="stylesheet" href="{{ STATIC_URL }}css/index.css">
+{% endblock extracss %}
+{% block current_page %}current="#top_projects";{% endblock current_page %}
+{% block title %}Sponsors {{ year }} &ndash; {{ year2 }}{% endblock title %}
+
+{% block content %}
+<h4 class="span4">{% if prev_year %}<a href="{% url cms:projects_year_url year=prev_year%}">&laquo; Projects {{ prev_year }} &ndash; {{ prev_year2 }}</a>{% else %}&nbsp;{% endif %}</h4>
+<h2 class="span8" style="text-align: center;">Sponsors</h2>
+<h4 class="span4 last" style="text-align: right;">{% if next_year %}<a href="{% url cms:projects_year_url year=next_year%}">Projects {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>{% else %}&nbsp;{% endif %}</h4>
+
+{% if sponsors %}
+<div class="span-18" style="margin-top: 20px;">
+{% for sponsor in sponsors %}
+<div class="span-17 last">
+{% if sponsor.image %}
+<img class="span-6" style="margin-bottom: 2em;" src="{{ MEDIA_URL }}{{ sponsor.image }}" width="35%" />
+{% else %}
+<!--img class="span-6" style="margin-bottom: 2em;" src="{{ STATIC_URL }}images/octocat.jpg" width="35%" /-->
+<div class="span-6" style="margin-bottom: 2em;"></div>
+{% endif %}
+<dl class="span-11 last">
+    <a name="{{ sponsor.pk }}"></a>
+    <h3>
+        {{ sponsor.name }}
+        {% if user|can_delete_sponsor %}
+        <small><a href="{% url cms:delete_sponsor_url pk=sponsor.pk %}">delete</a></small>
+        {% endif %}
+    </h3>
+</dl></div>
+{% endfor %}
+</div>
+
+
+{% else %}
+    No sponsors.
+{% endif %}
+
+
+{% if form.is_multipart %}
+<form id="createSponsorForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:sponsors_url %}">
+{% else %}
+<form id="createSponsorForm" width="700px" method="post" action="{% url cms:sponsors_url %}">
+{% endif %}
+    {% csrf_token %}
+    {% if form.errors %}
+        {% for field in form %}
+            {% if field.errors %}
+                <div class="formlyRequired" style="display: block">
+                    {{ field.label }}: {{ field.errors|first }}
+                </div>
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+    <fieldset>
+        <legend>Add Sponsor</legend>
+        {% for field in form %}
+        <div class="clearfix">
+            <label for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="actions">
+            <input type="submit" class="btn primary" value="Create" />
+            <button type="button" id="cancel" class="btn">Cancel</button>
+        </div>
+    </fieldset>
+</form>
+
+{% endblock content %}

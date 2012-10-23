@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from cms.models import Project, Member, News, BlogPost, Tag, ProjectMember, Page
+from cms.models import Project, Member, News, BlogPost, Tag, ProjectMember, Page, Sponsor
 
 class ProjectMemberInline(admin.StackedInline):
     model = ProjectMember
@@ -49,4 +49,5 @@ admin.site.register(News, NewsAdmin)
 admin.site.register(BlogPost, BlogPostAdmin)
 admin.site.register(Tag)
 admin.site.register(Page)
+admin.site.register(Sponsor)
 

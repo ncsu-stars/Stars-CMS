@@ -83,3 +83,10 @@ def can_user_delete_page(user, page):
     # only the SLC leader can delete pages through the main interface
     return is_user_slc_leader(user)
 
+def can_user_delete_sponsor(user):
+    # only the SLC leader can delete pages through the main interface
+    return is_user_slc_leader(user)
+
+def can_user_create_sponsor(user):
+    # only the SLC leader can delete pages through the main interface
+    return is_user_slc_leader(user)

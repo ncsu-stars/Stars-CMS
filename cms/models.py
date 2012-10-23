@@ -24,6 +24,12 @@ def make_project_image_name(instance, filename):
         raise Exception('save Project instance before saving ImageField')
     return os.path.join(PROJECT_IMAGE_FOLDER, str(instance.pk) + os.path.splitext(filename)[1].lower())
 
+SPONSOR_IMAGE_FOLDER = 'sponsor'
+def make_sponsor_image_name(instance, filename):
+    if instance.pk is None:
+        raise Exception('save Sponsor instance before saving ImageField')
+    return os.path.join(SPONSOR_IMAGE_FOLDER, str(instance.pk) + os.path.splitext(filename)[1].lower())
+
 class Member(models.Model):
     GROUP_CHOICES = (
         (u'graduate', u'Graduate'),
@@ -217,3 +223,25 @@ class BlogPost(models.Model):
         verbose_name        = 'blog post'
         verbose_name_plural = 'blog posts'
         ordering            = ['-date']
+
+class Sponsor(models.Model):
+    name            = models.CharField(max_length=255)
+    image           = models.ImageField(upload_to=make_sponsor_image_name, storage=OverwriteStorage(), blank=True)
+
+    def __unicode__(self):
+        return unicode(self.name)
+
+    @models.permalink
+    def get_absolute_url(self):
+        return ('cms:sponsors_url')
+
+    def save(self):
+        img_tmp = self.image
+        self.image = None
+        super(Sponsor, self).save()
+        self.image = img_tmp
+        return super(Sponsor, self).save()
+
+    class Meta:
+        verbose_name        = 'sponsor'
+        verbose_name_plural = 'sponsors'

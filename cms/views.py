@@ -7,8 +7,8 @@ from django.views.generic import View, ListView, DetailView, CreateView, UpdateV
 from django.shortcuts import get_object_or_404
 from django.db.models import Q
 
-from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag
-from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm, PageForm
+from cms.models import Member, News, Page, Project, ProjectMember, BlogPost, Tag, Sponsor
+from cms.forms import MemberForm, ProjectForm, BlogForm, MemberAdminForm, ProjectAdminForm, PageForm, SponsorForm
 
 from cms import signals
 from cms import permissions
@@ -33,7 +33,7 @@ class HomepageView(TemplateView):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:5]
         context['SPONSOR_LOGO_URL'] = settings.SPONSOR_LOGO_URL
-        context['sponsors'] = settings.SPONSORS
+        context['sponsors'] = Sponsor.objects.all()
         context['front_pages'] = Page.objects.filter(pub_front_page=True).order_by('weight')
 
         return context
@@ -611,3 +611,53 @@ class EditPageView(UpdateView):
             return UpdateView.render_to_response(self, context)
         else:
             return HttpResponseForbidden('You do not have permission to edit this page.')
+
+
+class CreateSponsorView(CreateView):
+    model = Sponsor
+    object = model
+    form_class = SponsorForm
+    context_object_name = 'sponsors'
+
+    def post(self, request, *args, **kwargs):
+        if permissions.can_user_create_sponsor(self.request.user):
+            return super(CreateSponsorView, self).post(request, *args, **kwargs)
+
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page.')
+
+    def get_success_url(self):
+        return reverse('cms:sponsors_url')
+
+
+class SponsorView(ListView, CreateSponsorView):
+    model = Sponsor
+    form_class = SponsorForm
+    template_name = 'sponsors/sponsors.html'
+    context_object_name = 'sponsors'
+
+    def get_context_data(self, **kwargs):
+        context = super(ListView, self).get_context_data(**kwargs)
+        context['form'] = SponsorForm()
+        return context
+        
+    def render_to_response(self, context):
+        if permissions.can_user_create_sponsor(self.request.user):
+            return ListView.render_to_response(self, context)
+        else:
+            return HttpResponseForbidden('You do not have permission to access this page.')
+
+    
+class DeleteSponsorView(DeleteView):
+    model = Sponsor
+    template_name = 'sponsors/delete.html'
+
+    def dispatch(self, request, *args, **kwargs):
+        sponsor = get_object_or_404(Sponsor, pk=kwargs.get('pk', None))
+        if permissions.can_user_delete_sponsor(request.user):
+            return super(DeleteSponsorView, self).dispatch(request, *args, **kwargs)
+        else:
+            return HttpResponseForbidden('You do not have permission to delete sponsors.')
+
+    def get_success_url(self):
+        return reverse('cms:sponsors_url')
