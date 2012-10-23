@@ -1,50 +1,25 @@
 {% extends 'base.html' %}
 
+{% load bootstrap_toolkit %}
+
 {% block title %}Edit Page{% endblock title %}
 
-{% block extrajs %}
-<script type="text/javascript">
-    $('#cancel').click(function(e) {
-        e.preventDefault();
-
-        if(confirm('Are you sure you want to leave this page?')) {
-            window.location = '{% url cms:homepage_url %}';
-        }
-    });
-});
-</script>
-{% endblock extrajs %}
-
 {% block content %}
-{% if form.is_multipart %}
-<form id="createPageForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:edit_page_url pk=page.pk %}">
-{% else %}
-<form id="createPageForm" width="700px" method="post" action="{% url cms:edit_page_url pk=page.pk %}">
-{% endif %}
-    {% csrf_token %}
-    {% if form.errors %}
-        {% for field in form %}
-            {% if field.errors %}
-                <div class="formlyRequired" style="display: block">
-                    {{ field.label }}: {{ field.errors|first }}
+    <div class="row">
+        <div class="span12">
+            <form class="form form-horizontal" id="createPageForm" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url cms:edit_page_url pk=page.pk %}">
+                {% csrf_token %}
+                <fieldset>
+                    <legend>Edit Page</legend>
+                    {{ form|as_bootstrap:"horizontal" }}
+                </fieldset>
+                <div class="control-group">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-primary">Edit</button>
+                        <a class="btn" href="{% url cms:page_url slug=page.slug %}">Cancel</a>
+                    </div>
                 </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    <fieldset>
-        <legend>Edit Page</legend>
-        {% for field in form %}
-        <div class="clearfix">
-            <label for="id_{{ field.name }}">{{ field.label }}</label>
-            <div class="input">
-                {{ field }}
-            </div>
+            </form>
         </div>
-        {% endfor %}
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Edit" />
-            <button type="button" id="cancel" class="btn">Cancel</button>
-        </div>
-    </fieldset>
-</form>
+    </div>
 {% endblock content %}

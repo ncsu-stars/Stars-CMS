@@ -6,85 +6,77 @@
 {% block current_page %}current="#top_home";{% endblock current_page %}
 
 {% block extrajs %}
-<script type="text/javascript">
-$(window).load(function() {
-    $('#slider').nivoSlider({
-        effect: 'fade',
-        slices: 15,
-        directionNav: true,
-        directionNavHide: true,
-        controlNav: false,
-        controlNavThumbs: false,
-        keyboardNav: true,
-        pauseOnHover: true
-    });
-});
-</script>
+    {% if empty_profile %}
+        <script type="text/javascript">
+        $(window).load(function() {
+            if(confirm('You have an empty member profile!  Would you like create one now?')) {
+                var url = '{% url cms:edit_profile_url pk=empty_profile.pk %}';
+                window.location.href = url;
+            }
+        });
+        </script>
+    {% endif %}
 
-{% if empty_profile %}
-<script type="text/javascript">
-$(window).load(function() {
-    if(confirm('You have an empty member profile!  Would you like create one now?')) {
-        var url = '{% url cms:edit_profile_url pk=empty_profile.pk %}';
-        window.location.href = url;
-    }
-});
-</script>
-{% endif %}
-
-{% if empty_projects %}
-<script type="text/javascript">
-$(window).load(function() {
-    if(confirm('You coordinate projects with empty listings!\n\n' +
-        {% for project in empty_projects %}
-            '\t{{ project.title|stripjs|escapejs }}\n' +
-        {% endfor %}
-                '\nWould you like create {{ empty_projects|first|field:"title"|stripjs|escapejs }} now?')) {
-        var url = '{% url cms:edit_project_url pk=empty_projects|first|field:"pk" %}';
-        window.location.href = url;
-    }
-});
-</script>
-{% endif %}
-
+    {% if empty_projects %}
+        <script type="text/javascript">
+        $(window).load(function() {
+            if(confirm('You coordinate projects with empty listings!\n\n' +
+                {% for project in empty_projects %}
+                    '\t{{ project.title|stripjs|escapejs }}\n' +
+                {% endfor %}
+                        '\nWould you like create {{ empty_projects|first|field:"title"|stripjs|escapejs }} now?')) {
+                var url = '{% url cms:edit_project_url pk=empty_projects|first|field:"pk" %}';
+                window.location.href = url;
+            }
+        });
+        </script>
+    {% endif %}
 {% endblock extrajs %}
 
 
 {% block content %}
-<div class="span-16">
-<h1>Welcome to STARS at NCSU</h1>
-            <div class="span-16 last" style="text-align: center; margin-bottom: 10px;">
+    <div class="row">
+        <div id="mainContent" class="span8">
+            <div class="banner center">
+                <h1>Welcome to STARS at NCSU</h1>
                 <img src="{{ STATIC_URL }}images/people_banner.jpg" />
             </div>
+
             <p>The NCSU STARS (<strong><u>S</u></strong>tudents &amp; <u><strong>T</strong></u>echnology in <u><strong>A</strong></u>cademia, <u><strong>R</strong></u>esearch and <u><strong>S</strong></u>ervice) Student Leadership Corps (SLC) is a student organization that provides students with the opportunity to learn more about computer science careers, participate in service and outreach programs to local schools, engage in research, meet with leaders in the computer field, all while earning a stipend!</p>
             <p>The NCSU SLC is part of the larger <a href="http://www.starsalliance.org/">STARS  Alliance</a>, a system of regional partnerships among colleges and universities, industry, primary schools and the community to collaboratively implement programs for student recruitment and success in computing.</p>
             <p>If you are a college student in the Raleigh area and would like to learn more about joining STARS SLC, follow the <a href="/page/s/joining">Joining Stars</a> link.  To learn more about what NCSU STARS students do every week, view their <a href="{% url cms:blogs_url %}">blogs</a>.</p>
             <p>STARS is funded by the <a href="http://www.nsf.gov">National Science Foundation</a>.</p>
             <p>NCSU STARS would like to thank their local sponsors below for their contributions to the Raleigh community.</p>
+        </div>
+        <div class="span4">
+            <h3>Recent Blog Posts</h3>
+            <ul>
+                {% for blog in blog_posts %}
+                    <li>
+                        <a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a> by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author }}</a>
+                    </li>
+                {% endfor %}
+            </ul>
+            <h3>Pages</h3>
+            <ul>
+                {% for page in front_pages %}
+                    <li><a href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
+                {% endfor %}
+            </ul>
+            <p style="text-align: center;"><a href="{% url cms:pages_all_url %}">See all pages</a></p>
+        </div>
+    </div>
 
-</div>
-<div class="span-8 last">
-    <h3>Recent Blog Posts</h3>
-    <ul>
-        {% for blog in blog_posts %}
-        <li><a href="{{ blog.get_absolute_url }}">{{ blog.title }}</a> by <a href="{% url cms:profile_url pk=blog.author.pk %}">{{ blog.author }}</a></li>
-        {% endfor %}
-    </ul>
-</div>
+    <div class="span12 last" style="text-align: center">
+        {% for sponsor in sponsors %} {% if sponsor.image %}<img alt="{{ sponsor.name }}" src="{{ MEDIA_URL }}{{ sponsor.image }}" width="86px" /> {% endif %}{% endfor %}
+    </div>
 
-<div class="span-8 last">
-    <h3>Pages</h3>
-    <ul>
-    {% for page in front_pages %}
-        <li><a href="{% url cms:page_url slug=page.slug %}">{{ page }}</a></li>
-    {% endfor %}
-    </ul>
-    <p style="text-align: center;"><a href="{% url cms:pages_all_url %}">See all pages</a></p>
-</div>
-
-<div class="span-24 last" style="text-align: center">
-<p><p>
-    {% for sponsor in sponsors %} {% if sponsor.image %}<img alt="{{ sponsor.name }}" src="{{ MEDIA_URL }}{{ sponsor.image }}" width="86px" /> {% endif %}{% endfor %}
-</div>
-
+    <div class="row">
+        <div class="span12 center">
+        <p><p>
+            {% for sponsor in sponsors %}
+                <img alt="{{ sponsor.name }}" src="{{ STATIC_URL }}{{ SPONSOR_LOGO_URL }}{{ sponsor.logo_path }}" width="9%" />
+            {% endfor %}
+        </div>
+    </div>
 {% endblock content %}

@@ -2,53 +2,8 @@
 
 {% block title %}Edit Project{% endblock title %}
 
-{% block extrajs %}
-<script type="text/javascript">
-    $(document).ready(function() {
-        //Quick and dirty fix for the select height
-        $('select[multiple=multiple]').css('height', '100px');
-        $('textarea').css('width', '400px');
-
-        $('#cancel').click(function(e) {
-            e.preventDefault();
-
-            if(confirm('Are you sure you want to leave this page?')) {
-                window.location = '{% url cms:projects_url %}';
-            }
-        });
-    });
-</script>
-{% endblock extrajs %}
-
 {% block content %}
-{% if form.is_multipart %}
-<form id="projectForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:edit_project_url pk=project.pk %}">
-{% else %}
-<form id="projectForm" width="700px" method="post" action="{% url cms:edit_project_url pk=project.pk %}">
-{% endif %}
-    {% csrf_token %}
-    {% if form.errors %}
-        {% for field in form %}
-            {% if field.errors %}
-                <div class="formlyRequired" style="display: block">
-                    {{ field.label }}: {{ field.errors|first }}
-                </div>
-            {% endif %}
-        {% endfor %}
-    {% endif %}
-    <fieldset>
-        <legend>Edit Project</legend>
-        {% for field in form %}
-        <div class="clearfix">
-            <label for="id_{{ field.name }}">{{ field.label }}</label>
-            <div class="input">
-                {{ field }}
-            </div>
-        </div>
-        {% endfor %}
-        <div class="actions">
-            <input type="submit" class="btn primary" value="Save" />
-            <button type="button" id="cancel" class="btn">Cancel</button>
-    </fieldset>
-</form>
+    <form id="projectForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url cms:edit_project_url pk=project.pk %}">
+        {% include "projects/project_form.html" with legend="Edit Project" %}
+    </form>
 {% endblock content %}

@@ -1,11 +1,12 @@
-.badge{
-    padding: 5px;
+.badge {
     margin-bottom: 20px;
     border-color: #CCCCCC;
     border-style: solid;
     border-width: 1px;
     border-radius: 5px;
-    disaply:table;
+    background-color: #FFFFFF;
+    color: #222222;
+    text-shadow: none;
 }
 
 .badge-archived {
@@ -20,16 +21,16 @@
 .badge h2 {
     line-height: 24px;
 }
-.badge .member_pic img{
+.badge .member_pic img {
     width: 75px;
     margin-right: 10px;
     vertical-align: top;
 }
 
-.badge .member_info{
-    width: 350px;    
+.badge .member_info {
+    width: 350px;
     margin-left: 10px;
 }
-.badge .member_participation{  
+.badge .member_participation {
     margin-left: 5px;
 }

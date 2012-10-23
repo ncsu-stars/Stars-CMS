@@ -310,7 +310,7 @@ class BlogsYearView(ListView):
     model = BlogPost
     template_name = 'blogs/blogs_year.html'
     context_object_name = 'blog_posts'
-    paginate_by = 10
+    paginate_by = 5
 
     def get_queryset(self):
         return BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('-date')
@@ -345,7 +345,7 @@ class BlogsMonthView(ListView):
     model = BlogPost
     template_name = 'blogs/blogs_month.html'
     context_object_name = 'blog_posts'
-    paginate_by = 10
+    paginate_by = 5
 
     def get_queryset(self):
         return BlogPost.objects.filter(date__year=self.kwargs.get('year', settings.CURRENT_YEAR)).filter(date__month=self.kwargs.get('month', time.localtime().tm_mon)).order_by('-date')
@@ -370,7 +370,7 @@ class BlogsMonthView(ListView):
 class BlogView(ListView):
     template_name = 'blogs/blogs.html'
     context_object_name = 'blog_posts'
-    paginate_by = 10
+    paginate_by = 5
 
     def get_queryset(self):
         return BlogPost.objects.filter(author__pk=self.kwargs.get('pk', None)).order_by('-date')
@@ -380,9 +380,6 @@ class BlogView(ListView):
         context['member'] = get_object_or_404(Member, pk=self.kwargs.get('pk', None))
 
         return context
-
-    #def render_to_response(self, context):
-    #    return ListView.render_to_response(self, context)
 
 class BlogPostView(DetailView):
     model = BlogPost
