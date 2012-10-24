@@ -29,18 +29,23 @@
     </div>
 
     <div class="row">
-        <h4 class="span12" style="text-align: center; margin-bottom: 10px;">
+        <div class="span10">
+            {% if blog_posts %}
+                {% include "blogs/blog_badge.html" %}
+            {% endif %}
+        </div>
+
+        <div class="span2">
             {% if months %}
+                <h4>Months</h4>
                 {% for month in months %}
-                    <a href="{% url cms:blogs_month_url year=month.year month=month.month %}">{{ month|date:"F" }}</a>
+                    <a href="{% url cms:blogs_month_url year=month.year month=month.month %}">
+                        {{ month|date:"F" }}
+                    </a> <br />
                 {% endfor %}
             {% endif %}
-        </h4>
+        </div>
     </div>
-
-    {% if blog_posts %}
-        {% include "blogs/blog_badge.html" %}
-    {% endif %}
 
     {% if is_paginated %}
         {% include "blogs/paginator.html" %}
