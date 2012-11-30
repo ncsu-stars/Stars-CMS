@@ -9,7 +9,7 @@ from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, Blo
 from cms.views import BlogsMonthView, CreateProjectView, CreateMemberView, ActivateMemberView
 from cms.views import SponsorView, DeleteSponsorView
 from cms.views import DeleteProjectView, CreatePageView, EditPageView, PageAllView, ArchiveMemberView, DeleteMemberView, ReactivateMemberView, DeletePageView
-
+from cms.feeds import UserBlogFeed
 
 urlpatterns = (
     url(r'^$', HomepageView.as_view(), name='homepage_url'),
@@ -55,6 +55,7 @@ urlpatterns += (
     url(r'^people/(?P<pk>\d+)/blog/$', BlogView.as_view(), name='blog_url'),
     url(r'^people/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/$', BlogPostView.as_view(), name='blog_post_url'),
     url(r'^people/(?P<pk>\d+)/blog/add/$', AddBlogView.as_view(), name='add_blog_url'),
+    url(r'^people/(?P<pk>\d+)/blog/rss/$', UserBlogFeed(), name='blog_rss_url'),
     url(r'^people/(?P<pk>\d+)/blog/(?P<blog_pk>\d+)/edit/$', EditBlogView.as_view(), name='edit_blog_url'),
     url(r'^people/(?P<pk>\d+)/delete/$', DeleteMemberView.as_view(), name='delete_member_url'),
     url(r'^people/(?P<pk>\d+)/archive/$', ArchiveMemberView.as_view(), name='archive_member_url'),
