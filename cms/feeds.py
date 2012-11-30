@@ -5,6 +5,8 @@ from cms.models import Member, BlogPost
 
 class UserBlogFeed(Feed):
 
+    description_template = "blogs/blog_rss.html"
+
     def get_object(self, request, **kwargs):
         return get_object_or_404(Member, pk=kwargs.get('pk', None))
 
@@ -19,3 +21,6 @@ class UserBlogFeed(Feed):
 
     def items(self, obj):
         return BlogPost.objects.filter(author=obj).order_by('-date')[:30]
+
+    def item_title(self, item):
+        return item.title
