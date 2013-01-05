@@ -9,7 +9,7 @@ from cms.views import BlogPostView, AddBlogView, EditBlogView, TagCloudView, Blo
 from cms.views import BlogsMonthView, CreateProjectView, CreateMemberView, ActivateMemberView
 from cms.views import SponsorView, DeleteSponsorView
 from cms.views import DeleteProjectView, CreatePageView, EditPageView, PageAllView, ArchiveMemberView, DeleteMemberView, ReactivateMemberView, DeletePageView
-from cms.feeds import UserBlogFeed
+from cms.feeds import UserBlogFeed, BlogFeed
 
 urlpatterns = (
     url(r'^$', HomepageView.as_view(), name='homepage_url'),
@@ -37,6 +37,7 @@ urlpatterns += (
     url(r'^blog/all/$', BlogsYearView.as_view(), name='blogs_url'),
     url(r'^blog/all/(?P<year>\d+)/$', BlogsYearView.as_view(), name='blogs_year_url'),
     url(r'^blog/all/(?P<year>\d+)/(?P<month>\d+)/$', BlogsMonthView.as_view(), name='blogs_month_url'),
+    url(r'^blog/rss/$', BlogFeed(), name='blogs_rss_url'),
 )
 
 urlpatterns += (

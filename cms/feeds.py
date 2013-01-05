@@ -24,3 +24,22 @@ class UserBlogFeed(Feed):
 
     def item_title(self, item):
         return item.title
+
+class BlogFeed(Feed):
+
+    description_template = "blogs/blog_rss.html"
+
+    def title(self, obj):
+        return "STARS Blog"
+
+    def link(self, obj):
+        return reverse("cms:blogs_url")
+
+    def description(self, obj):
+        return ""
+
+    def items(self, obj):
+        return BlogPost.objects.all().order_by('-date')[:30]
+
+    def item_title(self, item):
+        return item.title

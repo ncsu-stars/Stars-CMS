@@ -45,6 +45,7 @@
                 {% endfor %}
             {% endif %}
         </div>
+        <div style="text-align:right"><a href="{% url cms:blogs_rss_url %}"><img src="{{ STATIC_URL }}images/feed-icon-28x28.png" alt="RSS"/></a></div>
     </div>
 
     {% if is_paginated %}

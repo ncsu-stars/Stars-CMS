@@ -1,4 +1,4 @@
-.badge {
+.blog-badge {
     border: 1px solid #CCCCCC;
     border-radius: 5px;
     background-color: #FFFFFF;
@@ -8,18 +8,22 @@
     padding-top: 5px;
     white-space: normal;
     display: inline-block;
+    width: 100%;
+
+    padding: 5px;
+    box-sizing: border-box;
 }
 
-.badge h3 {
+.blog-badge h3 {
     margin: 0;
     line-height: 26px;
 }
 
-.badge h5 {
+.blog-badge h5 {
     margin: 0;
     line-height: 20px;
 }
 
-.badge p {
+.blog-badge p {
     font-weight: normal;
 }

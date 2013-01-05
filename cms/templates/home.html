@@ -49,7 +49,7 @@
             <p>NCSU STARS would like to thank their local sponsors below for their contributions to the Raleigh community.</p>
         </div>
         <div class="span4">
-            <h3>Recent Blog Posts</h3>
+            <div class="row"><h3 class="span3">Recent Blog Posts</h3><div class="span1"><a href="{% url cms:blogs_rss_url %}"><img src="{{ STATIC_URL }}images/feed-icon-14x14.png" alt="RSS"/></a></div></div>
             <ul>
                 {% for blog in blog_posts %}
                     <li>
