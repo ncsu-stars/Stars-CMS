@@ -15,8 +15,7 @@ register = template.Library()
 @register.filter
 @stringfilter
 def stripjs(value):
-    stripped = re.sub(r'<script(?:\s[^>]*)?(>(?:.(?!/script>))*</script>|/>)', \
-                      '', force_unicode(value), flags=re.S)
+    stripped = re.compile(r'<script(?:\s[^>]*)?(>(?:.(?!/script>))*</script>|/>)', re.S).sub('', force_unicode(value))
     return mark_safe(stripped)
 
 @register.filter
