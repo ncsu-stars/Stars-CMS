@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% load filters %}
+
+{% load bootstrap_toolkit %}
+{% block title %}Sponsors{% endblock title %}
+
+{% block content %}
+<h2 class="span12" style="text-align: center;">Add Sponsor</h2>
+
+
+
+{% if form.is_multipart %}
+<form id="createSponsorForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:create_sponsor_url %}">
+{% else %}
+<form id="createSponsorForm" width="700px" method="post" action="{% url cms:create_sponsor_url %}">
+{% endif %}
+    {% csrf_token %}
+    <fieldset>
+        <legend>Add Sponsor</legend>
+        {{ form|as_bootstrap:"horizontal" }}
+    </fieldset>
+    <div class="control-group">
+        <div class="controls">
+            <input type="submit" class="btn primary" value="Create" />
+            <button type="button" id="cancel" class="btn">Cancel</button>
+        </div>
+    </div>
+</form>
+
+{% endblock content %}

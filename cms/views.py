@@ -618,6 +618,7 @@ class CreateSponsorView(CreateView):
     object = model
     form_class = SponsorForm
     context_object_name = 'sponsors'
+    template_name = 'sponsors/create.html'
 
     def post(self, request, *args, **kwargs):
         if permissions.can_user_create_sponsor(self.request.user):
@@ -630,7 +631,7 @@ class CreateSponsorView(CreateView):
         return reverse('cms:sponsors_url')
 
 
-class SponsorView(ListView, CreateSponsorView):
+class SponsorView(ListView):
     model = Sponsor
     form_class = SponsorForm
     template_name = 'sponsors/sponsors.html'
