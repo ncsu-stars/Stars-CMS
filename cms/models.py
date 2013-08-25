@@ -157,9 +157,9 @@ class ProjectMember(models.Model):
 
     def get_full_name(self):
         if self.is_volunteer:
-            return self.member.user.get_full_name()
-        else:
             return unicode(self.volunteer_name)
+        else:
+            return self.member.user.get_full_name()
 
     def __unicode__(self):
         if self.role:
