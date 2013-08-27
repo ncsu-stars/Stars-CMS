@@ -33,7 +33,7 @@ class HomepageView(TemplateView):
         context = super(HomepageView, self).get_context_data(**kwargs)
         context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:5]
         context['SPONSOR_LOGO_URL'] = settings.SPONSOR_LOGO_URL
-        context['sponsors'] = Sponsor.objects.all()
+        context['sponsors'] = Sponsor.objects.all().order_by('name')
         context['front_pages'] = Page.objects.filter(pub_front_page=True).order_by('weight')
 
         return context
