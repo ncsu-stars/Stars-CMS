@@ -5,6 +5,6 @@
 
 {% block content %}
 <h1>Forbidden</h1>
-{% if not user|logged_in %}<p>The number you have dialed is rejecting anonymous callers.  Please dial <a href="{% url cms:login_url %}">*82</a>, and place your call again.</p>{% endif %}
+{% if not user|logged_in %}<p>The number you have dialed is rejecting anonymous callers.  Please dial <a href="{% url 'cms:login_url' %}">*82</a>, and place your call again.</p>{% endif %}
 {% if message %}<p>{{ message }}</p>{% endif %}
 {% endblock content %}

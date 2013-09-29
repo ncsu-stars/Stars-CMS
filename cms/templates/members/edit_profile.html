@@ -6,7 +6,7 @@
 
 {% block content %}
 
-    <form id="profileForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url cms:edit_profile_url pk=member.pk %}">
+    <form id="profileForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url 'cms:edit_profile_url' pk=member.pk %}">
         {% csrf_token %}
         <fieldset>
             <legend>Edit Profile</legend>
@@ -15,7 +15,7 @@
         <div class="control-group">
             <div class="controls">
                 <button type="submit" class="btn btn-primary">Save Member</button>
-                <a class="btn" href="{% url cms:profile_url pk=member.pk %}">Cancel</a>
+                <a class="btn" href="{% url 'cms:profile_url' pk=member.pk %}">Cancel</a>
             </div>
         </div>
     </form>

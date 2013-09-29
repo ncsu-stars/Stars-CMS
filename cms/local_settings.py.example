@@ -1,0 +1,45 @@
+import os
+from django.core.urlresolvers import reverse_lazy
+
+from ncsu.wrap.settings import *
+
+PROJECT_DIR = '%s/../project' % os.path.dirname(os.path.abspath(__file__))
+
+WRAP_PUBLIC_KEY_PATH = os.path.join(PROJECT_DIR, 'wrap16.pub')
+
+AUTHENTICATION_BACKENDS = (
+    'django.contrib.auth.backends.ModelBackend',
+    'ncsu.wrap.backends.WrapBackend',
+)
+
+AUTH_PROFILE_MODULE = 'cms.Member'
+
+LOGIN_REDIRECT_URL = '/'
+LOGIN_URL = reverse_lazy('cms:login_url')
+LOGOUT_URL = reverse_lazy('cms:logout_url')
+
+ANONYMOUS_USER_ID = -1
+
+CURRENT_YEAR = 2013
+
+# Remove in production
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Can be set to any email
+DEFAULT_FROM_EMAIL = 'donotrespond@stars.csc.ncsu.edu'
+
+# Used for now to get the SLC leader
+SLC_LEADERS = ['Kristy Boyer', 'Robinson Udechukwu', 'Veronica Catete', 'Eric Whitmire']
+
+# Used for website title
+SLC_NAME = 'NCSU STARS Alliance'
+
+SPONSOR_LOGO_URL = 'images/logos/sponsors/'
+SPONSORS = [ dict(zip(['name', 'logo_path'], x)) for x in [
+                ('NetApp', 'netapp-grey.png'),
+                ('SAS', 'sas-grey.png'),
+                ('EMC', 'emc-grey.png'),
+                ('Cisco', 'cisco-grey.png'),
+                ('Duke Energy', 'dukeenergy-grey.png'),
+                ('Tekelec', 'tekelec-grey.png'),
+                ] ]

@@ -6,13 +6,13 @@
 
 {% block content %}
     <div class="row">
-        <h2 class="span11"><a href="{% url cms:profile_url pk=member.pk %}">{{ member }}</a>'s Blog
+        <h2 class="span11"><a href="{% url 'cms:profile_url' pk=member.pk %}">{{ member }}</a>'s Blog
         {% if user|can_user_post_as_member:member %}
-            <small><a href="{% url cms:add_blog_url pk=member.pk %}">add post</a></small>
+            <small><a href="{% url 'cms:add_blog_url' pk=member.pk %}">add post</a></small>
         {% endif %}
         </h2>
         <span class="span1" style="text-align: right;">
-            <a href="{% url cms:blog_rss_url pk=member.pk %}"><img src="{{ STATIC_URL }}images/feed-icon-28x28.png" alt="RSS"/></a>
+            <a href="{% url 'cms:blog_rss_url' pk=member.pk %}"><img src="{{ STATIC_URL }}images/feed-icon-28x28.png" alt="RSS"/></a>
         </span>
     </div>
     <div class="row">

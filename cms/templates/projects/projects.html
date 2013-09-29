@@ -14,7 +14,7 @@
     <div class="row">
         <h4 class="span3">
             {% if prev_year %}
-                <a href="{% url cms:projects_year_url year=prev_year%}">&laquo; Projects {{ prev_year }} &ndash; {{ prev_year2 }}</a>
+                <a href="{% url 'cms:projects_year_url' year=prev_year%}">&laquo; Projects {{ prev_year }} &ndash; {{ prev_year2 }}</a>
             {% else %}
                 &nbsp;
             {% endif %}
@@ -26,7 +26,7 @@
 
         <h4 class="span3" style="text-align: right;">
             {% if next_year %}
-                <a href="{% url cms:projects_year_url year=next_year%}">Projects {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>
+                <a href="{% url 'cms:projects_year_url' year=next_year%}">Projects {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>
             {% else %}
                 &nbsp;
             {% endif %}
@@ -50,10 +50,10 @@
                         <h3>
                             {{ project.title }}
                             {% if user|can_edit_project:project %}
-                                <small><a href="{% url cms:edit_project_url pk=project.pk %}">edit</a></small>
+                                <small><a href="{% url 'cms:edit_project_url' pk=project.pk %}">edit</a></small>
                             {% endif %}
                             {% if user|can_delete_project:project %}
-                                <small><a href="{% url cms:delete_project_url pk=project.pk %}">delete</a></small>
+                                <small><a href="{% url 'cms:delete_project_url' pk=project.pk %}">delete</a></small>
                             {% endif %}
                         </h3>
                         {{ project.description|stripjs }}
@@ -63,7 +63,7 @@
                                 {% for project_member in project.projectmember_set.all %}
                                     {% if project_member.member %}
                                         <li>
-                                            <a href="{% url cms:profile_url pk=project_member.member.pk %}">{{ project_member.member }}</a>
+                                            <a href="{% url 'cms:profile_url' pk=project_member.member.pk %}">{{ project_member.member }}</a>
                                             {% if project_member.role %} ({{ project_member.role }}){% endif %}
                                         </li>
                                     {% else %}
@@ -84,7 +84,7 @@
                         <h3>{{ project_group.group }}</h3>
                         <ul>
                             {% for project in project_group.projects %}
-                                <li><a href="{% url cms:projects_year_url year=project.year %}#{{ project.pk }}">{{ project.title }}</a></li>
+                                <li><a href="{% url 'cms:projects_year_url' year=project.year %}#{{ project.pk }}">{{ project.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

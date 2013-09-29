@@ -59,7 +59,7 @@ class Member(models.Model):
     classification  = models.CharField(max_length=255, choices=CLASS_CHOICES, blank=True)
     hometown        = models.CharField(max_length=255, blank=True)
     interests       = models.TextField(blank=True)
-    homepage        = models.URLField(verify_exists=False, blank=True)
+    homepage        = models.URLField(blank=True)
     blurb           = models.TextField(blank=True)
     image           = models.ImageField(upload_to=make_member_image_name, storage=OverwriteStorage(), blank=True)
     status          = models.IntegerField(choices=STATUS_CHOICES)
