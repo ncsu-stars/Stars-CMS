@@ -30,7 +30,7 @@ class ProjectAdminForm(ModelForm):
 
     class Meta:
         model = Project
-        fields = ('title', 'coordinators',)
+        fields = ('title', 'coordinators', 'parent')
 
 class ProjectForm(ModelForm):
     members = forms.ModelMultipleChoiceField(queryset=Member.get_possible_project_members())

@@ -127,13 +127,14 @@ class Project(models.Model):
     category        = models.IntegerField(choices=CATEGORY_CHOICES, default=CATEGORY_OTHER)
     year            = models.IntegerField()
     members         = models.ManyToManyField(Member, through='ProjectMember')
+    parent          = models.ForeignKey('self', blank=True, null=True, on_delete=models.SET_NULL)
 
     def __unicode__(self):
         return unicode('%s %d' % (self.title, self.year))
 
     @models.permalink
     def get_absolute_url(self):
-        return ('cms:projects_url', (), {})
+        return ('cms:projects_year_pk_url', (), {'year': self.year, 'pk': self.pk})
 
     def is_member_coordinator(self, member):
         return ProjectMember.objects.filter(member__pk=member.pk, project__pk=self.pk, is_coordinator=True).count() != 0

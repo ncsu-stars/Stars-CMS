@@ -464,6 +464,7 @@ class TagCloudView(JSONResponseMixin, View):
 
 class CreateProjectView(CreateView):
     model = Project
+    object = model
     form_class = ProjectAdminForm
     template_name = 'projects/create.html'
 
@@ -484,13 +485,19 @@ class CreateProjectView(CreateView):
                 project = form.save(commit=False)
                 project.year = settings.CURRENT_YEAR
                 project.status = Project.STATUS_EMPTY # so a coordinator can fill out the project information
+
+                if project.parent:
+                    project.description = project.parent.description
+                    project.image = project.parent.image
+                    project.category = project.parent.category
+
                 project.save()
 
                 signals.assign_coordinators.send(sender=None, project=project, members=form.cleaned_data['coordinators'])
 
                 return HttpResponseRedirect(reverse('cms:projects_url'))
             else:
-                self.render_to_response(self.get_context_data(form=form))
+                return self.render_to_response(self.get_context_data(form=form))
         else:
             return HttpResponseForbidden('You do not have permission to access this page.')
 

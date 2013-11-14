@@ -37,6 +37,7 @@
         <div class="row">
             <div class="span9" id="projects">
             {% for project in projects %}
+                <a name="{{ project.pk }}"></a>
                 <div class="row">
                     {% if project.image %}
                         <img class="span3" style="margin-bottom: 2em;" src="{{ MEDIA_URL }}{{ project.image }}" />
@@ -46,7 +47,6 @@
                     {% endif %}
 
                     <dl class="span6">
-                        <a name="{{ project.pk }}"></a>
                         <h3>
                             {{ project.title }}
                             {% if user|can_edit_project:project %}
@@ -72,6 +72,13 @@
                                 {% endfor %}
                             </ul>
                         </dd>
+                        {% if project.parent %}
+                        <dt>Related</dt>
+                        <dd>
+                            <a href={{ project.parent.get_absolute_url }}>{{ project.parent }}</a>
+                        </dd>
+                        {% endif %}
+
                     </dl>
                 </div>
             {% endfor %}
@@ -84,7 +91,7 @@
                         <h3>{{ project_group.group }}</h3>
                         <ul>
                             {% for project in project_group.projects %}
-                                <li><a href="{% url cms:projects_year_url year=project.year %}#{{ project.pk }}">{{ project.title }}</a></li>
+                                <li><a href="{% url cms:projects_year_pk_url year=project.year pk=project.pk %}">{{ project.title }}</a></li>
                             {% endfor %}
                         </ul>
                     </div>

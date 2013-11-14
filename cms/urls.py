@@ -29,6 +29,7 @@ urlpatterns += (
     url(r'^project/create/$', CreateProjectView.as_view(), name='create_project_url'),
     url(r'^project/all/$', ProjectView.as_view(), name='projects_url'),
     url(r'^project/all/(?P<year>\d+)/$', ProjectView.as_view(), name='projects_year_url'),
+    url(r'^project/all/(?P<year>\d+)/#(?P<pk>\d+)$', ProjectView.as_view(), name='projects_year_pk_url'),
     url(r'^project/(?P<pk>\d+)/edit/$', EditProjectView.as_view(), name='edit_project_url'),
     url(r'^project/(?P<pk>\d+)/delete/$', DeleteProjectView.as_view(), name='delete_project_url'),
 )
