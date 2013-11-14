@@ -14,15 +14,15 @@
     <h1>{{ member }}
         <small>({{ member.get_group_display }})</small>
         {% if user|can_edit_member:member%}
-            <small><a href="{% url cms:edit_profile_url pk=member.pk %}">edit</a></small>
+            <small><a href="{% url 'cms:edit_profile_url' pk=member.pk %}">edit</a></small>
         {% endif %}
         {% if user|can_archive_member:member %}
-            <small><a href="{% url cms:archive_member_url pk=member.pk %}">archive</a></small>
+            <small><a href="{% url 'cms:archive_member_url' pk=member.pk %}">archive</a></small>
         {% endif %}
         {% if user|can_delete_member:member %}
-            <small><a href="{% url cms:delete_member_url pk=member.pk %}">delete</a></small>
+            <small><a href="{% url 'cms:delete_member_url' pk=member.pk %}">delete</a></small>
         {% endif %}
-        <small><a href="{% url cms:blog_url pk=member.pk %}">blog posts</a></small>
+        <small><a href="{% url 'cms:blog_url' pk=member.pk %}">blog posts</a></small>
     </h1>
 
     <div class="row">
@@ -50,7 +50,7 @@
                                 <ul>
                                     {% for project_member in group.project_members %}
                                         <li>
-                                            <a href="{% url cms:projects_year_url year=group.year %}#{{ project_member.project.pk }}">
+                                            <a href="{% url 'cms:projects_year_url' year=group.year %}#{{ project_member.project.pk }}">
                                                 {{ project_member.project.title }}
                                             </a>
                                             {% if project_member.role %} ({{ project_member.role }}){% endif %}</li>
@@ -67,7 +67,7 @@
                             <ul>
                                 {% for blog in recent_blogs %}
                                     <li>
-                                        <a href="{% url cms:blog_post_url pk=member.pk blog_pk=blog.pk %}">{{ blog.title }}</a> - {{ blog.date|date:"F j" }}
+                                        <a href="{% url 'cms:blog_post_url' pk=member.pk blog_pk=blog.pk %}">{{ blog.title }}</a> - {{ blog.date|date:"F j" }}
                                     </li>
                                 {% endfor%}
                             </ul>

@@ -13,7 +13,7 @@
                     {% endifnotequal %}
                     {% load filters %}
                     {% if user|can_edit_blogpost:blog %}
-                        <a href="{% url cms:edit_blog_url pk=member.pk blog_pk=blog.pk %}">edit</a>
+                        <a href="{% url 'cms:edit_blog_url' pk=member.pk blog_pk=blog.pk %}">edit</a>
                     {% endif %}
                 </small>
             </h1>

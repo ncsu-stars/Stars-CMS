@@ -9,7 +9,7 @@
     <div class="row">
         <h4 class="span3">
             {% if prev_year %}
-                <a href="{% url cms:blogs_year_url year=prev_year%}">&laquo; Blogs {{ prev_year }} &ndash; {{ prev_year2 }}</a>
+                <a href="{% url 'cms:blogs_year_url' year=prev_year%}">&laquo; Blogs {{ prev_year }} &ndash; {{ prev_year2 }}</a>
             {% else %}
                 &nbsp;
             {% endif%}
@@ -21,7 +21,7 @@
 
         <h4 class="span3" style="text-align: right;">
             {% if next_year %}
-                <a href="{% url cms:blogs_year_url year=next_year%}">Blogs {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>
+                <a href="{% url 'cms:blogs_year_url' year=next_year%}">Blogs {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>
             {% else %}
                 &nbsp;
             {% endif %}
@@ -39,13 +39,13 @@
             {% if months %}
                 <h4>Months</h4>
                 {% for month in months %}
-                    <a href="{% url cms:blogs_month_url year=month.year month=month.month %}">
+                    <a href="{% url 'cms:blogs_month_url' year=month.year month=month.month %}">
                         {{ month|date:"F" }}
                     </a> <br />
                 {% endfor %}
             {% endif %}
         </div>
-        <div style="text-align:right"><a href="{% url cms:blogs_rss_url %}"><img src="{{ STATIC_URL }}images/feed-icon-28x28.png" alt="RSS"/></a></div>
+        <div style="text-align:right"><a href="{% url 'cms:blogs_rss_url' %}"><img src="{{ STATIC_URL }}images/feed-icon-28x28.png" alt="RSS"/></a></div>
     </div>
 
     {% if is_paginated %}

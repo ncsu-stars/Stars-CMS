@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.delete_column('cms_blogpost', 'post_ptr_id')
 
         # Adding field 'BlogPost.id'
-        db.add_column('cms_blogpost', 'id', self.gf('django.db.models.fields.AutoField')(primary_key=True), keep_default=False)
+        db.add_column('cms_blogpost', 'id', self.gf('django.db.models.fields.AutoField')(default=1, primary_key=True), keep_default=False)
 
         # Adding field 'BlogPost.title'
         db.add_column('cms_blogpost', 'title', self.gf('django.db.models.fields.CharField')(default=1, max_length=255), keep_default=False)

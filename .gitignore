@@ -1,5 +1,8 @@
 db
+*.db
 media
+manage.py
+local_settings.py
 
 # compiled Python
 *.pyc

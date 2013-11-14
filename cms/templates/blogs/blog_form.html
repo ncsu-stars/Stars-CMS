@@ -22,7 +22,7 @@
 
                 if(!child.length) {
                     var csrf = $('input[name=csrfmiddlewaretoken]').val();
-                    $.post('{% url cms:tag_cloud_url %}', {
+                    $.post("{% url 'cms:tag_cloud_url' %}", {
                         'tag': new_tag,
                         'blog_id': {% if blog.pk %}{{ blog.pk }}{% else %}-1{% endif %},
                         'member_id': {{ member.pk }},
@@ -50,7 +50,7 @@
     <div class="control-group">
         <div class="controls">
             <button type="submit" class="btn btn-primary">Submit Post</button>
-            <a class="btn" href="{% url cms:blog_url pk=member.pk %}">Cancel</a>
+            <a class="btn" href="{% url 'cms:blog_url' pk=member.pk %}">Cancel</a>
         </div>
     </div>
 </fieldset>

@@ -3,7 +3,7 @@
 {% block title %}Add a new blog post{% endblock title %}
 
 {% block content %}
-    <form id="addBlogForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url cms:add_blog_url pk=member.pk %}">
+    <form id="addBlogForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url 'cms:add_blog_url' pk=member.pk %}">
         {% include 'blogs/blog_form.html' with legend="Add Post" %}
     </form>
 {% endblock content %}
