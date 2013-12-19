@@ -122,7 +122,7 @@
                 <li id="top_home"><a href="{% url 'cms:homepage_url' %}">Home</a></li>
                 <li id="top_projects"><a href="{% url 'cms:projects_url' %}">Projects</a></li>
                 <li id="top_members"><a href="{% url 'cms:members_url' %}">People</a></li>
-                <li id="top_blogs"><a href="{% url 'cms:blogs_url' %}">Blogs</a></li>
+                <li id="top_blogs"><a href="{% url 'cms:blogs_people_url' %}">Blogs</a></li>
                 {% for page in menu_pages %}
                 <li id="top_{{ page.pk }}"><a href="{% url 'cms:page_url' slug=page.slug %}">{{ page.title }}</a></li>
                 {% endfor %}
