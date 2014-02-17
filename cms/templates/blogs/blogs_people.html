@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+
+{% load filters %}
+
+{% block title %}User Blogs {% endblock title %}
+{% block current_page %}current="#top_blogs";{% endblock current_page %}
+
+{% block content %}
+<div class="row">
+        <h2 class="span6" style="text-align: center; margin-bottom: 20px;margin-left: 25%; margin-right: 25%;">User Blogs </h2>
+</div>
+<div class="row">
+    <div class="span10">
+        {% if blog_posts %}
+            {% include 'blogs/blog_badge.html' %}
+        {% else %}
+            No blogs available.
+        {% endif %}
+    </div>
+
+    <div class="span2">
+        {% if month %}
+                <a href="{% url 'cms:blogs_month_url' year=year month=month %}">Current Month</a> 
+                <br />
+        {% endif %}
+        <a href="{%url 'cms:blogs_url' %}">Current Year</a>
+        <div style="text-align:right"><a href="{% url 'cms:blogs_rss_url' %}"><img src="{{ STATIC_URL }}images/feed-icon-28x28.png" alt="RSS"/></a></div>
+
+    </div>
+</div>
+{% if is_paginated %}
+    {% include "blogs/paginator.html" %}
+{% endif %}
+
+{% endblock content %}

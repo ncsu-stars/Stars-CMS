@@ -341,6 +341,51 @@ class BlogsYearView(ListView):
         else:
             return super(BlogsYearView, self).render_to_response(context)
 
+class BlogsPeopleView(ListView):
+    model = BlogPost
+    template_name = 'blogs/blogs_people.html'
+    context_object_name = 'blog_posts'
+    paginate_by = 5
+
+    def get_queryset(self):
+        allTheBlogs = BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('-date');
+        blogsToRender = []
+        for blog in allTheBlogs:
+            add = True
+            for usedBlog in blogsToRender:
+                if blog.author == usedBlog.author:
+                    add = False
+            if add == True:
+                blogsToRender.append(blog)
+
+        return blogsToRender
+
+    def get_context_data(self, **kwargs):
+        context = super(BlogsPeopleView, self).get_context_data(**kwargs)
+
+        context['year'] = int(self.kwargs.get('year', settings.CURRENT_YEAR))
+        next_year = context['year'] + 1
+        context['year2'] = next_year
+        prev_year = context['year'] - 1
+
+        if BlogPost.objects.by_academic_year(next_year).count() > 0:
+            context['next_year'] = next_year
+            context['next_year2'] = next_year + 1
+        if BlogPost.objects.by_academic_year(prev_year).count() > 0:
+            context['prev_year'] = prev_year
+            context['prev_year2'] = prev_year + 1
+
+        context['month'] = time.strftime('%m');
+
+        return context
+
+    def render_to_response(self, context):
+        # check for "year" in kwargs to avoid redirect loop when current year has no data
+        if len(context['blog_posts']) == 0 and 'year' in self.kwargs:
+            return HttpResponseRedirect(reverse('cms:blogs_url'))
+        else:
+            return super(BlogsPeopleView, self).render_to_response(context)    
+        
 class BlogsMonthView(ListView):
     model = BlogPost
     template_name = 'blogs/blogs_month.html'
