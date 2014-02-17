@@ -6,7 +6,7 @@
     <div class="blog-badge">
         <div class="row-fluid">
             <div class="span3">
-                <a href="{% url 'cms:blog_post_url' pk=blog.author.pk blog_pk=blog.pk %}">
+                <a href="{% url 'cms:blog_url' pk=blog.author.pk %}">
                     {% if  blog.author.image %}
                         <img src="{{ MEDIA_URL }}/{{ blog.author.image}}"/>
                     {% else %}
