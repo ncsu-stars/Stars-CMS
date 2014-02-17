@@ -4,7 +4,6 @@ from django.db import models
 from django.conf import settings
 from django.db.models import signals
 from django.contrib.auth.models import User
-import django.contrib.localflavor.us.us_states as states
 from django.db.models import Q
 
 from cms.managers import BlogPostManager
