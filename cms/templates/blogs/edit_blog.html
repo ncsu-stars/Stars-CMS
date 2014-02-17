@@ -3,7 +3,7 @@
 {% block title %}Add a new blog post{% endblock title %}
 
 {% block content %}
-    <form id="editBlogForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url cms:edit_blog_url pk=blog.author.pk blog_pk=blog.pk %}">
+    <form id="editBlogForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url 'cms:edit_blog_url' pk=blog.author.pk blog_pk=blog.pk %}">
         {% include 'blogs/blog_form.html' with legend="Edit Post" %}
     </form>
 {% endblock content %}

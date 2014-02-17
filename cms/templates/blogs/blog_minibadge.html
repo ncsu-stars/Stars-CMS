@@ -5,7 +5,7 @@
 {% for blog in blog_posts %}
     <div class="blog-badge">
         <div class="detail">
-            <h3><a href="{% url cms:blog_post_url pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a></h5>
+            <h3><a href="{% url 'cms:blog_post_url' pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a></h5>
             <h5>{{ blog.date|date:"F j, Y" }}</h5>
             <p>{{ blog.post|striptags|truncatewords_html:50 }}</p>
         </div>

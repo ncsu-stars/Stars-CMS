@@ -11,13 +11,13 @@
             <h1>All Pages</h1>
 
             {% for page in pages %}
-            <h2><a href="{% url cms:page_url slug=page.slug %}">{{ page.title }}</a>
+            <h2><a href="{% url 'cms:page_url' slug=page.slug %}">{{ page.title }}</a>
                 <small>
                     {% if user|can_edit_page:page %}
-                    <a href="{% url cms:edit_page_url pk=page.pk %}">edit</a>
+                    <a href="{% url 'cms:edit_page_url' pk=page.pk %}">edit</a>
                     {% endif %}
                     {% if user|can_delete_page:page %}
-                    <a href="{% url cms:delete_page_url pk=page.pk %}">delete</a>
+                    <a href="{% url 'cms:delete_page_url' pk=page.pk %}">delete</a>
                     {% endif %}
                 </small>
             </h2>

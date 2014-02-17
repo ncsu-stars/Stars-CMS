@@ -9,7 +9,7 @@ $(document).ready(function() {
         e.preventDefault();
         e.stopPropagation();
 
-        var url = '{% url cms:pages_all_url %}';
+        var url = "{% url 'cms:pages_all_url' %}";
         window.location.href = url;
     });
 });
@@ -19,7 +19,7 @@ $(document).ready(function() {
 {% block content %}
 {% load filters %}
 {% if user|can_delete_page:page %}
-<form id="deletePage" method="post" action="{% url cms:delete_page_url pk=page.pk %}">
+<form id="deletePage" method="post" action="{% url 'cms:delete_page_url' pk=page.pk %}">
     {% csrf_token %}
     <h1>Are you sure you want to delete {{ page.title }}</h1>
     <input type="submit" class="btn danger" value="Yes, delete page" />

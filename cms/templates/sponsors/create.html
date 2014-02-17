@@ -11,9 +11,9 @@
 
 
 {% if form.is_multipart %}
-<form id="createSponsorForm" width="700px" method="post" enctype="multipart/form-data" action="{% url cms:create_sponsor_url %}">
+<form id="createSponsorForm" width="700px" method="post" enctype="multipart/form-data" action="{% url 'cms:create_sponsor_url' %}">
 {% else %}
-<form id="createSponsorForm" width="700px" method="post" action="{% url cms:create_sponsor_url %}">
+<form id="createSponsorForm" width="700px" method="post" action="{% url 'cms:create_sponsor_url' %}">
 {% endif %}
     {% csrf_token %}
     <fieldset>

@@ -11,10 +11,10 @@
             <h1>{{ page.title }}
                 <small>
                     {% if user|can_edit_page:page %}
-                    <a href="{% url cms:edit_page_url pk=page.pk %}">edit</a>
+                    <a href="{% url 'cms:edit_page_url' pk=page.pk %}">edit</a>
                     {% endif %}
                     {% if user|can_delete_page:page %}
-                    <a href="{% url cms:delete_page_url pk=page.pk %}">delete</a>
+                    <a href="{% url 'cms:delete_page_url' pk=page.pk %}">delete</a>
                     {% endif %}
                 </small>
             </h1>
