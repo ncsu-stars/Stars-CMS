@@ -351,13 +351,14 @@ class BlogsPeopleView(ListView):
         allTheBlogs = BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('-date');
         blogsToRender = []
         for blog in allTheBlogs:
-            add = True
-            for usedBlog in blogsToRender:
-                if blog.author == usedBlog.author:
-                    add = False
-            if add == True:
-                blogsToRender.append(blog)
-
+            authorFound = False
+            for authorList in blogsToRender:
+                if blog.author == authorList[0].author:
+                    authorFound = True
+                    if len(authorList) < 3:
+                        authorList.append(blog)
+            if authorFound == False:
+                blogsToRender.append([blog])
         return blogsToRender
 
     def get_context_data(self, **kwargs):
