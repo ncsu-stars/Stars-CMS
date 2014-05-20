@@ -313,7 +313,7 @@ class BlogsYearView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('-date')
+        return BlogPost.objects.by_academic_year(self.kwargs.get('year', settings.CURRENT_YEAR)).order_by('date')
 
     def get_context_data(self, **kwargs):
         context = super(BlogsYearView, self).get_context_data(**kwargs)
@@ -394,7 +394,7 @@ class BlogsMonthView(ListView):
     paginate_by = 5
 
     def get_queryset(self):
-        return BlogPost.objects.filter(date__year=self.kwargs.get('year', settings.CURRENT_YEAR)).filter(date__month=self.kwargs.get('month', time.localtime().tm_mon)).order_by('-date')
+        return BlogPost.objects.filter(date__year=self.kwargs.get('year', settings.CURRENT_YEAR)).filter(date__month=self.kwargs.get('month', time.localtime().tm_mon)).order_by('date')
 
     def get_context_data(self, **kwargs):
         context = super(BlogsMonthView, self).get_context_data(**kwargs)
@@ -411,6 +411,10 @@ class BlogsMonthView(ListView):
         context['next_year'] = [ year, year + 1 ][month == 12]
         context['prev_year'] = [ year, year - 1 ][month == 1]
 
+        if(month <= 7):
+            year = year - 1
+
+        context['months'] = BlogPost.objects.by_academic_year(year).dates('date', 'month', 'ASC')
         return context
     
     def render_to_response(self, context):
