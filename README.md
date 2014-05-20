@@ -18,7 +18,7 @@ Installation
 
 There are two solutions:
 
-1. Download the application by running `https://github.com/ncsu-stars/Stars-CMS.git` in your project directory. 
+1. Download the application by running `git clone https://github.com/ncsu-stars/Stars-CMS.git` in your project directory. 
 
 2. Run `pip install stars-cms` and add `cms` to your `INSTALLED_APPS`
 
