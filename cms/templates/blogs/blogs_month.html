@@ -23,13 +23,28 @@
             </a>
         </h4>
     </div>
-
+    <div class="row">
+    <div class="span10">
     {% if blog_posts %}
         {% include 'blogs/blog_badge.html' %}
     {% else %}
         No blogs available.
     {% endif %}
-
+    </div>
+    <div class="span2">
+            {% if months %}
+                <h4>Months</h4>
+                {% for month in months %}
+                    <a href="{% url 'cms:blogs_month_url' year=month.year month=month.month %}">
+                        {{ month|date:"F" }}
+                    </a> <br />
+                {% endfor %}
+            {% endif %}
+            <hr />
+            <a href="{%url 'cms:blogs_people_url' %}">Member Blogs</a>
+        </div>
+        <div style="text-align:right"><a href="{% url 'cms:blogs_rss_url' %}"><img src="{{ STATIC_URL }}images/feed-icon-28x28.png" alt="RSS"/></a></div>
+    </div>
     {% if is_paginated %}
         {% include "blogs/paginator.html" %}
     {% endif %}
