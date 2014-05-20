@@ -1,7 +1,7 @@
 from django.core.urlresolvers import reverse
 from django.conf import settings
 from django.utils import simplejson
-from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden, HttpResponseBadRequest
 from django.contrib.auth.models import User
 from django.views.generic import View, ListView, DetailView, CreateView, UpdateView, TemplateView, DeleteView
 from django.shortcuts import get_object_or_404
@@ -412,6 +412,13 @@ class BlogsMonthView(ListView):
         context['prev_year'] = [ year, year - 1 ][month == 1]
 
         return context
+    
+    def render_to_response(self, context):
+        # check for "year" in kwargs to avoid redirect loop when current year has no data
+        if len(context['blog_posts']) == 0 and 'year' in self.kwargs:
+            return HttpResponseRedirect(reverse('cms:blogs_url'))
+        else:
+            return super(BlogsMonthView, self).render_to_response(context)    
 
 class BlogView(ListView):
     template_name = 'blogs/blogs.html'
