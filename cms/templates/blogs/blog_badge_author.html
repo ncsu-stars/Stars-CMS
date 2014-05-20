@@ -1,0 +1,32 @@
+{% block extracss %}
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/blog_badge.css" />
+{% endblock extracss %}
+
+{% for author in blog_posts %}
+   <div class="blog-badge">
+        <div class="row-fluid">
+            <div class="span3">
+                <a href="{% url 'cms:profile_url' pk=author.0.author.pk %}">
+                    {% if  author.0.author.image %}
+                        <img src="{{ MEDIA_URL }}/{{ author.0.author.image}}"/>
+                    {% else %}
+                        <img src="{{ STATIC_URL }}images/placeholder.png"/>
+                    {% endif %}
+                </a>
+            </div>
+            <div class="span9">
+                <h3><a href="{% url 'cms:blog_url' pk=author.0.author.pk %}">{{ author.0.author.user.get_full_name }}</a> <small>{{ author.0.author.group.title }}<small></h3>
+                <br />
+                <h4>Recent Posts:</h4>
+                {% for blog in author %}
+                    <h5><a href="{% url 'cms:blog_post_url' pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a> &ndash; {{ blog.date|date:"F j" }}</h5>
+                {% empty %}
+                    <h3>No blogs available.</h3>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    
+{% empty %}
+    <h3>No blogs available.</h3>
+{% endfor %}
