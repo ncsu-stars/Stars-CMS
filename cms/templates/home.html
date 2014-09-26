@@ -67,7 +67,11 @@
         </div>
     </div>
 
-    <div class="span12 last" style="text-align: center">
-        {% for sponsor in sponsors %} {% if sponsor.image %}<img alt="{{ sponsor.name }}" src="{{ MEDIA_URL }}{{ sponsor.image }}" width="86px" /> {% endif %}{% endfor %}
+    <div class="span12 last sponsor-wrapper">
+        {% for sponsor in sponsors %}
+            {% if sponsor.image %}
+                    <img alt="{{ sponsor.name }}" src="{{ MEDIA_URL }}{{ sponsor.image }}" width="{{ sponsor_image_width }}%"/>
+            {% endif %}
+        {% endfor %}
     </div>
 {% endblock content %}

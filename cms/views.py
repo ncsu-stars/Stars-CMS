@@ -34,6 +34,11 @@ class HomepageView(TemplateView):
         context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:5]
         context['SPONSOR_LOGO_URL'] = settings.SPONSOR_LOGO_URL
         context['sponsors'] = Sponsor.objects.all().order_by('name')
+        if len(context['sponsors']) > 0:
+            # This generates the percentage of the width a single sponsor image should
+            # take up based on the number of sponsors. The .95 is required so as to
+            # preserve the single line of images.
+            context['sponsor_image_width'] = (100 / len(context['sponsors'])) * .95
         context['front_pages'] = Page.objects.filter(pub_front_page=True).order_by('weight')
 
         return context
