@@ -20,7 +20,11 @@ LOGOUT_URL = reverse_lazy('cms:logout_url')
 
 ANONYMOUS_USER_ID = -1
 
-CURRENT_YEAR = 2013
+# This formula calculates the current academic year. If the current month is January through July then the
+# current academic year is one less than the current calendar year, while for months from August through December the
+# current academic year is the same as the current calendar year
+local_time = time.localtime()
+CURRENT_YEAR = local_time.tm_year if local_time.tm_mon >= 8  else local_time.tm_year - 1
 
 # Remove in production
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
