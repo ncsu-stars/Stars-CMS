@@ -11,12 +11,17 @@
             $('#normal_login').show();
             $('#wrap_login').hide();
         });
+        $('#cancelLogin').click(function() {
+            $('#not_ncsu').show();
+            $('#normal_login').hide();
+            $('#wrap_login').show();
+        });
     });
 </script>
 {% endblock extrajs %}
 
 {% block content %}
-<form id="loginForm" class="form" method="post" action="{% url 'cms:login_url' %}">
+<form id="nonWrapForm" class="form" method="post" action="{% url 'cms:login_url' %}">
     {% csrf_token %}
     {% if form.non_field_errors %}
         {% for error in form.non_field_errors %}
@@ -34,6 +39,23 @@
             {% endif %}
         {% endfor %}
     {% endif %}
+    <fieldset id="normal_login">
+        <legend>Login</legend>
+        {% for field in form %}
+        <div class="clearfix">
+            <label for="id_{{ field.name }}">{{ field.label }}</label>
+            <div class="input">
+                {{ field }}
+            </div>
+        </div>
+        {% endfor %}
+        <div class="actions">
+            <input type="submit" class="btn primary" name="password_login" value="Login" />
+            <button id="cancelLogin" type="reset" class="btn">Cancel</button>
+    </fieldset>
+</form>
+<form id="loginForm" class="form" method="post" action="{% url 'cms:login_url' %}">
+    {% csrf_token %}
     <fieldset id="wrap_login">
         <legend>WRAP Login</legend>
         {% if form.token %}
@@ -56,19 +78,5 @@
         </div>
     </fieldset>
     <a id="not_ncsu" href="javascript:void;">Not an NCSU student?</a>
-    <fieldset id="normal_login">
-        <legend>Login</legend>
-        {% for field in form %}
-        <div class="clearfix">
-            <label for="id_{{ field.name }}">{{ field.label }}</label>
-            <div class="input">
-                {{ field }}
-            </div>
-        </div>
-        {% endfor %}
-        <div class="actions">
-            <input type="submit" class="btn primary" name="password_login" value="Login" />
-            <button type="reset" class="btn">Cancel</button>
-    </fieldset>
 </form>
 {% endblock content %}
