@@ -99,14 +99,7 @@ class MembersView(ListView):
         # NOTE: "year" is a field lookup type so must use "year__exact" instead
         project_members = ProjectMember.objects.filter(project__year__exact=self.kwargs.get('year', settings.CURRENT_YEAR))
         member_query = Q(pk__in=project_members.values_list('member'))
-
-        # active members are shown unconditinoally for current year
-        if int(self.kwargs.get('year', settings.CURRENT_YEAR)) == settings.CURRENT_YEAR:
-            active_query = Q(status=Member.STATUS_ACTIVE)
-        else:
-            active_query = Q()
-
-        context['members'] = Member.objects.filter(member_query | active_query).order_by('user__first_name', 'user__last_name').distinct()
+        context['members'] = Member.objects.filter(member_query).order_by('user__first_name', 'user__last_name').distinct()
 
         if permissions.is_user_slc_leader(self.request.user):
             context['archived_members'] = Member.objects.filter(status=Member.STATUS_ARCHIVED).order_by('user__first_name', 'user__last_name')
