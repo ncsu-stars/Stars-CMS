@@ -3,6 +3,7 @@ from cms.models import User
 from cms.models import Member
 from cms.models import Project
 from cms.models import ProjectMember
+import cms
 from django.conf import settings
 import django.db.models.query
 import hashlib
@@ -116,3 +117,71 @@ class MemberTest(SimpleTestCase):
         with self.assertRaisesRegexp(IntegrityError, "UNIQUE.*auth_user.username"):
             Member.objects.create(user=User.objects.create(username="user7"), group="Undergraduate", hometown="hometown",
                               interests="", homepage="", classification="freshman", status=Member.STATUS_ARCHIVED)
+
+class ProjectTest(SimpleTestCase):
+    def setUp(self):
+        self.tearDown()
+        Project.objects.create(title="Project1", status=Project.STATUS_ACTIVE, year=cms.academic_year(cms.get_current_time()))
+
+    def test_get_absolute_url(self):
+        project = Project.objects.get(pk=1)
+        expectedUrl = "/project/all/2014/#1"
+        self.assertEqual(project.get_absolute_url(), expectedUrl)
+
+    def test_is_member_coordinator_no_members(self):
+        Member.objects.create(status=Member.STATUS_ACTIVE, user=User.objects.create())
+        project = Project.objects.get(pk=1)
+        member = Member.objects.get(pk=1)
+        self.assertFalse(project.is_member_coordinator(member))
+
+    def test_is_member_coordinator_member_is_coordinator(self):
+        Member.objects.create(status=Member.STATUS_ACTIVE, user=User.objects.create())
+        project = Project.objects.get(pk=1)
+        member = Member.objects.get(pk=1)
+        ProjectMember.objects.create(project=project, member=member, is_coordinator=True)
+        self.assertTrue(project.is_member_coordinator(member))
+
+    def test_is_member_coordinator_member_is_not_coordinator(self):
+        Member.objects.create(status=Member.STATUS_ACTIVE, user=User.objects.create())
+        project = Project.objects.get(pk=1)
+        member = Member.objects.get(pk=1)
+        ProjectMember.objects.create(project=project, member=member, is_coordinator=False)
+        self.assertFalse(project.is_member_coordinator(member))
+
+    def test_get_status(self):
+        Project.objects.create(title="Project2", status=Project.STATUS_ARCHIVED, year=cms.academic_year(cms.get_current_time()))
+        Project.objects.create(title="Project3", status=Project.STATUS_EMPTY, year=cms.academic_year(cms.get_current_time()))
+        self.assertEqual(3, Project.objects.all().__len__())
+        project1 = Project.objects.get(title="Project1")
+        project2 = Project.objects.get(title="Project2")
+        project3 = Project.objects.get(title="Project3")
+
+        self.assertEqual(u"Active", project1.get_status_display())
+        self.assertEqual(u"Archived", project2.get_status_display())
+        self.assertEqual(u"Empty", project3.get_status_display())
+
+    def test_get_category(self):
+        Project.objects.create(status=Project.STATUS_ARCHIVED, category=Project.CATEGORY_INTERNSHIP, year=cms.academic_year(cms.get_current_time()))
+        Project.objects.create(status=Project.STATUS_EMPTY, category=Project.CATEGORY_ORGANIZATIONAL, year=cms.academic_year(cms.get_current_time()))
+        Project.objects.create(status=Project.STATUS_ARCHIVED, category=Project.CATEGORY_OUTREACH, year=cms.academic_year(cms.get_current_time()))
+        Project.objects.create(status=Project.STATUS_EMPTY, category=Project.CATEGORY_SERVICE, year=cms.academic_year(cms.get_current_time()))
+        Project.objects.create(status=Project.STATUS_ARCHIVED, category=Project.CATEGORY_RESEARCH, year=cms.academic_year(cms.get_current_time()))
+
+        project1 = Project.objects.get(pk=1)
+        project2 = Project.objects.get(pk=2)
+        project3 = Project.objects.get(pk=3)
+        project4 = Project.objects.get(pk=4)
+        project5 = Project.objects.get(pk=5)
+        project6 = Project.objects.get(pk=6)
+
+        self.assertEqual("Other", project1.get_category_display())
+        self.assertEqual("Internship", project2.get_category_display())
+        self.assertEqual("Organizational", project3.get_category_display())
+        self.assertEqual("Outreach", project4.get_category_display())
+        self.assertEqual("Service", project5.get_category_display())
+        self.assertEqual("Research", project6.get_category_display())
+
+    def tearDown(self):
+        Member.objects.all().delete()
+        User.objects.all().delete()
+        Project.objects.all().delete()
