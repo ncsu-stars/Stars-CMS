@@ -1,4 +1,5 @@
 import time
+import pytz.reference
 import datetime
 
 def academic_year(t):
@@ -15,3 +16,7 @@ def academic_year(t):
         return year
     else:
         return year - 1
+
+
+def get_current_time():
+    return datetime.datetime.now(tz=pytz.reference.LocalTimezone())

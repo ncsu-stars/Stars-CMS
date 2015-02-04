@@ -1,5 +1,5 @@
 # encoding: utf-8
-import datetime
+import cms
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
@@ -9,7 +9,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
 
         # Adding field 'News.date'
-        db.add_column('cms_news', 'date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now), keep_default=False)
+        db.add_column('cms_news', 'date', self.gf('django.db.models.fields.DateTimeField')(default=cms.get_current_time), keep_default=False)
 
 
     def backwards(self, orm):
