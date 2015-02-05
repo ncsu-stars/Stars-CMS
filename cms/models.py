@@ -1,15 +1,13 @@
 import hashlib
 
 from django.db import models
-from django.conf import settings
-from django.db.models import signals
 from django.contrib.auth.models import User
-from django.db.models import Q
 
 from cms.managers import BlogPostManager
 from cms.storage import OverwriteStorage
 
 import os
+from django.core.urlresolvers import reverse
 
 MEMBER_IMAGE_FOLDER = 'member'
 def make_member_image_name(instance, filename):
@@ -67,9 +65,8 @@ class Member(models.Model):
     def __unicode__(self):
         return unicode(self.user.get_full_name())
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('cms:profile_url', (self.pk,), {})
+        return reverse('cms:profile_url', kwargs={'pk': self.pk})
 
     def generate_hashed_email(self):
         return hashlib.md5(self.user.email).hexdigest()
@@ -79,7 +76,7 @@ class Member(models.Model):
 
     @staticmethod
     def get_possible_project_members():
-	    # need to allow member one year old as well since activity status is predicated on project membership
+        # need to allow member one year old as well since activity status is predicated on project membership
 	    # but you can't create a project for a new year without a project coordinator
         # hence, the one year offset avoids the chicken-and-the-egg problem
         #return Member.objects.filter(Q(status=Member.STATUS_ACTIVE) | Q(pk__in=ProjectMember.objects.filter(project__year__gte= \
@@ -131,9 +128,8 @@ class Project(models.Model):
     def __unicode__(self):
         return unicode('%s %d' % (self.title, self.year))
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('cms:projects_year_pk_url', (), {'year': self.year, 'pk': self.pk})
+        return reverse('cms:projects_year_pk_url', kwargs={'year': self.year, 'pk': self.pk})
 
     def is_member_coordinator(self, member):
         return ProjectMember.objects.filter(member__pk=member.pk, project__pk=self.pk, is_coordinator=True).count() != 0
@@ -192,9 +188,8 @@ class Page(models.Model):
     def __unicode__(self):
         return unicode(self.title)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('cms:page_url', (), {'slug': self.slug})
+        return reverse('cms:page_url', kwargs={'slug': self.slug})
 
 class Tag(models.Model):
     name            = models.CharField(max_length=255)
@@ -212,9 +207,8 @@ class BlogPost(models.Model):
 
     objects         = BlogPostManager()
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('cms:blog_post_url', (), {'pk': self.author.pk, 'blog_pk': self.pk})
+        return reverse('cms:blog_post_url', kwargs={'pk': self.author.pk, 'blog_pk': self.pk})
 
     def __unicode__(self):
         return unicode('%s by %s' % (self.title, self.author))
@@ -231,11 +225,10 @@ class Sponsor(models.Model):
     def __unicode__(self):
         return unicode(self.name)
 
-    @models.permalink
     def get_absolute_url(self):
-        return ('cms:sponsors_url')
+        return reverse('cms:sponsors_url')
 
-    def save(self):
+    def save(self, **kwargs):
         img_tmp = self.image
         self.image = None
         super(Sponsor, self).save()
