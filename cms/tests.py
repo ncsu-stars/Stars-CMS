@@ -5,6 +5,8 @@ from django.conf import settings
 import django.db.models.query
 import hashlib
 from django.db import IntegrityError
+from django.core.files.uploadedfile import SimpleUploadedFile
+
 
 class MemberTest(SimpleTestCase):
     def setUp(self):
@@ -229,3 +231,52 @@ class NewsTest(SimpleTestCase):
 
     def test__unicode__(self):
         self.assertEqual("News1!", unicode(self.news))
+
+class PageTest(SimpleTestCase):
+    page = None
+    def setUp(self):
+        Page.objects.create(title="TitleForThisPage", content="Lots of content is awesome.", slug="thisismyslug")
+        self.page = Page.objects.get(pk=1)
+
+    def test__unicode__(self):
+        self.assertEqual("TitleForThisPage", unicode(self.page))
+
+    def test_get_absolute_url(self):
+        self.assertEqual("/page/s/thisismyslug/", self.page.get_absolute_url())
+
+class TagTest(SimpleTestCase):
+    def setUp(self):
+        Tag.objects.create(name="Tagging")
+        self.tag = Tag.objects.get(pk=1)
+
+    def test__unicode__(self):
+        self.assertEqual(u"Tagging", unicode(self.tag))
+
+class BlogPostTest(SimpleTestCase):
+    def setUp(self):
+        self.tearDown()
+        Member.objects.create(user=User.objects.create(username="User1", first_name="First", last_name="Last"), status=Member.STATUS_ACTIVE)
+        self.member = Member.objects.get(pk=1)
+        BlogPost.objects.create(author=self.member, title="Just a title", id=1)
+        self.blog = BlogPost.objects.get(pk=1)
+
+    def test__unicode__(self):
+        self.assertEqual("Just a title by First Last", unicode(self.blog))
+
+    def test_get_absolute_url(self):
+        self.assertEqual("/people/1/blog/1/", self.blog.get_absolute_url())
+
+    def tearDown(self):
+        Member.objects.all().delete()
+        User.objects.all().delete()
+
+class SponsorTest(SimpleTestCase):
+    mock_image = None
+    sponsor = None
+    def setUp(self):
+        mock_image = SimpleUploadedFile('test/file.jpg', "Image contents", content_type='image/jpeg')
+        Sponsor.objects.create(name="TestFile", image=mock_image)
+        self.sponsor = Sponsor.objects.get(pk=1)
+
+    def test_get_absolute_url(self):
+        self.assertEqual("/sponsors/", self.sponsor.get_absolute_url())
