@@ -151,7 +151,7 @@ class ProjectTest(SimpleTestCase):
     def test_get_status(self):
         Project.objects.create(title="Project2", status=Project.STATUS_ARCHIVED, year=cms.academic_year(cms.get_current_time()))
         Project.objects.create(title="Project3", status=Project.STATUS_EMPTY, year=cms.academic_year(cms.get_current_time()))
-        self.assertEqual(3, Project.objects.all().__len__())
+        self.assertEqual(3, len(Project.objects.all()))
         project1 = Project.objects.get(title="Project1")
         project2 = Project.objects.get(title="Project2")
         project3 = Project.objects.get(title="Project3")
@@ -185,3 +185,40 @@ class ProjectTest(SimpleTestCase):
         Member.objects.all().delete()
         User.objects.all().delete()
         Project.objects.all().delete()
+
+class ProjectMemberTest(SimpleTestCase):
+    def setUp(self):
+        self.tearDown()
+        Member.objects.create(user=User.objects.create(username="1", first_name="First", last_name="Last"), status=Member.STATUS_ACTIVE)
+        Project.objects.create(title="Project2", status=Project.STATUS_ARCHIVED, year=cms.academic_year(cms.get_current_time()))
+        ProjectMember.objects.create(project=Project.objects.get(pk=1), member=Member.objects.get(pk=1))
+        ProjectMember.objects.create(project=Project.objects.get(pk=1), volunteer_name="Volunteer")
+
+    def test_get_full_name_from_volunteer(self):
+        self.assertEqual(u"Volunteer", ProjectMember.objects.get(pk=2).get_full_name())
+
+    def test_get_full_name_from_member(self):
+        project_member = ProjectMember.objects.get(pk=1)
+        self.assertFalse(project_member.is_volunteer())
+        self.assertEqual(User.objects.get(pk=1).get_full_name(), project_member.get_full_name())
+
+    def test_is_volunteer(self):
+        self.assertFalse(ProjectMember.objects.get(pk=1).is_volunteer())
+        self.assertTrue(ProjectMember.objects.get(pk=2).is_volunteer())
+
+    def test__unicode__non_role(self):
+        project_member = ProjectMember.objects.get(pk=1)
+
+        self.assertEquals("First Last", unicode(project_member))
+
+    def test__unicode__role(self):
+        ProjectMember.objects.create(project=Project.objects.get(pk=1), member=Member.objects.get(pk=1),
+                                     role="Cool Kids")
+        role_project = ProjectMember.objects.get(pk=3)
+        self.assertEquals("First Last (Cool Kids)", unicode(role_project))
+
+
+    def tearDown(self):
+        User.objects.all().delete()
+        Project.objects.all().delete()
+        Member.objects.all().delete()

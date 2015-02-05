@@ -156,7 +156,7 @@ class ProjectMember(models.Model):
         return self.member is None
 
     def get_full_name(self):
-        if self.is_volunteer:
+        if self.is_volunteer():
             return unicode(self.volunteer_name)
         else:
             return self.member.user.get_full_name()
