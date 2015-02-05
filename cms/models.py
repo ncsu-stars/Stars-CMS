@@ -1,13 +1,13 @@
 import hashlib
+import os
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 
 from cms.managers import BlogPostManager
 from cms.storage import OverwriteStorage
 
-import os
-from django.core.urlresolvers import reverse
 
 MEMBER_IMAGE_FOLDER = 'member'
 def make_member_image_name(instance, filename):

@@ -1,11 +1,12 @@
 from django.test import SimpleTestCase
-from cms.models import *
-import cms
 from django.conf import settings
-import django.db.models.query
-import hashlib
 from django.db import IntegrityError
 from django.core.files.uploadedfile import SimpleUploadedFile
+import django.db.models.query
+
+from cms.models import *
+import cms
+import hashlib
 
 
 class MemberTest(SimpleTestCase):
