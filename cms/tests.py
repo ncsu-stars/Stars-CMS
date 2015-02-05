@@ -1,8 +1,5 @@
 from django.test import SimpleTestCase
-from cms.models import User
-from cms.models import Member
-from cms.models import Project
-from cms.models import ProjectMember
+from cms.models import *
 import cms
 from django.conf import settings
 import django.db.models.query
@@ -222,3 +219,13 @@ class ProjectMemberTest(SimpleTestCase):
         User.objects.all().delete()
         Project.objects.all().delete()
         Member.objects.all().delete()
+
+class NewsTest(SimpleTestCase):
+    news = None
+    def setUp(self):
+        News.objects.create(title="News1!", description="THis is a description.", content="Just some content",
+                            date=cms.get_current_time())
+        self.news = News.objects.get(pk=1)
+
+    def test__unicode__(self):
+        self.assertEqual("News1!", unicode(self.news))
