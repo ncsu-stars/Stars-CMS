@@ -7,10 +7,10 @@
 
 {% block content %}
 <div class="row">
-        <h2 class="col-md-6" style="text-align: center; margin-bottom: 20px;margin-left: 25%; margin-right: 25%;">User Blogs </h2>
+        <h2 class="span6" style="text-align: center; margin-bottom: 20px;margin-left: 25%; margin-right: 25%;">User Blogs </h2>
 </div>
 <div class="row">
-    <div class="col-md-10">
+    <div class="span10">
         {% if blog_posts %}
             {% include 'blogs/blog_badge_author.html' %}
         {% else %}
@@ -18,7 +18,7 @@
         {% endif %}
     </div>
 
-    <div class="col-md-2">
+    <div class="span2">
         {% if month %}
                 <a href="{% url 'cms:blogs_month_url' year=year month=month %}">Current Month</a> 
                 <br />

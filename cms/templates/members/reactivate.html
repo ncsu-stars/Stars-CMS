@@ -8,8 +8,8 @@
 <form id="activateMember" method="post" action="{% url 'cms:reactivate_member_url' pk=member.pk %}">
     {% csrf_token %}
     <h1>Are you sure you want to reactivate {{ member }}</h1>
-    <input type="submit" class="btn btn-danger" value="Yes, reactivate member" />
-    <a class="btn btn-primary" href="{% url 'cms:members_url' %}">No, do not reactivate member</a>
+    <input type="submit" class="btn danger" value="Yes, reactivate member" />
+    <a class="btn primary" href="{% url 'cms:members_url' %}">No, do not reactivate member</a>
 </form>
 {% endif %}
 {% endblock content %}

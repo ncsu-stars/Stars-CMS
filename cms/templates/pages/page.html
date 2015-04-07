@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="span12">
             <h1>{{ page.title }}
                 <small>
                     {% if user|can_edit_page:page %}
@@ -21,7 +21,7 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-12">
+        <div class="span12">
             <p>
                 {{ page.content|stripjs }}
             </p>

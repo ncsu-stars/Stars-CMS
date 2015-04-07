@@ -4,8 +4,8 @@
 
 {% for blog in blog_posts %}
     <div class="blog-badge">
-        <div class="row">
-            <div class="col-md-3">
+        <div class="row-fluid">
+            <div class="span3">
                 <a href="{% url 'cms:blog_url' pk=blog.author.pk %}">
                     {% if  blog.author.image %}
                         <img src="{{ MEDIA_URL }}/{{ blog.author.image}}"/>
@@ -14,7 +14,7 @@
                     {% endif %}
                 </a>
             </div>
-            <div class="col-md-9">
+            <div class="span9">
                 <h3><a href="{% url 'cms:blog_post_url' pk=blog.author.pk blog_pk=blog.pk %}">{{ blog.title }}</a></h3>
                 <h5><a href="{% url 'cms:profile_url' pk=blog.author.pk %}">{{ blog.author.user.get_full_name }}</a> &ndash; {{ blog.date|date:"F j" }}</h5>
                 <p>{{ blog.post|striptags|truncatewords_html:50 }}</p>
