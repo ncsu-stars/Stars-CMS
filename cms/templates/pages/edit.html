@@ -6,7 +6,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="span12">
             <form class="form form-horizontal" id="createPageForm" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url 'cms:edit_page_url' pk=page.pk %}">
                 {% csrf_token %}
                 <fieldset>
@@ -16,7 +16,7 @@
                 <div class="control-group">
                     <div class="controls">
                         <button type="submit" class="btn btn-primary">Edit</button>
-                        <a class="btn btn-default" href="{% url 'cms:page_url' slug=page.slug %}">Cancel</a>
+                        <a class="btn" href="{% url 'cms:page_url' slug=page.slug %}">Cancel</a>
                     </div>
                 </div>
             </form>

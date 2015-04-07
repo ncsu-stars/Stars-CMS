@@ -1,20 +1,12 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-    
     <title>{{ SLC_NAME }} - {% block title %}{% endblock title %}</title>
 
+
     <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/formly.min.css" />
-    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css" />
-    
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet/less" href="{{ STATIC_URL }}css/style.less" />
 
     {% block extracss %}{% endblock extracss %}
 
@@ -81,12 +73,11 @@
 <body>
     {% load filters %}
     {% if user|is_slc_leader %}
-    
-    
-        <nav class="navbar nav-inverse" role="navigation">
-                <div class="container-fluid">
+        <div class="navbar navbar-inverse navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
                     <a class="brand" href="{% url 'cms:homepage_url' %}">Stars CMS</a>
-                    <ul class="nav navbar-nav">
+                    <ul class="nav">
                         <li><a href="{% url 'cms:homepage_url' %}">Admin Home</a></li>
                         <li><a href="{% url 'cms:create_project_url' %}">Create Project</a></li>
                         <li><a href="{% url 'cms:create_member_url' %}">Create Member</a></li>
@@ -95,25 +86,26 @@
                         <!--li><a href="#">Create News</a></li-->
                     </ul>
                 </div>
-        </nav>
+            </div>
+        </div>
         <div class="shiv"></div>
     {% endif %}
 
-    <div class="container">
-        <div class="row" style="padding-top:2%">
-            <div class="col-xs-2 col-md-1">
-                <a href="{% url 'cms:homepage_url' %}"><img class="img-responsive" src="{{ STATIC_URL }}images/Stars_logo_transparent.png" /></a>
+    <div id="body" class="container">
+        <div class="row">
+            <div class="span2">
+                <a href="{% url 'cms:homepage_url' %}"><img height="125px" src="{{ STATIC_URL }}images/STARS_Logo2.jpg" /></a>
             </div>
-            <div class="col-xs-8 col-md-10" id="logo">
+            <div class="span8" id="logo">
                 {{ SLC_NAME }}
             </div>
-            <div class="col-xs-2 col-md-1">
-                <a href="http://www.nsf.gov/"><img class="img-responsive" src="{{ STATIC_URL }}images/NSFlogoTrans.png" /></a>
+            <div class="span2">
+                <a href="http://www.nsf.gov/"><img width="100px" src="{{ STATIC_URL }}images/nsf.jpg" /></a>
             </div>
-        </div><!-- end row -->
+        </div>
 
         <div id="mainNavTop" class="row">
-            <div class="col-md-offset-10">
+            <div class="span12">
                 {% if user|logged_in %}
                     {% if user.get_profile %}
                         Welcome <a href="{% url 'cms:profile_url' pk=user.get_profile.pk %}">{{ user.get_full_name|default:"No Name" }}</a>!
@@ -125,50 +117,29 @@
                 {% endif %}
             </div>
         </div>
-        <nav class="navbar navbar-inverse" role="navigation">
-  			<div class="container-fluid">
-    			<!-- Brand and toggle get grouped for better mobile display -->
-    			<div class="navbar-header">
-      			<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-        			<span class="sr-only">Toggle navigation</span>
-        			<span class="icon-bar"></span>
-        			<span class="icon-bar"></span>
-        			<span class="icon-bar"></span>
-      			</button>
-    			</div>
-            	<!-- Collect the nav links, forms, and other content for toggling -->
-    			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-      				<ul class="nav navbar-nav">
-                	<li class="active" id="top_home"><a href="{% url 'cms:homepage_url' %}">Home</a></li>
-                	<li id="top_projects"><a href="{% url 'cms:projects_url' %}">Projects</a></li>
-                	<li id="top_members"><a href="{% url 'cms:members_url' %}">People</a></li>
-                	<li id="top_blogs"><a href="{% url 'cms:blogs_people_url' %}">Blogs</a></li>
+        <div id="mainNav" class="row">
+            <ul class="span10">
+                <li id="top_home"><a href="{% url 'cms:homepage_url' %}">Home</a></li>
+                <li id="top_projects"><a href="{% url 'cms:projects_url' %}">Projects</a></li>
+                <li id="top_members"><a href="{% url 'cms:members_url' %}">People</a></li>
+                <li id="top_blogs"><a href="{% url 'cms:blogs_people_url' %}">Blogs</a></li>
                 {% for page in menu_pages %}
-                	<li id="top_{{ page.pk }}"><a href="{% url 'cms:page_url' slug=page.slug %}">{{ page.title }}</a></li>
+                <li id="top_{{ page.pk }}"><a href="{% url 'cms:page_url' slug=page.slug %}">{{ page.title }}</a></li>
                 {% endfor %}
-            		</ul>
-               		<ul class="nav navbar-nav navbar-right">
-        			<li>
+            </ul>
+            <span class="span1">
                 {% if user|logged_in %}
-                <a class="navbar-link" href="{% url 'cms:logout_url' %}">Logout</a>
+                <a href="{% url 'cms:logout_url' %}">Logout</a>
                 {% else %}
-                <a class="navbar-link" href="{% url 'cms:login_url' %}">Login</a>
+                <a href="{% url 'cms:login_url' %}">Login</a>
                 {% endif %}
-                	</li>
-            		</ul>
-            
-            </div><!-- /.navbar-collapse --> 
-                
-            
-            
-            
-  		</div><!-- /.container-fluid -->
-	</nav>
+            </span>
+        </div>
 
         {% block content %}{% endblock content %}
 
         <div id="footer" class="row">
-            <div class="col-md-12">
+            <div class="span12">
                 &copy; {% now "Y" %} {{ SLC_NAME }}
             </div>
         </div>

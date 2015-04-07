@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="row">
-        <h4 class="col-md-3">
+        <h4 class="span3">
             {% if prev_year %}
                 <a href="{% url 'cms:blogs_year_url' year=prev_year%}">&laquo; Blogs {{ prev_year }} &ndash; {{ prev_year2 }}</a>
             {% else %}
@@ -15,11 +15,11 @@
             {% endif %}
         </h4>
 
-        <h2 class="col-md-6" style="text-align: center;">
+        <h2 class="span6" style="text-align: center;">
             Blogs {{ year }} &ndash; {{ year2 }}
         </h2>
 
-        <h4 class="col-md-3" style="text-align: right;">
+        <h4 class="span3" style="text-align: right;">
             {% if next_year %}
                 <a href="{% url 'cms:blogs_year_url' year=next_year%}">Blogs {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>
             {% else %}
@@ -29,13 +29,13 @@
     </div>
 
     <div class="row">
-        <div class="col-md-10">
+        <div class="span10">
             {% if blog_posts %}
                 {% include "blogs/blog_badge.html" %}
             {% endif %}
         </div>
 
-        <div class="col-md-2">
+        <div class="span2">
             {% if months %}
                 <h4>Months</h4>
                 {% for month in months %}

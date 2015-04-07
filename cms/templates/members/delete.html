@@ -9,7 +9,7 @@
             {% csrf_token %}
             <h1>Are you sure you want to delete {{ member }}?</h1>
             <input type="submit" class="btn btn-danger" value="Yes, delete member" />
-            <a class="btn btn-default" href="{% url 'cms:profile_url' pk=member.pk %}">No, do not delete member</a>
+            <a class="btn" href="{% url 'cms:profile_url' pk=member.pk %}">No, do not delete member</a>
         </form>
     {% endif %}
 {% endblock content %}

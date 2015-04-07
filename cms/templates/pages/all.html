@@ -7,7 +7,7 @@
 
 {% block content %}
     <div class="row">
-        <div class="col-md-12">
+        <div class="span12">
             <h1>All Pages</h1>
 
             {% for page in pages %}
@@ -27,7 +27,7 @@
 
     {% if is_paginated %}
         <div class="row">
-            <div class="col-md-6">
+            <div class="span6">
                 <div id="paginate" class="pagination">
                     <ul>
                         {% if page_obj.has_previous %}

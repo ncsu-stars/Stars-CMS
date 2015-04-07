@@ -13,17 +13,17 @@
 
 {% block content %}
     <div class="row">
-        <h4 class="col-md-3">
+        <h4 class="span3">
             {% if prev_year %}
                 <a href="{% url 'cms:members_year_url' year=prev_year%}">&laquo; People {{ prev_year }} &ndash; {{ prev_year2 }}</a>
             {% else %}
                 &nbsp;
             {% endif%}
         </h4>
-        <h2 class="col-md-6" style="text-align: center;">
+        <h2 class="span6" style="text-align: center;">
             People {{ year }} &ndash; {{ year2 }}
         </h2>
-        <h4 class="col-md-3" style="text-align: right;">
+        <h4 class="span3" style="text-align: right;">
             {% if next_year %}
                 <a href="{% url 'cms:members_year_url' year=next_year%}">People {{ next_year }} &ndash; {{ next_year2 }} &raquo;</a>
             {% else %}
@@ -34,7 +34,7 @@
 
     <div class="row">
         {% if members %}
-            <div class="col-md-8">
+            <div class="span8">
                 {% for member in members %}
                     <div class="badge">
                         <div class="member_pic"><a href="{% url 'cms:profile_url' pk=member.pk %}">
@@ -65,7 +65,7 @@
                     </div>
                 {% endfor %}
             </div>
-            <div class="col-md-4">
+            <div class="span4">
                 {% for project_member_group in project_member_groups %}
                     {% if project_member_group.members or project_member_group.project_members %}
                         <div class="index">
@@ -88,10 +88,10 @@
     </div>
 
     {% if archived_members and year == current_year %}
-        <h2 class="col-md-8" style="text-align: center;">Archived Members</h2>
+        <h2 class="span8" style="text-align: center;">Archived Members</h2>
         {% for member in archived_members %}
             <div class="row">
-                <div class="col-md-8">
+                <div class="span8">
                     <div class="badge badge-archived">
                         <div class="member_pic"><a href="{% url 'cms:profile_url' pk=member.pk %}">
                             {% if member.image %}
@@ -107,8 +107,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4" style="text-align:center">
-                    <a class="btn btn-default" href="{% url 'cms:reactivate_member_url' pk=member.pk%}">Reactivate User</a>
+                <div class="span4" style="text-align:center">
+                    <a class="btn" href="{% url 'cms:reactivate_member_url' pk=member.pk%}">Reactivate User</a>
                 </div>
             </div>
         {% endfor %}
