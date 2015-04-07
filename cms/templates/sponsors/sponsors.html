@@ -1,61 +1,40 @@
-{% extends 'base.html' %}
-
-{% load filters %}
-
-{% load bootstrap_toolkit %}
-{% block title %}Sponsors{% endblock title %}
-
-{% block content %}
-<h2 class="span12" style="text-align: center;">Sponsors</h2>
-
-
-{% if sponsors %}
-    <div class="span12" style="margin-top: 20px;">
-    {% for sponsor in sponsors %}
+<div class="container"></div>{% extends 'base.html' %} {% load filters %} {% load bootstrap_toolkit
+%} {% block title %}Sponsors{% endblock title %} {% block content %}
+<h2
+class="col-md-12" style="text-align: center;">Sponsors</h2>{% if sponsors %}
+    <div class="col-md-12" style="margin-top: 20px;">{% for sponsor in sponsors %}
         <div class="row">
-            <div class="span4">
-            {% if sponsor.image %}
-                <img style="margin-bottom: 2em;" src="{{ MEDIA_URL }}{{ sponsor.image }}" width="86px" />
-            {% else %}
-                <!--img class="span-6" style="margin-bottom: 2em;" src="{{ STATIC_URL }}images/octocat.jpg" width="35%" /-->
-                <div class="span6" style="margin-bottom: 2em;"></div>
-            {% endif %}
-            </div>
-            <div class="span8">
-                <a name="{{ sponsor.pk }}"></a>
-                <h3>
+            <div class="col-md-4">{% if sponsor.image %}
+                <img style="margin-bottom: 2em;" src="{{ MEDIA_URL }}{{ sponsor.image }}"
+                width="86px" class="img-responsive" />{% else %}
+                <!--img class="span-6" style="margin-bottom: 2em;" src="{{ STATIC_URL
+                }}images/octocat.jpg" width="35%" /-->
+                <div class="col-md-6" style="margin-bottom: 2em;"></div>{% endif %}</div>
+            <div class="col-md-8"> <a name="{{ sponsor.pk }}"></a>
+                 <h3>
+
                     {{ sponsor.name }}
+
                     {% if user|can_delete_sponsor %}
+
                         <small><a href="{% url 'cms:delete_sponsor_url' pk=sponsor.pk %}">delete</a></small>
+
                     {% endif %}
+
                 </h3>
             </div>
-        </div>
-    {% endfor %}
-    </div>
-
-
-{% else %}
-    No sponsors.
-{% endif %}
-
-
-{% if form.is_multipart %}
-<form id="createSponsorForm" width="700px" method="post" enctype="multipart/form-data" action="{% url 'cms:create_sponsor_url' %}">
-{% else %}
-<form id="createSponsorForm" width="700px" method="post" action="{% url 'cms:create_sponsor_url' %}">
-{% endif %}
-    {% csrf_token %}
-    <fieldset>
-        <legend>Add Sponsor</legend>
-        {{ form|as_bootstrap:"horizontal" }}
-    </fieldset>
-    <div class="control-group">
-        <div class="controls">
-            <input type="submit" class="btn primary" value="Create" />
-            <button type="button" id="cancel" class="btn">Cancel</button>
-        </div>
-    </div>
-</form>
-
-{% endblock content %}
+        </div>{% endfor %}</div>{% else %} No sponsors. {% endif %} {% if form.is_multipart
+    %}
+    <form id="createSponsorForm" width="700px" method="post" enctype="multipart/form-data"
+    action="{% url 'cms:create_sponsor_url' %}">{% else %}
+        <form id="createSponsorForm" width="700px" method="post" action="{% url 'cms:create_sponsor_url' %}">{% endif %} {% csrf_token %}
+            <fieldset>
+                <legend>Add Sponsor</legend>{{ form|as_bootstrap:"horizontal" }}</fieldset>
+            <div
+            class="control-group">
+                <div class="controls">
+                    <input type="submit" class="btn btn-default primary" value="Create" />
+                    <button type="button" id="cancel" class="btn btn-default">Cancel</button>
+                </div>
+                </div>
+        </form>{% endblock content %}</form>

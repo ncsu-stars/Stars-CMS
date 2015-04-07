@@ -6,7 +6,7 @@
 
 {% block content %}
 <div class="row">
-    <div class="span12">
+    <div class="col-md-12">
         <form id="createPageForm" class="form form-horizontal" method="post" {% if form.is_multipart %}enctype="multipart/form-data"{% endif %} action="{% url 'cms:create_page_url' %}">
             {% csrf_token %}
             <fieldset>
@@ -16,7 +16,7 @@
             <div class="control-group">
                 <div class="controls">
                     <button type="submit" class="btn btn-primary">Create</button>
-                    <a class="btn" href="{% url 'cms:homepage_url' %}">Cancel</a>
+                    <a class="btn btn-default" href="{% url 'cms:homepage_url' %}">Cancel</a>
                 </div>
             </div>
         </form>
