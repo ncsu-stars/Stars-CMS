@@ -22,8 +22,8 @@ $(document).ready(function() {
 <form id="deletePage" method="post" action="{% url 'cms:delete_page_url' pk=page.pk %}">
     {% csrf_token %}
     <h1>Are you sure you want to delete {{ page.title }}</h1>
-    <input type="submit" class="btn danger" value="Yes, delete page" />
-    <button type="button" id="not_delete" class="btn primary">No, do not delete page</button>
+    <input type="submit" class="btn btn-danger" value="Yes, delete page" />
+    <button type="button" id="not_delete" class="btn btn-primary">No, do not delete page</button>
 </form>
 {% endif %}
 {% endblock content %}
