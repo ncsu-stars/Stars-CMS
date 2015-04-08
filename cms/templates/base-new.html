@@ -9,6 +9,10 @@
     <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/formly.min.css"/>
     <link type="text/css" rel="stylesheet" href="{{ STATIC_URL }}css/bootstrap.css"/>
 
+    <link href="{{ STATIC_URL }}css/main.css" rel="stylesheet">
+	<link href="{{ STATIC_URL }}css/animate.css" rel="stylesheet">
+    <link href="{{ STATIC_URL }}css/responsive.css" rel="stylesheet">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -122,20 +126,7 @@
 {% endif %}
 
 <div class="container">
-    <div class="row" style="padding-top:2%">
-        <div class="col-xs-2 col-md-1">
-            <a href="{% url 'cms:homepage_url' %}"><img class="img-responsive"
-                                                        src="{{ STATIC_URL }}images/Stars_logo_transparent.png"/></a>
-        </div>
-        <div class="col-xs-8 col-md-10" id="logo">
-            {{ SLC_NAME }}
-        </div>
-        <div class="col-xs-2 col-md-1">
-            <a href="http://www.nsf.gov/"><img class="img-responsive"
-                                               src="{{ STATIC_URL }}images/NSFlogoTrans.png"/></a>
-        </div>
-    </div>
-    <!-- end row -->
+
 
     <div id="mainNavTop" class="row">
         <div class="col-md-offset-10">
@@ -151,7 +142,7 @@
             {% endif %}
         </div>
     </div>
-    <nav class="navbar navbar-inverse" role="navigation">
+    <nav class="navbar navbar-inverse" role="navigation" style="margin: 0px">
         <div class="container-fluid">
             <!-- Brand and toggle get grouped for better mobile display -->
             <div class="navbar-header">
@@ -162,6 +153,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
+                <a class="navbar-brand" href="#"><img src="{{ STATIC_URL }}images/Stars_logo_transparent.png" class="img-responsive" /> </a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -195,7 +187,7 @@
 
     {% block content %}{% endblock content %}
 
-    <div id="footer" class="row">
+    <div id="footer">
         <div class="col-md-12">
             &copy; {% now "Y" %} {{ SLC_NAME }}
         </div>
