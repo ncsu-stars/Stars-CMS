@@ -1089,7 +1089,7 @@ textarea {
   line-height: inherit;
 }
 a {
-  color: #337ab7;
+  color: #E21737;
   text-decoration: none;
 }
 a:hover,
@@ -4793,7 +4793,7 @@ a.label:focus {
   background-color: #c9302c;
 }
 .badge {
-  display: inline-block;
+  /*display: inline-block;*/
   min-width: 10px;
   padding: 3px 7px;
   font-size: 12px;
