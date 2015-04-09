@@ -31,7 +31,7 @@ class HomepageView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(HomepageView, self).get_context_data(**kwargs)
-        context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:5]
+        context['blog_posts'] = BlogPost.objects.all().order_by('-date')[:3]
         context['SPONSOR_LOGO_URL'] = settings.SPONSOR_LOGO_URL
         context['sponsors'] = Sponsor.objects.all().order_by('name')
         if len(context['sponsors']) > 0:
