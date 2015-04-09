@@ -115,6 +115,7 @@ h2 {
     z-index: 1000;
     background-color: rgba(51,51,51, 0.8);
     padding: 15px;
+    min-width: 60px;
 
 }
 
