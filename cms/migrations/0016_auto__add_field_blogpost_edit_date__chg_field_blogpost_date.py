@@ -3,13 +3,14 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+from pytz import reference
 
 class Migration(SchemaMigration):
 
     def forwards(self, orm):
         
         # Adding field 'BlogPost.edit_date'
-        db.add_column('cms_blogpost', 'edit_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=datetime.date(2011, 12, 19), blank=True), keep_default=False)
+        db.add_column('cms_blogpost', 'edit_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, default=datetime.datetime(2011, 12, 19, tzinfo=reference.LocalTimezone()), blank=True), keep_default=False)
 
         # Changing field 'BlogPost.date'
         db.alter_column('cms_blogpost', 'date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True))

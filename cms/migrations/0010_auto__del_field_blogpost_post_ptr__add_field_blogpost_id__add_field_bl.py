@@ -3,6 +3,7 @@ import datetime
 from south.db import db
 from south.v2 import SchemaMigration
 from django.db import models
+import cms
 
 class Migration(SchemaMigration):
 
@@ -18,7 +19,7 @@ class Migration(SchemaMigration):
         db.add_column('cms_blogpost', 'title', self.gf('django.db.models.fields.CharField')(default=1, max_length=255), keep_default=False)
 
         # Adding field 'BlogPost.date'
-        db.add_column('cms_blogpost', 'date', self.gf('django.db.models.fields.DateTimeField')(default=datetime.datetime.now), keep_default=False)
+        db.add_column('cms_blogpost', 'date', self.gf('django.db.models.fields.DateTimeField')(default=cms.get_current_time), keep_default=False)
 
         # Adding field 'BlogPost.post'
         db.add_column('cms_blogpost', 'post', self.gf('django.db.models.fields.TextField')(default=1), keep_default=False)
