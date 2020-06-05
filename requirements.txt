@@ -1,4 +1,4 @@
-Django==1.5.4
+Django==1.11.29
 South==0.8.2
 setuptools==7.0
 django-floppyforms==1.0
