@@ -1,6 +1,6 @@
 Django==1.5.4
 South==0.8.2
-setuptools==7.0
+setuptools==65.5.1
 django-floppyforms==1.0
 django-uni-form==0.8.0
 wsgiref==0.1.2
